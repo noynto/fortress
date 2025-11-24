@@ -11,6 +11,10 @@ dependencies {
     testImplementation(libs.junit.jupiter)
     // https://mvnrepository.com/artifact/org.junit.platform/junit-platform-launcher
     testImplementation(libs.junit.platform)
+    // https://mvnrepository.com/artifact/org.mockito/mockito-core
+    testImplementation(libs.mockito)
+    // https://mvnrepository.com/artifact/tools.jackson.core/jackson-databind
+    implementation("tools.jackson.core:jackson-databind:3.0.2")
 }
 
 java {
