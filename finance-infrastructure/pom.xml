@@ -1,0 +1,56 @@
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>me.noynto.fortress</groupId>
+        <artifactId>fortress</artifactId>
+        <version>0.0.0</version>
+    </parent>
+
+    <artifactId>finance-infrastructure</artifactId>
+
+    <dependencies>
+        <!-- Dépendance sur le module app -->
+        <dependency>
+            <groupId>me.noynto.fortress</groupId>
+            <artifactId>finance-application</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- Helidon SE WebServer minimal -->
+        <dependency>
+            <groupId>io.helidon.webserver</groupId>
+            <artifactId>helidon-webserver</artifactId>
+            <version>${helidon.version}</version>
+        </dependency>
+
+        <!-- Helidon Config pour la configuration -->
+        <dependency>
+            <groupId>io.helidon.config</groupId>
+            <artifactId>helidon-config</artifactId>
+            <version>${helidon.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.helidon.http.media</groupId>
+            <artifactId>helidon-http-media-jsonb</artifactId>
+            <version>${helidon.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.helidon.dbclient</groupId>
+            <artifactId>helidon-dbclient-mongodb</artifactId>
+            <version>${helidon.version}</version>
+        </dependency>
+
+        <!-- SLF4J pour logs -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>2.0.9</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>2.0.9</version>
+        </dependency>
+    </dependencies>
+</project>
