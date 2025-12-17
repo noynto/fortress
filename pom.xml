@@ -9,17 +9,32 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>finance-application</module>
-        <module>finance-infrastructure</module>
-        <module>bootstrap</module>
+        <module>knight</module>
+        <module>finance-core</module>
+        <module>minio</module>
     </modules>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>21</maven.compiler.release>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
         <junit.jupiter.version>5.13.4</junit.jupiter.version>
         <mockito.version>5.20.0</mockito.version>
         <helidon.version>4.3.2</helidon.version>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.helidon</groupId>
+                <artifactId>helidon-bom</artifactId>
+                <version>${helidon.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
