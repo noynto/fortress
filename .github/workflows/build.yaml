@@ -42,4 +42,4 @@ jobs:
 
       # 3. Lancer un build de l'image docker
       - name: Docker build
-        run: docker build -t fortress-knight:0.0.0
+        run: docker build -t fortress-knight:0.0.0 .
