@@ -1,6 +1,5 @@
 name: Build
 
-# Déclencheur : à chaque push sur n'importe quelle branche
 on:
   push:
     branches:
@@ -8,9 +7,17 @@ on:
 
 # Jobs
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. Récupérer le code
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      # 2. Lancer les essai du projet.
+      - name: Run tests
+        run: ./mvnw test
   build:
     runs-on: ubuntu-latest
-
     steps:
       # 1. Installer Docker
       - name: Docker installation
