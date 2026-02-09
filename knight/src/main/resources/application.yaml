@@ -1,5 +1,0 @@
-knight:
-  port: 8080
-storage:
-  file:
-    path: /home/noynto/Vidéos
