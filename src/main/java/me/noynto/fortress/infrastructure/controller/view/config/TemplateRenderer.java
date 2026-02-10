@@ -4,9 +4,7 @@ import gg.jte.ContentType;
 import gg.jte.TemplateEngine;
 import gg.jte.TemplateOutput;
 import gg.jte.output.StringOutput;
-import gg.jte.resolve.DirectoryCodeResolver;
 
-import java.nio.file.Path;
 import java.util.Map;
 
 public class TemplateRenderer {
@@ -14,10 +12,7 @@ public class TemplateRenderer {
     private final TemplateEngine engine;
 
     public TemplateRenderer() {
-        Path templatePath = Path.of("src/main/jte");
-        DirectoryCodeResolver codeResolver = new DirectoryCodeResolver(templatePath);
-        this.engine = TemplateEngine.create(codeResolver, ContentType.Html);
-        this.engine.setBinaryStaticContent(true);
+        this.engine = TemplateEngine.createPrecompiled(ContentType.Html);
     }
 
     /**

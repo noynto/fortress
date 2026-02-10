@@ -16,7 +16,7 @@ WORKDIR /process
 # Incremental docker builds will always resume after that, unless you update
 # the pom
 ADD pom.xml .
-RUN mvn package -Dmaven.test.skip -Declipselink.weave.skip
+RUN mvn -B -q -e -DskipTests dependency:go-offline
 
 # Do the Maven build!
 # Incremental docker builds will resume here when you change sources
@@ -31,6 +31,7 @@ WORKDIR /process
 
 # Copy the binary built in the 1st stage
 COPY --from=build /process/target/fortress-**.jar ./fortress.jar
+COPY --from=build /process/target/libs ./libs
 
 CMD ["java", "-jar", "fortress.jar"]
 

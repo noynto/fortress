@@ -51,9 +51,53 @@
             <artifactId>jte</artifactId>
             <version>3.1.13</version>
         </dependency>
+        <!-- Runtime pour templates précompilés -->
+        <dependency>
+            <groupId>gg.jte</groupId>
+            <artifactId>jte-runtime</artifactId>
+            <version>3.1.13</version>
+        </dependency>
     </dependencies>
 
     <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.6.0</version>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/libs</outputDirectory>
+                            <includeScope>runtime</includeScope>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>gg.jte</groupId>
+                <artifactId>jte-maven-plugin</artifactId>
+                <version>3.1.13</version>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <sourceDirectory>${project.basedir}/src/main/jte</sourceDirectory>
+                    <targetDirectory>${project.build.directory}/generated-sources/jte</targetDirectory>
+                    <contentType>Html</contentType>
+                </configuration>
+            </plugin>
+        </plugins>
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -74,6 +118,8 @@
                         <archive>
                             <manifest>
                                 <mainClass>${mainClass}</mainClass>
+                                <addClasspath>true</addClasspath>
+                                <classpathPrefix>libs/</classpathPrefix>
                             </manifest>
                         </archive>
                     </configuration>
