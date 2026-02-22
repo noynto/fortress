@@ -6,22 +6,22 @@ import io.helidon.webserver.http.HttpRules;
 import io.helidon.webserver.http.HttpService;
 import io.helidon.webserver.http.ServerRequest;
 import io.helidon.webserver.http.ServerResponse;
-import me.noynto.fortress.application.command.ApproveTransactionCommand;
-import me.noynto.fortress.application.command.CreateTransactionCommand;
-import me.noynto.fortress.application.command.DeleteTransactionCommand;
-import me.noynto.fortress.application.command.RejectTransactionCommand;
-import me.noynto.fortress.application.command.handler.ApproveTransactionHandler;
-import me.noynto.fortress.application.command.handler.CreateTransactionHandler;
-import me.noynto.fortress.application.command.handler.DeleteTransactionHandler;
-import me.noynto.fortress.application.command.handler.RejectTransactionHandler;
-import me.noynto.fortress.application.query.GetAllTransactionsQuery;
-import me.noynto.fortress.application.query.GetBalanceQuery;
-import me.noynto.fortress.application.query.GetTransactionsByStatusQuery;
-import me.noynto.fortress.application.query.handler.GetAllTransactionsHandler;
-import me.noynto.fortress.application.query.handler.GetBalanceHandler;
-import me.noynto.fortress.application.query.handler.GetTransactionsByStatusHandler;
-import me.noynto.fortress.domain.Balance;
-import me.noynto.fortress.domain.Transaction;
+import me.noynto.fortress.application.transactions.command.ApproveTransactionCommand;
+import me.noynto.fortress.application.transactions.command.CreateTransactionCommand;
+import me.noynto.fortress.application.transactions.command.DeleteTransactionCommand;
+import me.noynto.fortress.application.transactions.command.RejectTransactionCommand;
+import me.noynto.fortress.application.transactions.command.handler.ApproveTransactionHandler;
+import me.noynto.fortress.application.transactions.command.handler.CreateTransactionHandler;
+import me.noynto.fortress.application.transactions.command.handler.DeleteTransactionHandler;
+import me.noynto.fortress.application.transactions.command.handler.RejectTransactionHandler;
+import me.noynto.fortress.application.transactions.query.GetAllTransactionsQuery;
+import me.noynto.fortress.application.transactions.query.GetBalanceQuery;
+import me.noynto.fortress.application.transactions.query.GetTransactionsByStatusQuery;
+import me.noynto.fortress.application.transactions.query.handler.GetAllTransactionsHandler;
+import me.noynto.fortress.application.transactions.query.handler.GetBalanceHandler;
+import me.noynto.fortress.application.transactions.query.handler.GetTransactionsByStatusHandler;
+import me.noynto.fortress.domain.transactions.Balance;
+import me.noynto.fortress.domain.transactions.Transaction;
 import me.noynto.fortress.infrastructure.controller.view.config.TemplateRenderer;
 
 import java.math.BigDecimal;
@@ -126,10 +126,11 @@ public class TransactionViewController implements HttpService {
         try {
             // Parser les données du formulaire
             Map<String, String> formData = parseFormData(req.content().as(String.class));
-            Transaction.Amount amount = new Transaction.Amount(new BigDecimal(formData.get("amount")));
-            Transaction.Type type = Transaction.Type.valueOf(formData.get("type"));
-            Transaction.Description description = new Transaction.Description(formData.getOrDefault("description", ""));
-            CreateTransactionCommand command = new CreateTransactionCommand(amount, type, description);
+            CreateTransactionCommand command = new CreateTransactionCommand(
+                    new BigDecimal(formData.get("amount")),
+                    formData.get("type"),
+                    formData.getOrDefault("description", "")
+            );
             createTransactionHandler.handle(command);
             // Redirection vers la liste
             res.status(Status.SEE_OTHER_303);

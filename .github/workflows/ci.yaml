@@ -1,0 +1,95 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches:
+      - 'feature/**'
+      - 'fix/**'
+    paths:
+      - 'src/**'
+      - 'pom.xml'
+  pull_request:
+    branches:
+      - 'main'   # Toutes les PR ciblent main directement
+    paths:
+      - 'src/**'
+      - 'pom.xml'
+
+# ─────────────────────────────────────────────
+# Permissions minimales
+# ─────────────────────────────────────────────
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
+
+# ─────────────────────────────────────────────
+# Jobs
+# ─────────────────────────────────────────────
+jobs:
+
+  build:
+    name: Compile & Essai
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Clône
+        uses: actions/checkout@v4
+
+      - name: Mise en place de Java 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Compile & Essais
+        run: mvn verify --no-transfer-progress
+
+      - name: Rapport d'essai JUnit
+        uses: dorny/test-reporter@v1
+        if: always()
+        with:
+          name: JUnit Tests
+          path: target/surefire-reports/*.xml
+          reporter: java-junit
+          fail-on-error: true
+
+      - name: Téléversement du rapport de couverture
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: jacoco-report
+          path: target/site/jacoco/
+          retention-days: 7
+
+      - name: Téléversement de l'artéfact JAR
+        uses: actions/upload-artifact@v4
+        # Uniquement sur les PR vers main (code validé)
+        if: github.event_name == 'pull_request'
+        with:
+          name: fortress-${{ github.sha }}
+          path: target/*.jar
+          retention-days: 5
+
+      - name: Résumé
+        if: always()
+        run: |
+          BRANCH="${{ github.ref_name }}"
+
+          if [[ "$BRANCH" == feature/* ]]; then
+            BRANCH_TYPE="🌿 Feature"
+          elif [[ "$BRANCH" == fix/* ]]; then
+            BRANCH_TYPE="🐛 Fix"
+          else
+            BRANCH_TYPE="📌 $BRANCH"
+          fi
+
+          echo "## 📋 Build Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| | |" >> $GITHUB_STEP_SUMMARY
+          echo "|---|---|" >> $GITHUB_STEP_SUMMARY
+          echo "| **Branche** | ${BRANCH_TYPE} \`${BRANCH}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Commit** | \`${{ github.sha }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Essais JUnit** | Voir rapport ci-dessus |" >> $GITHUB_STEP_SUMMARY

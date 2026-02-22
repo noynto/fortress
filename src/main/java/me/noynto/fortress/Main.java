@@ -2,17 +2,17 @@ package me.noynto.fortress;
 
 import io.helidon.webserver.WebServer;
 import io.helidon.webserver.http.HttpRouting;
-import me.noynto.fortress.application.command.handler.ApproveTransactionHandler;
-import me.noynto.fortress.application.command.handler.CreateTransactionHandler;
-import me.noynto.fortress.application.command.handler.DeleteTransactionHandler;
-import me.noynto.fortress.application.command.handler.RejectTransactionHandler;
-import me.noynto.fortress.application.query.handler.GetAllTransactionsHandler;
-import me.noynto.fortress.application.query.handler.GetBalanceHandler;
-import me.noynto.fortress.application.query.handler.GetTransactionsByStatusHandler;
-import me.noynto.fortress.domain.Persistence;
+import me.noynto.fortress.application.transactions.command.handler.ApproveTransactionHandler;
+import me.noynto.fortress.application.transactions.command.handler.CreateTransactionHandler;
+import me.noynto.fortress.application.transactions.command.handler.DeleteTransactionHandler;
+import me.noynto.fortress.application.transactions.command.handler.RejectTransactionHandler;
+import me.noynto.fortress.application.transactions.query.handler.GetAllTransactionsHandler;
+import me.noynto.fortress.application.transactions.query.handler.GetBalanceHandler;
+import me.noynto.fortress.application.transactions.query.handler.GetTransactionsByStatusHandler;
+import me.noynto.fortress.domain.transactions.TransactionProvider;
 import me.noynto.fortress.infrastructure.controller.view.TransactionViewController;
 import me.noynto.fortress.infrastructure.controller.view.config.TemplateRenderer;
-import me.noynto.fortress.infrastructure.persistence.InMemoryTransactionPersistence;
+import me.noynto.fortress.infrastructure.persistence.transactions.InMemoryTransactions;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -20,21 +20,21 @@ public class Main {
 
     public static void main(String[] args) {
         // Infrastructure Layer : Repository
-        Persistence persistence = new InMemoryTransactionPersistence(new ConcurrentHashMap<>());
+        TransactionProvider transactionProvider = new InMemoryTransactions(new ConcurrentHashMap<>());
 
         // Application Layer : Command Handlers (écriture)
-        CreateTransactionHandler createTransactionHandler = new CreateTransactionHandler(persistence);
-        ApproveTransactionHandler approveTransactionHandler = new ApproveTransactionHandler(persistence);
-        RejectTransactionHandler rejectTransactionHandler = new RejectTransactionHandler(persistence);
-        DeleteTransactionHandler deleteTransactionHandler = new DeleteTransactionHandler(persistence);
+        CreateTransactionHandler createTransactionHandler = new CreateTransactionHandler(transactionProvider);
+        ApproveTransactionHandler approveTransactionHandler = new ApproveTransactionHandler(transactionProvider);
+        RejectTransactionHandler rejectTransactionHandler = new RejectTransactionHandler(transactionProvider);
+        DeleteTransactionHandler deleteTransactionHandler = new DeleteTransactionHandler(transactionProvider);
 
         // Application Layer : Query Handlers (lecture)
         GetAllTransactionsHandler getAllTransactionsHandler =
-                new GetAllTransactionsHandler(persistence);
+                new GetAllTransactionsHandler(transactionProvider);
         GetTransactionsByStatusHandler getTransactionsByStatusHandler =
-                new GetTransactionsByStatusHandler(persistence);
+                new GetTransactionsByStatusHandler(transactionProvider);
         GetBalanceHandler getBalanceHandler =
-                new GetBalanceHandler(persistence);
+                new GetBalanceHandler(transactionProvider);
 
         // Infrastructure Layer : Template Renderer
         TemplateRenderer templateRenderer = new TemplateRenderer();

@@ -1,6 +1,6 @@
-@import me.noynto.fortress.domain.Balance
-@import me.noynto.fortress.domain.Transaction
-@import me.noynto.fortress.domain.Transaction.Status
+@import me.noynto.fortress.domain.transactions.Balance
+@import me.noynto.fortress.domain.transactions.Transaction
+@import me.noynto.fortress.domain.transactions.Transaction.Status
 @import java.time.LocalDateTime
 @import java.util.List
 @import java.math.BigDecimal
