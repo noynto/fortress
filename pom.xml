@@ -17,6 +17,8 @@
         <!-- Version Helidon -->
         <helidon.version>4.1.4</helidon.version>
 
+        <jacoco.version>0.8.12</jacoco.version>
+
         <!-- Versions des plugins -->
         <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
         <maven-surefire-plugin.version>3.2.5</maven-surefire-plugin.version>
@@ -49,13 +51,13 @@
         <dependency>
             <groupId>gg.jte</groupId>
             <artifactId>jte</artifactId>
-            <version>3.1.13</version>
+            <version>3.1.16</version>
         </dependency>
         <!-- Runtime pour templates précompilés -->
         <dependency>
             <groupId>gg.jte</groupId>
             <artifactId>jte-runtime</artifactId>
-            <version>3.1.13</version>
+            <version>3.1.16</version>
         </dependency>
         <dependency>
             <groupId>at.favre.lib</groupId>
@@ -99,7 +101,7 @@
                     <execution>
                         <phase>generate-sources</phase>
                         <goals>
-                            <goal>precompile</goal>
+                            <goal>generate</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -108,6 +110,50 @@
                     <targetDirectory>${project.build.directory}/generated-sources/jte</targetDirectory>
                     <contentType>Html</contentType>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco.version}</version>
+                <executions>
+                    <!-- Prépare l'agent JaCoCo avant les tests -->
+                    <execution>
+                        <id>prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <!-- Génère le rapport HTML après les tests -->
+                    <execution>
+                        <id>report</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                    <!-- Fait échouer le build si la couverture est insuffisante -->
+                    <execution>
+                        <id>check</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <rule>
+                                    <element>BUNDLE</element>
+                                    <limits>
+                                        <limit>
+                                            <counter>LINE</counter>
+                                            <value>COVEREDRATIO</value>
+                                            <minimum>0.10</minimum> <!-- 50% minimum, à ajuster -->
+                                        </limit>
+                                    </limits>
+                                </rule>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
         <pluginManagement>
