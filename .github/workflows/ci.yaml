@@ -16,18 +16,12 @@ on:
       - 'src/**'
       - 'pom.xml'
 
-# ─────────────────────────────────────────────
-# Permissions minimales
-# ─────────────────────────────────────────────
 permissions:
   contents: read
   checks: write
   pull-requests: write
   packages: write
 
-# ─────────────────────────────────────────────
-# Jobs
-# ─────────────────────────────────────────────
 jobs:
 
   build:

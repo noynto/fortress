@@ -1,0 +1,174 @@
+name: Continuous Deployment
+
+on:
+  push:
+    branches:
+      - 'main'
+    paths:
+      - 'src/**'
+      - 'pom.xml'
+      - 'Dockerfile'
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+
+  build:
+    name: Compile & Essai
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clône
+        uses: actions/checkout@v4
+      - name: Mise en place de Java 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'maven'
+      - name: Compile & Essais
+        run: mvn verify --no-transfer-progress
+      - name: Rapport d'essai JUnit
+        uses: dorny/test-reporter@v1
+        if: always()
+        with:
+          name: JUnit Tests
+          path: target/surefire-reports/*.xml
+          reporter: java-junit
+          fail-on-error: true
+      - name: Téléversement du rapport de couverture
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: jacoco-report
+          path: target/site/jacoco/
+          retention-days: 7
+
+
+
+  docker:
+    name: Compile et pousse sur le registre de conteneurs GitHub
+    runs-on: ubuntu-latest
+    needs: build
+
+    outputs:
+      image: ghcr.io/${{ github.repository }}:${{ github.sha }}
+
+    steps:
+      - name: Clône
+        uses: actions/checkout@v4
+      - name: Mise en place de Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Authentification au registre de conteneur Github
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Génère les métadonnées de l'image
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository }}
+          tags: |
+            type=raw,value=latest
+            type=sha,prefix=sha-
+      - name: Compilation de l'image Docker
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - name: Résumé de l'image
+        run: |
+          echo "## 🐳 Docker Image" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| | |" >> $GITHUB_STEP_SUMMARY
+          echo "|---|---|" >> $GITHUB_STEP_SUMMARY
+          echo "| **Image** | \`ghcr.io/${{ github.repository }}:latest\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| **SHA** | \`ghcr.io/${{ github.repository }}:sha-${{ github.sha }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Commit** | \`${{ github.sha }}\` |" >> $GITHUB_STEP_SUMMARY
+
+
+  approve:
+    name: Approbation manuelle
+    runs-on: ubuntu-latest
+    needs: docker
+    environment:
+      name: production
+    steps:
+      - name: Approuvé
+        run: echo "✅ Déploiement en production approuvé"
+
+  deploy:
+    name: Deploy Production
+    runs-on: ubuntu-latest
+    needs: approve
+    steps:
+      - name: Installation de Railway CLI
+        run: curl -fsSL https://railway.app/install.sh | sh
+      - name: Déploiement de l'image sur Railway
+        id: deploy
+        run: |
+          railway up \
+            --image ghcr.io/${{ github.repository }}:sha-${{ github.sha }} \
+            --environment production \
+            --service ${{ secrets.RAILWAY_SERVICE_ID }} \
+            --detach
+
+          URL=$(railway domain \
+            --environment production \
+            --service ${{ secrets.RAILWAY_SERVICE_ID }})
+          echo "url=https://$URL" >> $GITHUB_OUTPUT
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+
+      # Vérifie que Helidon répond en production
+      - name: Health Check
+        run: |
+          echo "⏳ Attente démarrage sur Railway..."
+          sleep 10
+          curl -sf ${{ steps.deploy.outputs.url }}/health \
+            || (echo "❌ Health check production échoué" && exit 1)
+          echo "✅ Production opérationnelle"
+
+      - name: Deploy Summary
+        run: |
+          echo "## 🚀 Production déployée" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| | |" >> $GITHUB_STEP_SUMMARY
+          echo "|---|---|" >> $GITHUB_STEP_SUMMARY
+          echo "| **URL** | ${{ steps.deploy.outputs.url }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Image** | \`ghcr.io/${{ github.repository }}:sha-${{ github.sha }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Commit** | \`${{ github.sha }}\` |" >> $GITHUB_STEP_SUMMARY
+
+  # ════════════════════════════════════════════
+  # Job 5 — Rollback automatique si échec
+  # ════════════════════════════════════════════
+  rollback:
+    name: Rollback
+    runs-on: ubuntu-latest
+    needs: deploy
+    if: failure()
+
+    steps:
+
+      - name: Install Railway CLI
+        run: curl -fsSL https://railway.app/install.sh | sh
+
+      - name: Rollback
+        run: |
+          railway rollback \
+            --environment production \
+            --service ${{ secrets.RAILWAY_SERVICE_ID }}
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+
+      - name: Rollback Summary
+        run: |
+          echo "## ⚠️ Rollback effectué" >> $GITHUB_STEP_SUMMARY
+          echo "Le déploiement a échoué, retour à la version précédente." >> $GITHUB_STEP_SUMMARY
