@@ -30,20 +30,14 @@ jobs:
           cache: 'maven'
       - name: Compile & Essais
         run: mvn verify --no-transfer-progress
-      - name: Rapport d'essai JUnit
-        uses: dorny/test-reporter@v1
-        if: always()
-        with:
-          name: JUnit Tests
-          path: target/surefire-reports/*.xml
-          reporter: java-junit
-          fail-on-error: true
-      - name: Téléversement du rapport de couverture
+      - name: Téléversement du rapport d'essais et de couverture
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: jacoco-report
-          path: target/site/jacoco/
+          name: test-report-${{ github.sha }}
+          path: |
+            target/site/jacoco/
+            target/surefire-reports/
           retention-days: 7
 
 
