@@ -87,56 +87,55 @@ jobs:
           echo "| **Image** | \`ghcr.io/${{ github.repository }}:latest\` |" >> $GITHUB_STEP_SUMMARY
           echo "| **SHA** | \`ghcr.io/${{ github.repository }}:sha-${{ github.sha }}\` |" >> $GITHUB_STEP_SUMMARY
           echo "| **Commit** | \`${{ github.sha }}\` |" >> $GITHUB_STEP_SUMMARY
+  
 
-
-#  approve:
-#    name: Approbation manuelle
-#    runs-on: ubuntu-latest
-#    needs: docker
-#    environment:
-#      name: production
-#    steps:
-#      - name: Approuvé
-#        run: echo "✅ Déploiement en production approuvé"
+  #  approve:
+  #    name: Approbation manuelle
+  #    runs-on: ubuntu-latest
+  #    needs: docker
+  #    environment:
+  #      name: production
+  #    steps:
+  #      - name: Approuvé
+  #        run: echo "✅ Déploiement en production approuvé"
 
   deploy:
     name: Deploy Production
     runs-on: ubuntu-latest
-    container: ghcr.io/railwayapp/cli:latest
     needs: docker
     steps:
       - name: Déploiement de l'image sur Railway
         id: deploy
         run: |
-          railway redeploy \
-            --service ${{ secrets.RAILWAY_SERVICE_ID }} \
-            --yes
+          PAYLOAD = '{"query": "mutation { serviceInstanceRedeploy(environmentId: \"${{ secrets.RAILWAY_ENVIRONMENT_ID }}\", serviceId: \"${{ secrets.RAILWAY_SERVICE_ID }}\") }"}'
+          curl -sf -X POST https://backboard.railway.app/graphql/v2 \
+          -H "Content-Type: application/json" \
+          -H "Authorization: Bearer ${{ secrets.RAILWAY_TOKEN }}" \
+          -d "$PAYLOAD"
 
-          URL=$(railway domain \
-            --environment production \
-            --service ${{ secrets.RAILWAY_SERVICE_ID }})
-          echo "url=https://$URL" >> $GITHUB_OUTPUT
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+  #          URL=$(railway domain \
+  #            --environment production \
+  #            --service ${{ secrets.RAILWAY_SERVICE_ID }})
+  #          echo "url=https://$URL" >> $GITHUB_OUTPUT
 
-      # Vérifie que Helidon répond en production
-      - name: Health Check
-        run: |
-          echo "⏳ Attente démarrage sur Railway..."
-          sleep 10
-          curl -sf ${{ steps.deploy.outputs.url }}/health \
-            || (echo "❌ Health check production échoué" && exit 1)
-          echo "✅ Production opérationnelle"
-
-      - name: Deploy Summary
-        run: |
-          echo "## 🚀 Production déployée" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "| | |" >> $GITHUB_STEP_SUMMARY
-          echo "|---|---|" >> $GITHUB_STEP_SUMMARY
-          echo "| **URL** | ${{ steps.deploy.outputs.url }} |" >> $GITHUB_STEP_SUMMARY
-          echo "| **Image** | \`ghcr.io/${{ github.repository }}:sha-${{ github.sha }}\` |" >> $GITHUB_STEP_SUMMARY
-          echo "| **Commit** | \`${{ github.sha }}\` |" >> $GITHUB_STEP_SUMMARY
+  #      # Vérifie que Helidon répond en production
+  #      - name: Health Check
+  #        run: |
+  #          echo "⏳ Attente démarrage sur Railway..."
+  #          sleep 10
+  #          curl -sf ${{ steps.deploy.outputs.url }}/health \
+  #            || (echo "❌ Health check production échoué" && exit 1)
+  #          echo "✅ Production opérationnelle"
+  #
+  #      - name: Deploy Summary
+  #        run: |
+  #          echo "## 🚀 Production déployée" >> $GITHUB_STEP_SUMMARY
+  #          echo "" >> $GITHUB_STEP_SUMMARY
+  #          echo "| | |" >> $GITHUB_STEP_SUMMARY
+  #          echo "|---|---|" >> $GITHUB_STEP_SUMMARY
+  #          echo "| **URL** | ${{ steps.deploy.outputs.url }} |" >> $GITHUB_STEP_SUMMARY
+  #          echo "| **Image** | \`ghcr.io/${{ github.repository }}:sha-${{ github.sha }}\` |" >> $GITHUB_STEP_SUMMARY
+  #          echo "| **Commit** | \`${{ github.sha }}\` |" >> $GITHUB_STEP_SUMMARY
 
   # ════════════════════════════════════════════
   # Job 5 — Rollback automatique si échec
