@@ -109,11 +109,9 @@ jobs:
       - name: Déploiement de l'image sur Railway
         id: deploy
         run: |
-          railway up \
-            --image ghcr.io/${{ github.repository }}:sha-${{ github.sha }} \
-            --environment production \
+          railway redeploy \
             --service ${{ secrets.RAILWAY_SERVICE_ID }} \
-            --detach
+            --yes
 
           URL=$(railway domain \
             --environment production \
