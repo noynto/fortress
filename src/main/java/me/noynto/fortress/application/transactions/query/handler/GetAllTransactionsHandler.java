@@ -8,12 +8,12 @@ import java.util.List;
 import java.util.Objects;
 
 public record GetAllTransactionsHandler(
-        TransactionProvider repository
+        TransactionProvider provider
 ) {
 
     public List<Transaction> handle(GetAllTransactionsQuery query) {
         Objects.requireNonNull(query);
-        return repository.streamAll();
+        return this.provider.stream().toList();
     }
 
 }

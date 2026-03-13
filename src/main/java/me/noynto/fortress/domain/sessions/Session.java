@@ -1,4 +1,6 @@
-package me.noynto.fortress.domain.users;
+package me.noynto.fortress.domain.sessions;
+
+import me.noynto.fortress.domain.users.User;
 
 import java.util.Objects;
 

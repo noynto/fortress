@@ -1,17 +1,21 @@
 package me.noynto.fortress.domain.transactions;
 
-import java.util.List;
+import me.noynto.fortress.domain.shared.TransactionId;
+
 import java.util.Optional;
+import java.util.stream.Stream;
 
 public interface TransactionProvider {
 
-    Transaction create(Transaction transaction);
+    Transaction create(TransactionDescription description, TransactionAmount amount, TransactionType type);
 
-    List<Transaction> streamAll();
+    Stream<Transaction> stream();
 
-    Optional<Transaction> findById(Transaction.Id id);
+    Optional<Transaction> find(TransactionId id);
 
-    void deleteById(Transaction transaction);
+    void delete(TransactionId id);
 
-    List<Transaction> findByStatus(Transaction.Status status);
+    Stream<Transaction> stream(TransactionState state);
+
+    Transaction update(Transaction transaction);
 }

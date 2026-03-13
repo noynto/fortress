@@ -1,6 +1,6 @@
 @import me.noynto.fortress.domain.transactions.Balance
 @import me.noynto.fortress.domain.transactions.Transaction
-@import me.noynto.fortress.domain.transactions.Transaction.Status
+@import me.noynto.fortress.domain.transactions.TransactionState
 @import java.time.LocalDateTime
 @import java.util.List
 @import java.math.BigDecimal
@@ -78,11 +78,11 @@ content = @`
                             €
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            @if(transaction.status() == Status.PENDING)
+                            @if(transaction.state() == TransactionState.PENDING)
                                 <span class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">
                                             ⏳ En attente
                                         </span>
-                            @elseif(transaction.status() == Status.APPROVED)
+                            @elseif(transaction.state() == TransactionState.APPROVED)
                                 <span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
                                             ✓ Approuvée
                                         </span>
@@ -93,7 +93,7 @@ content = @`
                             @endif
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
-                            @if(transaction.status() == Status.PENDING)
+                            @if(transaction.state() == TransactionState.PENDING)
                                 <form action="/transactions/${transaction.id().value()}/approve" method="post"
                                       class="inline">
                                     <button type="submit" class="text-green-600 hover:text-green-900 mr-3">

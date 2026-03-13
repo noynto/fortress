@@ -8,7 +8,7 @@ import me.noynto.fortress.application.transactions.command.handler.DeleteTransac
 import me.noynto.fortress.application.transactions.command.handler.RejectTransactionHandler;
 import me.noynto.fortress.application.transactions.query.handler.GetAllTransactionsHandler;
 import me.noynto.fortress.application.transactions.query.handler.GetBalanceHandler;
-import me.noynto.fortress.application.transactions.query.handler.GetTransactionsByStatusHandler;
+import me.noynto.fortress.application.transactions.query.handler.GetTransactionsByStateHandler;
 import me.noynto.fortress.domain.transactions.TransactionProvider;
 import me.noynto.fortress.infrastructure.controller.view.TransactionViewController;
 import me.noynto.fortress.infrastructure.controller.view.config.TemplateRenderer;
@@ -31,8 +31,8 @@ public class Main {
         // Application Layer : Query Handlers (lecture)
         GetAllTransactionsHandler getAllTransactionsHandler =
                 new GetAllTransactionsHandler(transactionProvider);
-        GetTransactionsByStatusHandler getTransactionsByStatusHandler =
-                new GetTransactionsByStatusHandler(transactionProvider);
+        GetTransactionsByStateHandler getTransactionsByStateHandler =
+                new GetTransactionsByStateHandler(transactionProvider);
         GetBalanceHandler getBalanceHandler =
                 new GetBalanceHandler(transactionProvider);
 
@@ -47,7 +47,7 @@ public class Main {
                 rejectTransactionHandler,
                 deleteTransactionHandler,
                 getAllTransactionsHandler,
-                getTransactionsByStatusHandler,
+                getTransactionsByStateHandler,
                 getBalanceHandler
         );
 

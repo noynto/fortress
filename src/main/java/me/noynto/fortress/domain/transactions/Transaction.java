@@ -1,126 +1,52 @@
 package me.noynto.fortress.domain.transactions;
 
-import java.math.BigDecimal;
-import java.util.Objects;
+import me.noynto.fortress.domain.shared.TransactionId;
 
-public interface Transaction {
+public class Transaction {
 
-    record Id(
-            String value
-    ) {
-        public Id {
-            Objects.requireNonNull(value);
-        }
+    private TransactionId id;
+    private TransactionDescription description;
+    private TransactionAmount amount;
+    private TransactionType type;
+    private TransactionState state;
+
+    public TransactionId id() {
+        return this.id;
     }
 
-    record Description(
-            String value
-    ) {
-        public Description {
-            Objects.requireNonNull(value);
-        }
+    public void id(TransactionId id) {
+        this.id = id;
     }
 
-    record Amount(
-            BigDecimal value
-    ) {
-        public Amount {
-            Objects.requireNonNull(value);
-        }
+    public TransactionDescription description() {
+        return this.description;
     }
 
-    enum Type {
-        CREDIT,
-        DEBIT
+    public void description(TransactionDescription description) {
+        this.description = description;
     }
 
-    enum Status {
-        PENDING,
-        APPROVED,
-        REJECTED
+    public TransactionAmount amount() {
+        return this.amount;
     }
 
-    class NotFindable extends Exception {
-        public NotFindable(String message) {
-            super(message);
-        }
+    public void amount(TransactionAmount amount) {
+        this.amount = amount;
     }
 
-    Id id();
+    public TransactionType type() {
+        return this.type;
+    }
 
-    void id(Id id);
+    public void type(TransactionType type) {
+        this.type = type;
+    }
 
-    Description description();
+    public TransactionState state() {
+        return this.state;
+    }
 
-    void description(Description description);
-
-    Amount amount();
-
-    void amount(Amount amount);
-
-    Type type();
-
-    void type(Type type);
-
-    Status status();
-
-    void status(Status status);
-
-    class Default implements Transaction {
-        private Id id;
-        private Description description;
-        private Amount amount;
-        private Type type;
-        private Status status;
-
-        @Override
-        public Id id() {
-            return this.id;
-        }
-
-        @Override
-        public void id(Id id) {
-            this.id = id;
-        }
-
-        @Override
-        public Description description() {
-            return this.description;
-        }
-
-        @Override
-        public void description(Description description) {
-            this.description = description;
-        }
-
-        @Override
-        public Amount amount() {
-            return this.amount;
-        }
-
-        @Override
-        public void amount(Amount amount) {
-            this.amount = amount;
-        }
-
-        @Override
-        public Type type() {
-            return this.type;
-        }
-
-        @Override
-        public void type(Type type) {
-            this.type = type;
-        }
-
-        @Override
-        public Status status() {
-            return this.status;
-        }
-
-        @Override
-        public void status(Status status) {
-            this.status = status;
-        }
+    public void state(TransactionState state) {
+        this.state = state;
     }
 }

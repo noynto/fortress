@@ -3,26 +3,27 @@ package me.noynto.fortress.application.transactions.query.handler;
 import me.noynto.fortress.application.transactions.query.GetBalanceQuery;
 import me.noynto.fortress.domain.transactions.Balance;
 import me.noynto.fortress.domain.transactions.TransactionProvider;
-import me.noynto.fortress.domain.transactions.Transaction;
+import me.noynto.fortress.domain.transactions.TransactionState;
+import me.noynto.fortress.domain.transactions.TransactionType;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.Objects;
 
 public record GetBalanceHandler(
-        TransactionProvider transactionProvider
+        TransactionProvider provider
 ) {
 
     public Balance handle(GetBalanceQuery query) {
-        List<Transaction> approvedTransactions = transactionProvider.findByStatus(Transaction.Status.APPROVED);
-
-        BigDecimal value = BigDecimal.ZERO;
-        for (Transaction transaction : approvedTransactions) {
-            if (transaction.type() == Transaction.Type.CREDIT) {
-                value = value.add(transaction.amount().value());
-            } else {
-                value = value.subtract(transaction.amount().value());
-            }
-        }
-        return new Balance(value);
+        Objects.requireNonNull(query);
+        return new Balance(
+                this.provider
+                        .stream()
+                        .filter(transaction -> Objects.equals(transaction.state(), TransactionState.APPROVED))
+                        .reduce(
+                                BigDecimal.ZERO,
+                                (accumulator, item) -> item.type() == TransactionType.CREDIT ? accumulator.add(item.amount().value()) : accumulator.subtract(item.amount().value()),
+                                BigDecimal::add
+                        )
+        );
     }
 }

@@ -16,10 +16,10 @@ import me.noynto.fortress.application.transactions.command.handler.DeleteTransac
 import me.noynto.fortress.application.transactions.command.handler.RejectTransactionHandler;
 import me.noynto.fortress.application.transactions.query.GetAllTransactionsQuery;
 import me.noynto.fortress.application.transactions.query.GetBalanceQuery;
-import me.noynto.fortress.application.transactions.query.GetTransactionsByStatusQuery;
+import me.noynto.fortress.application.transactions.query.GetTransactionsByStateQuery;
 import me.noynto.fortress.application.transactions.query.handler.GetAllTransactionsHandler;
 import me.noynto.fortress.application.transactions.query.handler.GetBalanceHandler;
-import me.noynto.fortress.application.transactions.query.handler.GetTransactionsByStatusHandler;
+import me.noynto.fortress.application.transactions.query.handler.GetTransactionsByStateHandler;
 import me.noynto.fortress.domain.transactions.Balance;
 import me.noynto.fortress.domain.transactions.Transaction;
 import me.noynto.fortress.infrastructure.controller.view.config.TemplateRenderer;
@@ -44,7 +44,7 @@ public class TransactionViewController implements HttpService {
 
     // Query Handlers
     private final GetAllTransactionsHandler getAllTransactionsHandler;
-    private final GetTransactionsByStatusHandler getTransactionsByStatusHandler;
+    private final GetTransactionsByStateHandler getTransactionsByStateHandler;
     private final GetBalanceHandler getBalanceHandler;
 
     public TransactionViewController(
@@ -54,7 +54,7 @@ public class TransactionViewController implements HttpService {
             RejectTransactionHandler rejectTransactionHandler,
             DeleteTransactionHandler deleteTransactionHandler,
             GetAllTransactionsHandler getAllTransactionsHandler,
-            GetTransactionsByStatusHandler getTransactionsByStatusHandler,
+            GetTransactionsByStateHandler getTransactionsByStateHandler,
             GetBalanceHandler getBalanceHandler) {
         this.templateRenderer = templateRenderer;
         this.createTransactionHandler = createTransactionHandler;
@@ -62,7 +62,7 @@ public class TransactionViewController implements HttpService {
         this.rejectTransactionHandler = rejectTransactionHandler;
         this.deleteTransactionHandler = deleteTransactionHandler;
         this.getAllTransactionsHandler = getAllTransactionsHandler;
-        this.getTransactionsByStatusHandler = getTransactionsByStatusHandler;
+        this.getTransactionsByStateHandler = getTransactionsByStateHandler;
         this.getBalanceHandler = getBalanceHandler;
     }
 
@@ -97,10 +97,9 @@ public class TransactionViewController implements HttpService {
 
     private void showTransactionsByStatus(ServerRequest req, ServerResponse res) {
         try {
-            String statusParam = req.path().pathParameters().get("status");
-            Transaction.Status status = Transaction.Status.valueOf(statusParam.toUpperCase());
-            GetTransactionsByStatusQuery query = new GetTransactionsByStatusQuery(status);
-            List<Transaction> transactions = getTransactionsByStatusHandler.handle(query);
+            String rawState = req.path().pathParameters().get("status");
+            GetTransactionsByStateQuery query = new GetTransactionsByStateQuery(rawState);
+            List<Transaction> transactions = getTransactionsByStateHandler.handle(query);
             GetBalanceQuery balanceQuery = new GetBalanceQuery();
             Balance balance = getBalanceHandler.handle(balanceQuery);
             Map<String, Object> params = new HashMap<>();
@@ -143,14 +142,14 @@ public class TransactionViewController implements HttpService {
     }
 
     private void approveTransaction(ServerRequest req, ServerResponse res) {
-        Transaction.Id transactionId = new Transaction.Id(req.path().pathParameters().get("transactionId"));
+        String transactionId = req.path().pathParameters().get("transactionId");
         ApproveTransactionCommand command = new ApproveTransactionCommand(transactionId);
         try {
             approveTransactionHandler.handle(command);
             res.status(Status.SEE_OTHER_303);
             res.header(HeaderNames.LOCATION, "/");
             res.send();
-        } catch (Transaction.NotFindable e) {
+        } catch (IllegalArgumentException e) {
             res.status(Status.NOT_FOUND_404);
             res.send("Transaction non trouvée.");
         } catch (IllegalStateException e) {
@@ -160,14 +159,14 @@ public class TransactionViewController implements HttpService {
     }
 
     private void rejectTransaction(ServerRequest req, ServerResponse res) {
-        Transaction.Id transactionId = new Transaction.Id(req.path().pathParameters().get("transactionId"));
+        String transactionId = req.path().pathParameters().get("transactionId");
         RejectTransactionCommand command = new RejectTransactionCommand(transactionId);
         try {
             rejectTransactionHandler.handle(command);
             res.status(Status.SEE_OTHER_303);
             res.header(HeaderNames.LOCATION, "/");
             res.send();
-        } catch (Transaction.NotFindable e) {
+        } catch (IllegalArgumentException e) {
             res.status(Status.NOT_FOUND_404);
             res.send("Transaction non trouvée.");
         } catch (IllegalStateException e) {
@@ -177,14 +176,14 @@ public class TransactionViewController implements HttpService {
     }
 
     private void deleteTransaction(ServerRequest req, ServerResponse res) {
-        Transaction.Id transactionId = new Transaction.Id(req.path().pathParameters().get("transactionId"));
+        String transactionId = req.path().pathParameters().get("transactionId");
         DeleteTransactionCommand command = new DeleteTransactionCommand(transactionId);
         try {
             deleteTransactionHandler.handle(command);
             res.status(Status.SEE_OTHER_303);
             res.header(HeaderNames.LOCATION, "/");
             res.send();
-        } catch (Transaction.NotFindable e) {
+        } catch (IllegalArgumentException e) {
             res.status(Status.NOT_FOUND_404);
             res.send("Transaction non trouvée");
         }
