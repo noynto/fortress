@@ -57,9 +57,51 @@
     ${content}
 </main>
 
-<footer class="mt-12 py-6 border-t border-ctp-surface0">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-ctp-overlay0 text-xs">
-        Architecture CQRS avec Helidon SE & JTE
+<footer class="bg-ctp-mantle border-t border-ctp-surface0 mt-12 py-10">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <%-- HAUT DU FOOTER --%>
+        <div class="flex flex-wrap justify-between gap-8 mb-8">
+
+            <%-- BRANDING --%>
+            <div>
+                <p class="font-nunito text-base font-bold text-ctp-mauve mb-2">🐱 Fortress</p>
+                <p class="text-xs text-ctp-overlay0 leading-relaxed max-w-[200px]">
+                    Suivez, approuvez et analysez vos flux financiers en temps réel.
+                </p>
+            </div>
+
+            <%-- LIENS --%>
+            <div class="flex flex-wrap gap-12">
+                <div>
+                    <p class="text-[0.62rem] font-bold tracking-[.12em] uppercase text-ctp-overlay0 mb-3">Navigation</p>
+                    <div class="flex flex-col gap-2">
+                        <a href="/" class="text-xs text-ctp-subtext0 hover:text-ctp-mauve transition-colors">Dashboard</a>
+                        <a href="/transactions" class="text-xs text-ctp-subtext0 hover:text-ctp-mauve transition-colors">Transactions</a>
+                        <a href="/transactions/new" class="text-xs text-ctp-subtext0 hover:text-ctp-mauve transition-colors">Nouvelle transaction</a>
+                    </div>
+                </div>
+                <div>
+                    <p class="text-[0.62rem] font-bold tracking-[.12em] uppercase text-ctp-overlay0 mb-3">Stack</p>
+                    <div class="flex flex-col gap-2">
+                        <span class="text-xs text-ctp-subtext0">Helidon SE</span>
+                        <span class="text-xs text-ctp-subtext0">JTE Templates</span>
+                        <span class="text-xs text-ctp-subtext0">Tailwind CSS</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <%-- BAS DU FOOTER --%>
+        <div class="flex flex-wrap items-center justify-between gap-3 pt-5 border-t border-ctp-surface0">
+            <span class="text-[0.7rem] text-ctp-overlay0">© 2026 Fortress — Gestion financière</span>
+            <div class="flex items-center gap-2">
+                <div class="w-1.5 h-1.5 rounded-full bg-ctp-green"></div>
+                <span class="text-[0.7rem] text-ctp-overlay0">Système opérationnel</span>
+            </div>
+        </div>
+
     </div>
 </footer>
 
