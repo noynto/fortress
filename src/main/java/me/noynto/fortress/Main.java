@@ -6,10 +6,9 @@ import me.noynto.fortress.application.transactions.command.handler.ApproveTransa
 import me.noynto.fortress.application.transactions.command.handler.CreateTransactionHandler;
 import me.noynto.fortress.application.transactions.command.handler.DeleteTransactionHandler;
 import me.noynto.fortress.application.transactions.command.handler.RejectTransactionHandler;
-import me.noynto.fortress.application.transactions.query.handler.GetAllTransactionsHandler;
-import me.noynto.fortress.application.transactions.query.handler.GetBalanceHandler;
-import me.noynto.fortress.application.transactions.query.handler.GetTransactionsByStateHandler;
+import me.noynto.fortress.application.transactions.query.handler.*;
 import me.noynto.fortress.domain.transactions.TransactionProvider;
+import me.noynto.fortress.infrastructure.controller.view.DashboardViewController;
 import me.noynto.fortress.infrastructure.controller.view.TransactionViewController;
 import me.noynto.fortress.infrastructure.controller.view.config.TemplateRenderer;
 import me.noynto.fortress.infrastructure.persistence.transactions.InMemoryTransactions;
@@ -31,30 +30,35 @@ public class Main {
         // Application Layer : Query Handlers (lecture)
         GetAllTransactionsHandler getAllTransactionsHandler =
                 new GetAllTransactionsHandler(transactionProvider);
-        GetTransactionsByStateHandler getTransactionsByStateHandler =
-                new GetTransactionsByStateHandler(transactionProvider);
-        GetBalanceHandler getBalanceHandler =
-                new GetBalanceHandler(transactionProvider);
 
         // Infrastructure Layer : Template Renderer
         TemplateRenderer templateRenderer = new TemplateRenderer();
 
         // Infrastructure Layer : View Controller (rendu HTML)
-        TransactionViewController viewController = new TransactionViewController(
+        DashboardViewController dashboardViewController = new DashboardViewController(
+                new CalculateBalance(transactionProvider),
+                new CalculateForecastBalance(transactionProvider),
+                new CalculatePendingCredits(transactionProvider),
+                new CalculatePendingDebits(transactionProvider),
+                new CountPending(transactionProvider),
+                new CountApproved(transactionProvider),
+                new CountRejected(transactionProvider),
+                templateRenderer
+        );
+        TransactionViewController transactionViewController = new TransactionViewController(
                 templateRenderer,
                 createTransactionHandler,
                 approveTransactionHandler,
                 rejectTransactionHandler,
                 deleteTransactionHandler,
-                getAllTransactionsHandler,
-                getTransactionsByStateHandler,
-                getBalanceHandler
+                getAllTransactionsHandler
         );
 
         // Configuration du routing HTTP
         HttpRouting.Builder routing = HttpRouting.builder()
                 // Pages HTML (interface web)
-                .register("/", viewController);
+                .register("/", dashboardViewController)
+                .register("/transactions", transactionViewController);
 
         // Création et démarrage du serveur
         WebServer server = WebServer.builder()

@@ -18,7 +18,8 @@ public record CreateTransactionHandler(
         TransactionDescription description = new TransactionDescription(command.description());
         TransactionAmount amount = new TransactionAmount(command.amount());
         TransactionType type = TransactionType.valueOf(command.type());
-        return provider.create(description, amount, type);
+        TransactionEffectiveDate effectiveDate = new TransactionEffectiveDate(command.effectiveDate());
+        return provider.create(description, amount, type, effectiveDate);
     }
 
 }

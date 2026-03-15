@@ -7,7 +7,12 @@ import java.util.stream.Stream;
 
 public interface TransactionProvider {
 
-    Transaction create(TransactionDescription description, TransactionAmount amount, TransactionType type);
+    Transaction create(
+            TransactionDescription description,
+            TransactionAmount amount,
+            TransactionType type,
+            TransactionEffectiveDate effectiveDate
+    );
 
     Stream<Transaction> stream();
 

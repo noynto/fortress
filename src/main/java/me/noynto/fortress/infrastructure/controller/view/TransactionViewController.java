@@ -15,16 +15,12 @@ import me.noynto.fortress.application.transactions.command.handler.CreateTransac
 import me.noynto.fortress.application.transactions.command.handler.DeleteTransactionHandler;
 import me.noynto.fortress.application.transactions.command.handler.RejectTransactionHandler;
 import me.noynto.fortress.application.transactions.query.GetAllTransactionsQuery;
-import me.noynto.fortress.application.transactions.query.GetBalanceQuery;
-import me.noynto.fortress.application.transactions.query.GetTransactionsByStateQuery;
 import me.noynto.fortress.application.transactions.query.handler.GetAllTransactionsHandler;
-import me.noynto.fortress.application.transactions.query.handler.GetBalanceHandler;
-import me.noynto.fortress.application.transactions.query.handler.GetTransactionsByStateHandler;
-import me.noynto.fortress.domain.transactions.Balance;
 import me.noynto.fortress.domain.transactions.Transaction;
 import me.noynto.fortress.infrastructure.controller.view.config.TemplateRenderer;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,8 +40,6 @@ public class TransactionViewController implements HttpService {
 
     // Query Handlers
     private final GetAllTransactionsHandler getAllTransactionsHandler;
-    private final GetTransactionsByStateHandler getTransactionsByStateHandler;
-    private final GetBalanceHandler getBalanceHandler;
 
     public TransactionViewController(
             TemplateRenderer templateRenderer,
@@ -53,17 +47,14 @@ public class TransactionViewController implements HttpService {
             ApproveTransactionHandler approveTransactionHandler,
             RejectTransactionHandler rejectTransactionHandler,
             DeleteTransactionHandler deleteTransactionHandler,
-            GetAllTransactionsHandler getAllTransactionsHandler,
-            GetTransactionsByStateHandler getTransactionsByStateHandler,
-            GetBalanceHandler getBalanceHandler) {
+            GetAllTransactionsHandler getAllTransactionsHandler
+    ) {
         this.templateRenderer = templateRenderer;
         this.createTransactionHandler = createTransactionHandler;
         this.approveTransactionHandler = approveTransactionHandler;
         this.rejectTransactionHandler = rejectTransactionHandler;
         this.deleteTransactionHandler = deleteTransactionHandler;
         this.getAllTransactionsHandler = getAllTransactionsHandler;
-        this.getTransactionsByStateHandler = getTransactionsByStateHandler;
-        this.getBalanceHandler = getBalanceHandler;
     }
 
     @Override
@@ -71,46 +62,23 @@ public class TransactionViewController implements HttpService {
         rules
                 // Pages
                 .get("/", this::showAllTransactions)
-                .get("/status/{status}", this::showTransactionsByStatus)
                 .get("/new", this::showNewTransactionForm)
                 // Actions
-                .post("/transactions/create", this::createTransaction)
-                .post("/transactions/{transactionId}/approve", this::approveTransaction)
-                .post("/transactions/{transactionId}/reject", this::rejectTransaction)
-                .post("/transactions/{transactionId}/delete", this::deleteTransaction);
+                .post("/create", this::createTransaction)
+                .post("/{transactionId}/approve", this::approveTransaction)
+                .post("/{transactionId}/reject", this::rejectTransaction)
+                .post("/{transactionId}/delete", this::deleteTransaction);
     }
 
     // ============= PAGES (Queries) =============
 
     private void showAllTransactions(ServerRequest req, ServerResponse res) {
-        GetAllTransactionsQuery query = new GetAllTransactionsQuery();
-        List<Transaction> transactions = getAllTransactionsHandler.handle(query);
-        GetBalanceQuery balanceQuery = new GetBalanceQuery();
-        Balance balance = getBalanceHandler.handle(balanceQuery);
+        List<Transaction> transactions = getAllTransactionsHandler.handle(new GetAllTransactionsQuery());
         Map<String, Object> params = new HashMap<>();
         params.put("transactions", transactions);
-        params.put("balance", balance);
         String html = templateRenderer.render("page/transactions.jte", params);
         res.header(HeaderNames.CONTENT_TYPE, "text/html");
         res.send(html);
-    }
-
-    private void showTransactionsByStatus(ServerRequest req, ServerResponse res) {
-        try {
-            String rawState = req.path().pathParameters().get("status");
-            GetTransactionsByStateQuery query = new GetTransactionsByStateQuery(rawState);
-            List<Transaction> transactions = getTransactionsByStateHandler.handle(query);
-            GetBalanceQuery balanceQuery = new GetBalanceQuery();
-            Balance balance = getBalanceHandler.handle(balanceQuery);
-            Map<String, Object> params = new HashMap<>();
-            params.put("transactions", transactions);
-            params.put("balance", balance);
-            String html = templateRenderer.render("page/transactions.jte", params);
-            res.header(HeaderNames.CONTENT_TYPE, "text/html");
-            res.send(html);
-        } catch (IllegalArgumentException e) {
-            res.status(Status.BAD_REQUEST_400).send("Statut invalide");
-        }
     }
 
     private void showNewTransactionForm(ServerRequest req, ServerResponse res) {
@@ -128,7 +96,8 @@ public class TransactionViewController implements HttpService {
             CreateTransactionCommand command = new CreateTransactionCommand(
                     new BigDecimal(formData.get("amount")),
                     formData.get("type"),
-                    formData.getOrDefault("description", "")
+                    formData.getOrDefault("description", ""),
+                    LocalDate.parse(formData.get("effective-date"))
             );
             createTransactionHandler.handle(command);
             // Redirection vers la liste

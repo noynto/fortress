@@ -1,85 +1,111 @@
 @template.layout.main(
 title = "Nouvelle transaction",
 content = @`
-    <div class="max-w-2xl mx-auto">
-        <div class="bg-white rounded-lg shadow p-8">
-            <h2 class="text-2xl font-bold mb-6">Créer une nouvelle transaction</h2>
+    <div class="max-w-xl mx-auto">
+        <div class="mb-8">
+            <a href="/transactions" class="text-xs text-ctp-overlay1 hover:text-ctp-mauve transition-colors">← Retour</a>
+            <h1 class="font-nunito text-2xl font-bold text-ctp-text mt-4">Nouvelle transaction</h1>
+            <p class="text-sm text-ctp-overlay1 mt-1">Renseignez les informations ci-dessous</p>
+        </div>
 
-            <form action="/transactions/create" method="post" class="space-y-6">
-                <!-- Type -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Type de transaction</label>
-                    <div class="grid grid-cols-2 gap-4">
-                        <label class="relative flex cursor-pointer rounded-lg border border-gray-300 bg-white p-4 hover:border-green-500 focus:outline-none">
-                            <input type="radio" name="type" value="CREDIT" class="sr-only" required checked>
-                            <span class="flex flex-1">
-                                    <span class="flex flex-col">
-                                        <span class="block text-lg font-semibold text-green-600">↗ CRÉDIT</span>
-                                        <span class="mt-1 flex items-center text-sm text-gray-500">Ajout d'argent</span>
-                                    </span>
-                                </span>
+        <form action="/transactions/create" method="post" class="space-y-6">
+
+            <%-- TYPE --%>
+            <div>
+                <p class="text-[0.65rem] font-nunito font-bold tracking-[.14em] uppercase text-ctp-overlay1 mb-3">Type</p>
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="relative">
+                        <input type="radio" name="type" value="CREDIT" id="type-credit"
+                               class="peer sr-only" required checked>
+                        <label for="type-credit"
+                               class="flex flex-col cursor-pointer rounded-2xl border border-ctp-surface1 bg-ctp-mantle p-5
+                                      transition-all
+                                      peer-checked:border-ctp-green peer-checked:bg-ctp-green/5
+                                      hover:border-ctp-overlay1">
+                            <span class="font-nunito text-base font-bold text-ctp-green">↗ Crédit</span>
+                            <span class="text-xs text-ctp-overlay1 mt-1">Ajout d'argent</span>
                         </label>
-
-                        <label class="relative flex cursor-pointer rounded-lg border border-gray-300 bg-white p-4 hover:border-red-500 focus:outline-none">
-                            <input type="radio" name="type" value="DEBIT" class="sr-only" required>
-                            <span class="flex flex-1">
-                                    <span class="flex flex-col">
-                                        <span class="block text-lg font-semibold text-red-600">↙ DÉBIT</span>
-                                        <span class="mt-1 flex items-center text-sm text-gray-500">Retrait d'argent</span>
-                                    </span>
-                                </span>
+                    </div>
+                    <div class="relative">
+                        <input type="radio" name="type" value="DEBIT" id="type-debit"
+                               class="peer sr-only" required>
+                        <label for="type-debit"
+                               class="flex flex-col cursor-pointer rounded-2xl border border-ctp-surface1 bg-ctp-mantle p-5
+                                      transition-all
+                                      peer-checked:border-ctp-red peer-checked:bg-ctp-red/5
+                                      hover:border-ctp-overlay1">
+                            <span class="font-nunito text-base font-bold text-ctp-red">↙ Débit</span>
+                            <span class="text-xs text-ctp-overlay1 mt-1">Retrait d'argent</span>
                         </label>
                     </div>
                 </div>
+            </div>
 
-                <!-- Montant -->
-                <div>
-                    <label for="amount" class="block text-sm font-medium text-gray-700 mb-2">
-                        Montant (€)
-                    </label>
-                    <input
-                            type="number"
-                            id="amount"
-                            name="amount"
-                            step="0.01"
-                            min="0.01"
-                            required
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                            placeholder="100.00"
-                    >
+            <%-- MONTANT --%>
+            <div>
+                <label for="amount"
+                       class="block text-[0.65rem] font-nunito font-bold tracking-[.14em] uppercase text-ctp-overlay1 mb-3">
+                    Montant (€)
+                </label>
+                <div class="relative">
+                    <input type="number" id="amount" name="amount"
+                           step="0.01" min="0.01" required placeholder="0.00"
+                           class="w-full bg-ctp-mantle border border-ctp-surface1 rounded-xl px-5 py-3.5 pr-10
+                                  text-ctp-text font-nunito text-lg font-bold
+                                  placeholder:text-ctp-surface2
+                                  focus:outline-none focus:border-ctp-mauve focus:ring-1 focus:ring-ctp-mauve/30
+                                  transition-colors">
+                    <span class="absolute right-4 top-1/2 -translate-y-1/2 text-ctp-overlay1 text-sm font-semibold">€</span>
                 </div>
+            </div>
 
-                <!-- Description -->
-                <div>
-                    <label for="description" class="block text-sm font-medium text-gray-700 mb-2">
-                        Description
-                    </label>
-                    <textarea
-                            id="description"
-                            name="description"
-                            rows="3"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                            placeholder="Exemple: Salaire mensuel, Achat supermarché..."
-                    ></textarea>
-                </div>
+            <%-- DATE --%>
+            <div>
+                <label for="effective-date"
+                       class="block text-[0.65rem] font-nunito font-bold tracking-[.14em] uppercase text-ctp-overlay1 mb-3">
+                    Date effective
+                </label>
+                <input type="date"
+                       id="effective-date"
+                       name="effective-date"
+                       required
+                       class="w-full bg-ctp-mantle border border-ctp-surface1 rounded-xl px-5 py-3.5
+                              text-ctp-text font-nunito text-sm font-semibold
+                              focus:outline-none focus:border-ctp-mauve focus:ring-1 focus:ring-ctp-mauve/30
+                              transition-colors
+                              [&::-webkit-calendar-picker-indicator]:opacity-40
+                              [&::-webkit-calendar-picker-indicator]:invert">
+            </div>
 
-                <!-- Boutons -->
-                <div class="flex gap-4">
-                    <button
-                            type="submit"
-                            class="flex-1 bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 font-semibold"
-                    >
-                        Créer la transaction
-                    </button>
-                    <a
-                            href="/"
-                            class="flex-1 bg-gray-200 text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-300 font-semibold text-center"
-                    >
-                        Annuler
-                    </a>
-                </div>
-            </form>
-        </div>
+            <%-- DESCRIPTION --%>
+            <div>
+                <label for="description"
+                       class="block text-[0.65rem] font-nunito font-bold tracking-[.14em] uppercase text-ctp-overlay1 mb-3">
+                    Description
+                </label>
+                <textarea id="description" name="description" rows="3"
+                          placeholder="Ex : Salaire mensuel, Achat supermarché..."
+                          class="w-full bg-ctp-mantle border border-ctp-surface1 rounded-xl px-5 py-3.5
+                                 text-ctp-text text-sm placeholder:text-ctp-surface2
+                                 focus:outline-none focus:border-ctp-mauve focus:ring-1 focus:ring-ctp-mauve/30
+                                 transition-colors resize-none"></textarea>
+            </div>
+
+            <%-- ACTIONS --%>
+            <div class="flex gap-3 pt-2">
+                <button type="submit"
+                        class="flex-1 font-nunito font-bold text-sm py-3.5 px-6 rounded-xl
+                               bg-ctp-mauve text-ctp-crust hover:opacity-85 transition-opacity">
+                    Créer la transaction
+                </button>
+                <a href="/transactions"
+                   class="flex-1 font-nunito font-bold text-sm py-3.5 px-6 rounded-xl text-center
+                          bg-ctp-mantle border border-ctp-surface1 text-ctp-overlay1 hover:bg-ctp-surface0 hover:text-ctp-text transition-colors">
+                    Annuler
+                </a>
+            </div>
+
+        </form>
     </div>
 `
 )

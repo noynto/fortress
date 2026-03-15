@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,7 +24,8 @@ class CreateTransactionHandlerTest {
         BigDecimal amount = new BigDecimal("100");
         String type = "CREDIT";
         String description = "Description";
-        CreateTransactionCommand command = new CreateTransactionCommand(amount, type, description);
+        LocalDate effectiveDate = LocalDate.now().plusDays(3);
+        CreateTransactionCommand command = new CreateTransactionCommand(amount, type, description,effectiveDate);
         Transaction transaction = handler.handle(command);
         Assertions.assertNotNull(transaction);
         Assertions.assertEquals(TransactionState.PENDING, transaction.state());

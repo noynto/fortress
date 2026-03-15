@@ -3,6 +3,7 @@ package me.noynto.fortress.infrastructure.persistence.transactions;
 import me.noynto.fortress.domain.shared.TransactionId;
 import me.noynto.fortress.domain.transactions.*;
 
+import java.time.LocalDate;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -14,7 +15,7 @@ public record InMemoryTransactions(
 ) implements TransactionProvider {
 
     @Override
-    public Transaction create(TransactionDescription description, TransactionAmount amount, TransactionType type) {
+    public Transaction create(TransactionDescription description, TransactionAmount amount, TransactionType type, TransactionEffectiveDate effectiveDate) {
         Transaction transaction = new Transaction();
         TransactionId id = new TransactionId(UUID.randomUUID().toString());
         transaction.id(id);
@@ -22,6 +23,8 @@ public record InMemoryTransactions(
         transaction.amount(amount);
         transaction.type(type);
         transaction.state(TransactionState.PENDING);
+        transaction.creationDate(new TransactionCreationDate(LocalDate.now()));
+        transaction.effectiveDate(effectiveDate);
         this.store.put(id, transaction);
         return transaction;
     }

@@ -9,6 +9,8 @@ public class Transaction {
     private TransactionAmount amount;
     private TransactionType type;
     private TransactionState state;
+    private TransactionCreationDate creationDate;
+    private TransactionEffectiveDate effectiveDate;
 
     public TransactionId id() {
         return this.id;
@@ -48,5 +50,21 @@ public class Transaction {
 
     public void state(TransactionState state) {
         this.state = state;
+    }
+
+    public TransactionCreationDate creationDate() {
+        return creationDate;
+    }
+
+    public void creationDate(TransactionCreationDate creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public TransactionEffectiveDate effectiveDate() {
+        return effectiveDate;
+    }
+
+    public void effectiveDate(TransactionEffectiveDate effectiveDate) {
+        this.effectiveDate = effectiveDate;
     }
 }
