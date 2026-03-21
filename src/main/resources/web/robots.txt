@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard/
+Disallow: /transactions/
+
+Sitemap: https://fortress-production-79b3.up.railway.app/sitemap.xml

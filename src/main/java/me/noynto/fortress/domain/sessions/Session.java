@@ -1,20 +1,25 @@
 package me.noynto.fortress.domain.sessions;
 
-import me.noynto.fortress.domain.users.User;
+import me.noynto.fortress.domain.shared.SessionId;
+import me.noynto.fortress.domain.shared.UserId;
 
-import java.util.Objects;
+public class Session {
+    private SessionId id;
+    private UserId userId;
 
-public interface Session {
+    public UserId userId() {
+        return userId;
+    }
 
-    Id id();
+    public void userId(UserId userId) {
+        this.userId = userId;
+    }
 
-    User.Id userId();
+    public SessionId id() {
+        return id;
+    }
 
-    record Id(
-            String value
-    ) {
-        public Id {
-            Objects.requireNonNull(value);
-        }
+    public void id(SessionId id) {
+        this.id = id;
     }
 }

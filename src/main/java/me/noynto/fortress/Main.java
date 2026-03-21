@@ -1,16 +1,20 @@
 package me.noynto.fortress;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import io.helidon.webserver.WebServer;
 import io.helidon.webserver.http.HttpRouting;
+import io.helidon.webserver.staticcontent.StaticContentService;
 import me.noynto.fortress.application.transactions.command.handler.ApproveTransactionHandler;
 import me.noynto.fortress.application.transactions.command.handler.CreateTransactionHandler;
 import me.noynto.fortress.application.transactions.command.handler.DeleteTransactionHandler;
 import me.noynto.fortress.application.transactions.command.handler.RejectTransactionHandler;
 import me.noynto.fortress.application.transactions.query.handler.*;
+import me.noynto.fortress.domain.sessions.SessionProvider;
 import me.noynto.fortress.domain.transactions.TransactionProvider;
 import me.noynto.fortress.infrastructure.controller.view.DashboardViewController;
 import me.noynto.fortress.infrastructure.controller.view.TransactionViewController;
 import me.noynto.fortress.infrastructure.controller.view.config.TemplateRenderer;
+import me.noynto.fortress.infrastructure.persistence.sessions.InMemorySessions;
 import me.noynto.fortress.infrastructure.persistence.transactions.InMemoryTransactions;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -20,6 +24,7 @@ public class Main {
     public static void main(String[] args) {
         // Infrastructure Layer : Repository
         TransactionProvider transactionProvider = new InMemoryTransactions(new ConcurrentHashMap<>());
+        SessionProvider sessionProvider = new InMemorySessions(new ConcurrentHashMap<>(), BCrypt.withDefaults());
 
         // Application Layer : Command Handlers (écriture)
         CreateTransactionHandler createTransactionHandler = new CreateTransactionHandler(transactionProvider);
@@ -56,8 +61,9 @@ public class Main {
 
         // Configuration du routing HTTP
         HttpRouting.Builder routing = HttpRouting.builder()
+                .register("/", StaticContentService.builder("/web").welcomeFileName("index.html").build())
                 // Pages HTML (interface web)
-                .register("/", dashboardViewController)
+                .register("/dashboard", dashboardViewController)
                 .register("/transactions", transactionViewController);
 
         // Création et démarrage du serveur

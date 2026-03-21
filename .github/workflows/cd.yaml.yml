@@ -99,19 +99,19 @@ jobs:
   #      - name: Approuvé
   #        run: echo "✅ Déploiement en production approuvé"
 
-  deploy:
-    name: Deploy Production
-    runs-on: ubuntu-latest
-    needs: docker
-    steps:
-      - name: Déploiement de l'image sur Railway
-        id: deploy
-        run: |
-          PAYLOAD = '{"query": "mutation { serviceInstanceRedeploy(environmentId: \"${{ secrets.RAILWAY_ENVIRONMENT_ID }}\", serviceId: \"${{ secrets.RAILWAY_SERVICE_ID }}\") }"}'
-          curl -sf -X POST https://backboard.railway.app/graphql/v2 \
-          -H "Content-Type: application/json" \
-          -H "Authorization: Bearer ${{ secrets.RAILWAY_TOKEN }}" \
-          -d "$PAYLOAD"
+  #deploy:
+  #  name: Deploy Production
+  #  runs-on: ubuntu-latest
+  #  needs: docker
+  #  steps:
+  #    - name: Déploiement de l'image sur Railway
+  #      id: deploy
+  #      run: |
+  #        PAYLOAD = '{"query": "mutation { serviceInstanceRedeploy(environmentId: \"${{ secrets.RAILWAY_ENVIRONMENT_ID }}\", serviceId: \"${{ secrets.RAILWAY_SERVICE_ID }}\") }"}'
+  #        curl -sf -X POST https://backboard.railway.app/graphql/v2 \
+  #        -H "Content-Type: application/json" \
+  #        -H "Authorization: Bearer ${{ secrets.RAILWAY_TOKEN }}" \
+  #        -d "$PAYLOAD"
 
   #          URL=$(railway domain \
   #            --environment production \
@@ -140,26 +140,26 @@ jobs:
   # ════════════════════════════════════════════
   # Job 5 — Rollback automatique si échec
   # ════════════════════════════════════════════
-  rollback:
-    name: Rollback
-    runs-on: ubuntu-latest
-    needs: deploy
-    if: failure()
+  #rollback:
+  #  name: Rollback
+  #  runs-on: ubuntu-latest
+  #  needs: deploy
+  #  if: failure()
 
-    steps:
+  #  steps:
 
-      - name: Install Railway CLI
-        run: curl -fsSL https://railway.app/install.sh | sh
+  #    - name: Install Railway CLI
+  #      run: curl -fsSL https://railway.app/install.sh | sh
 
-      - name: Rollback
-        run: |
-          railway rollback \
-            --environment production \
-            --service ${{ secrets.RAILWAY_SERVICE_ID }}
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+  #    - name: Rollback
+  #      run: |
+  #        railway rollback \
+  #          --environment production \
+  #          --service ${{ secrets.RAILWAY_SERVICE_ID }}
+  #      env:
+  #        RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 
-      - name: Rollback Summary
-        run: |
-          echo "## ⚠️ Rollback effectué" >> $GITHUB_STEP_SUMMARY
-          echo "Le déploiement a échoué, retour à la version précédente." >> $GITHUB_STEP_SUMMARY
+  #    - name: Rollback Summary
+  #      run: |
+  #        echo "## ⚠️ Rollback effectué" >> $GITHUB_STEP_SUMMARY
+  #        echo "Le déploiement a échoué, retour à la version précédente." >> $GITHUB_STEP_SUMMARY
