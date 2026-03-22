@@ -102,7 +102,7 @@ public class TransactionViewController implements HttpService {
             createTransactionHandler.handle(command);
             // Redirection vers la liste
             res.status(Status.SEE_OTHER_303);
-            res.header(HeaderNames.LOCATION, "/");
+            res.header(HeaderNames.LOCATION, "/transactions");
             res.send();
         } catch (Exception e) {
             res.status(Status.BAD_REQUEST_400);
@@ -116,7 +116,7 @@ public class TransactionViewController implements HttpService {
         try {
             approveTransactionHandler.handle(command);
             res.status(Status.SEE_OTHER_303);
-            res.header(HeaderNames.LOCATION, "/");
+            res.header(HeaderNames.LOCATION, "/transactions");
             res.send();
         } catch (IllegalArgumentException e) {
             res.status(Status.NOT_FOUND_404);
@@ -133,7 +133,7 @@ public class TransactionViewController implements HttpService {
         try {
             rejectTransactionHandler.handle(command);
             res.status(Status.SEE_OTHER_303);
-            res.header(HeaderNames.LOCATION, "/");
+            res.header(HeaderNames.LOCATION, "/transactions");
             res.send();
         } catch (IllegalArgumentException e) {
             res.status(Status.NOT_FOUND_404);
@@ -150,7 +150,7 @@ public class TransactionViewController implements HttpService {
         try {
             deleteTransactionHandler.handle(command);
             res.status(Status.SEE_OTHER_303);
-            res.header(HeaderNames.LOCATION, "/");
+            res.header(HeaderNames.LOCATION, "/transactions");
             res.send();
         } catch (IllegalArgumentException e) {
             res.status(Status.NOT_FOUND_404);
