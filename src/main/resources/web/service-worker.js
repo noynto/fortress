@@ -1,5 +1,5 @@
 const CACHE_NAME = 'fortress-v1';
-const STATIC_ASSETS = ['/', '/transactions', '/manifest.json', '/offline'];
+const STATIC_ASSETS = ['/', '/transactions', '/manifest.json', '/offline.html'];
 
 // Installation
 self.addEventListener('install', event => {
@@ -30,7 +30,7 @@ self.addEventListener('fetch', event => {
                 return response;
             })
             .catch(() =>
-                caches.match(event.request).then(cached => cached || caches.match('/offline'))
+                caches.match(event.request).then(cached => cached || caches.match('/offline.html'))
             )
     );
 });
