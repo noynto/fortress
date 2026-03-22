@@ -8,7 +8,7 @@ content = @`
             <p class="text-sm text-ctp-overlay1 mt-1">Renseignez les informations ci-dessous</p>
         </div>
 
-        <form action="/transactions/create" method="post" class="space-y-6">
+        <form action="/transactions" method="post" class="space-y-6">
 
             <%-- TYPE --%>
             <div>

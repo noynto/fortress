@@ -64,7 +64,7 @@ public class TransactionViewController implements HttpService {
                 .get("/", this::showAllTransactions)
                 .get("/new", this::showNewTransactionForm)
                 // Actions
-                .post("/create", this::createTransaction)
+                .post("/", this::createTransaction)
                 .post("/{transactionId}/approve", this::approveTransaction)
                 .post("/{transactionId}/reject", this::rejectTransaction)
                 .post("/{transactionId}/delete", this::deleteTransaction);

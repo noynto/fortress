@@ -97,7 +97,7 @@
                 <div>
                     <p class="text-[0.62rem] font-bold tracking-[.12em] uppercase text-ctp-overlay0 mb-3">Navigation</p>
                     <div class="flex flex-col gap-2">
-                        <a href="/" class="text-xs text-ctp-subtext0 hover:text-ctp-mauve transition-colors">Dashboard</a>
+                        <a href="/dashboard" class="text-xs text-ctp-subtext0 hover:text-ctp-mauve transition-colors">Dashboard</a>
                         <a href="/transactions" class="text-xs text-ctp-subtext0 hover:text-ctp-mauve transition-colors">Transactions</a>
                         <a href="/transactions/new" class="text-xs text-ctp-subtext0 hover:text-ctp-mauve transition-colors">Nouvelle transaction</a>
                     </div>

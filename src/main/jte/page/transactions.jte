@@ -12,7 +12,7 @@ content = @`
 <%-- TOPBAR --%>
     <div class="flex items-center justify-between mb-10">
         <div class="flex items-center gap-3">
-            <a href="/" class="font-nunito text-lg font-bold text-ctp-mauve hover:opacity-80 transition-opacity">🐱
+            <a href="/dashboard" class="font-nunito text-lg font-bold text-ctp-mauve hover:opacity-80 transition-opacity">🐱
                 Fortress</a>
             <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-ctp-surface0 text-ctp-overlay2">Transactions</span>
         </div>
