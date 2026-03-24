@@ -16,7 +16,7 @@ public record SignUpHandler(
         BCrypt.Hasher hasher,
         SessionProvider sessionProvider
 ) {
-    private static final int LEVEL_OF_HASH = 12;
+    private static final int LEVEL_OF_HASH = 8;
 
     public Session handle(SignUpCommand command) {
         Objects.requireNonNull(command);
