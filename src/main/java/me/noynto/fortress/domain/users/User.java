@@ -1,78 +1,34 @@
 package me.noynto.fortress.domain.users;
 
-import java.util.Objects;
+import me.noynto.fortress.domain.shared.UserId;
 
-public interface User {
+public class User {
 
-    Id id();
+    private UserId id;
+    private UserElectronicAddress electronicAddress;
+    private UserPassword password;
 
-    void id(Id id);
-
-    ElectronicAddress electronicAddress();
-
-    void electronicAddress(ElectronicAddress electronicAddress);
-
-    Password password();
-
-    void password(Password password);
-
-    record Id(
-            String value
-    ) {
-        public Id {
-            Objects.requireNonNull(value);
-        }
+    public UserId id() {
+        return this.id;
     }
 
-    record ElectronicAddress(
-            String value
-    ) {
-        public ElectronicAddress {
-            Objects.requireNonNull(value);
-        }
+    public void id(UserId id) {
+        this.id = id;
     }
 
-    record Password(
-            String value
-    ) {
-        public Password {
-            Objects.requireNonNull(value);
-        }
+    public UserElectronicAddress electronicAddress() {
+        return this.electronicAddress;
     }
 
-    class Default implements User {
-        private Id id;
-        private ElectronicAddress electronicAddress;
-        private Password password;
+    public void electronicAddress(UserElectronicAddress electronicAddress) {
+        this.electronicAddress = electronicAddress;
+    }
 
-        @Override
-        public Id id() {
-            return this.id;
-        }
+    public UserPassword password() {
+        return this.password;
+    }
 
-        @Override
-        public void id(Id id) {
-            this.id = id;
-        }
-
-        @Override
-        public ElectronicAddress electronicAddress() {
-            return this.electronicAddress;
-        }
-
-        @Override
-        public void electronicAddress(ElectronicAddress electronicAddress) {
-            this.electronicAddress = electronicAddress;
-        }
-
-        @Override
-        public Password password() {
-            return this.password;
-        }
-
-        @Override
-        public void password(Password password) {
-            this.password = password;
-        }
+    public void password(UserPassword password) {
+        this.password = password;
     }
 }

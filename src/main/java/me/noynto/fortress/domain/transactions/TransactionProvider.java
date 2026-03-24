@@ -11,7 +11,8 @@ public interface TransactionProvider {
             TransactionDescription description,
             TransactionAmount amount,
             TransactionType type,
-            TransactionEffectiveDate effectiveDate
+            TransactionOwner owner,
+            TransactionApplicationDate applicationDate
     );
 
     Stream<Transaction> stream();

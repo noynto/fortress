@@ -9,8 +9,9 @@ public class Transaction {
     private TransactionAmount amount;
     private TransactionType type;
     private TransactionState state;
-    private TransactionCreationDate creationDate;
-    private TransactionEffectiveDate effectiveDate;
+    private TransactionApplicationDate effectiveDate;
+    private TransactionOwner creator;
+    private TransactionIssueDate issueDate;
 
     public TransactionId id() {
         return this.id;
@@ -52,19 +53,27 @@ public class Transaction {
         this.state = state;
     }
 
-    public TransactionCreationDate creationDate() {
-        return creationDate;
-    }
-
-    public void creationDate(TransactionCreationDate creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    public TransactionEffectiveDate effectiveDate() {
+    public TransactionApplicationDate applicationDate() {
         return effectiveDate;
     }
 
-    public void effectiveDate(TransactionEffectiveDate effectiveDate) {
+    public void applicationDate(TransactionApplicationDate effectiveDate) {
         this.effectiveDate = effectiveDate;
+    }
+
+    public TransactionOwner owner() {
+        return creator;
+    }
+
+    public void owner(TransactionOwner creator) {
+        this.creator = creator;
+    }
+
+    public TransactionIssueDate issueDate() {
+        return issueDate;
+    }
+
+    public void issueDate(TransactionIssueDate issueDate) {
+        this.issueDate = issueDate;
     }
 }

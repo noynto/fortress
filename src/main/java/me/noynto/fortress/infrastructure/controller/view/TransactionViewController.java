@@ -2,8 +2,8 @@ package me.noynto.fortress.infrastructure.controller.view;
 
 import io.helidon.http.HeaderNames;
 import io.helidon.http.Status;
-import io.helidon.webserver.http.HttpRules;
-import io.helidon.webserver.http.HttpService;
+import io.helidon.webserver.http.HttpFeature;
+import io.helidon.webserver.http.HttpRouting;
 import io.helidon.webserver.http.ServerRequest;
 import io.helidon.webserver.http.ServerResponse;
 import me.noynto.fortress.application.transactions.command.ApproveTransactionCommand;
@@ -16,8 +16,11 @@ import me.noynto.fortress.application.transactions.command.handler.DeleteTransac
 import me.noynto.fortress.application.transactions.command.handler.RejectTransactionHandler;
 import me.noynto.fortress.application.transactions.query.GetAllTransactionsQuery;
 import me.noynto.fortress.application.transactions.query.handler.GetAllTransactionsHandler;
+import me.noynto.fortress.domain.sessions.Session;
 import me.noynto.fortress.domain.transactions.Transaction;
+import me.noynto.fortress.infrastructure.controller.filter.SessionFilter;
 import me.noynto.fortress.infrastructure.controller.view.config.TemplateRenderer;
+import me.noynto.fortress.infrastructure.controller.view.helper.FormDataParser;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -28,52 +31,32 @@ import java.util.Map;
 /**
  * Contrôleur pour le rendu HTML des transactions avec JTE
  */
-public class TransactionViewController implements HttpService {
-
-    private final TemplateRenderer templateRenderer;
-
-    // Command Handlers
-    private final CreateTransactionHandler createTransactionHandler;
-    private final ApproveTransactionHandler approveTransactionHandler;
-    private final RejectTransactionHandler rejectTransactionHandler;
-    private final DeleteTransactionHandler deleteTransactionHandler;
-
-    // Query Handlers
-    private final GetAllTransactionsHandler getAllTransactionsHandler;
-
-    public TransactionViewController(
-            TemplateRenderer templateRenderer,
-            CreateTransactionHandler createTransactionHandler,
-            ApproveTransactionHandler approveTransactionHandler,
-            RejectTransactionHandler rejectTransactionHandler,
-            DeleteTransactionHandler deleteTransactionHandler,
-            GetAllTransactionsHandler getAllTransactionsHandler
-    ) {
-        this.templateRenderer = templateRenderer;
-        this.createTransactionHandler = createTransactionHandler;
-        this.approveTransactionHandler = approveTransactionHandler;
-        this.rejectTransactionHandler = rejectTransactionHandler;
-        this.deleteTransactionHandler = deleteTransactionHandler;
-        this.getAllTransactionsHandler = getAllTransactionsHandler;
-    }
+public record TransactionViewController(
+        TemplateRenderer templateRenderer,
+        SessionFilter sessionFilter,
+        CreateTransactionHandler createTransactionHandler,
+        ApproveTransactionHandler approveTransactionHandler,
+        RejectTransactionHandler rejectTransactionHandler,
+        DeleteTransactionHandler deleteTransactionHandler,
+        GetAllTransactionsHandler getAllTransactionsHandler
+) implements HttpFeature {
 
     @Override
-    public void routing(HttpRules rules) {
-        rules
-                // Pages
-                .get("/", this::showAllTransactions)
-                .get("/new", this::showNewTransactionForm)
-                // Actions
-                .post("/", this::createTransaction)
-                .post("/{transactionId}/approve", this::approveTransaction)
-                .post("/{transactionId}/reject", this::rejectTransaction)
-                .post("/{transactionId}/delete", this::deleteTransaction);
+    public void setup(HttpRouting.Builder builder) {
+        builder
+                .get("/transactions", sessionFilter,this::showAllTransactions)
+                .get("/transactions/new", sessionFilter,this::showNewTransactionForm)
+                .post("/transactions", sessionFilter, this::createTransaction)
+                .post("/transactions/{transactionId}/approve", sessionFilter, this::approveTransaction)
+                .post("/transactions/{transactionId}/reject", sessionFilter, this::rejectTransaction)
+                .post("/transactions/{transactionId}/delete", sessionFilter, this::deleteTransaction);
     }
 
     // ============= PAGES (Queries) =============
 
     private void showAllTransactions(ServerRequest req, ServerResponse res) {
-        List<Transaction> transactions = getAllTransactionsHandler.handle(new GetAllTransactionsQuery());
+        Session session = req.context().get(Session.class).orElseThrow();
+        List<Transaction> transactions = getAllTransactionsHandler.handle(new GetAllTransactionsQuery(session.userId()));
         Map<String, Object> params = new HashMap<>();
         params.put("transactions", transactions);
         String html = templateRenderer.render("page/transactions.jte", params);
@@ -90,14 +73,16 @@ public class TransactionViewController implements HttpService {
     // ============= ACTIONS (Commands) =============
 
     private void createTransaction(ServerRequest req, ServerResponse res) {
+        Session session = req.context().get(Session.class).orElseThrow();
         try {
             // Parser les données du formulaire
-            Map<String, String> formData = parseFormData(req.content().as(String.class));
+            Map<String, String> formData = FormDataParser.execute(req.content().as(String.class));
             CreateTransactionCommand command = new CreateTransactionCommand(
                     new BigDecimal(formData.get("amount")),
                     formData.get("type"),
                     formData.getOrDefault("description", ""),
-                    LocalDate.parse(formData.get("effective-date"))
+                    LocalDate.parse(formData.get("effective-date")),
+                    session.userId()
             );
             createTransactionHandler.handle(command);
             // Redirection vers la liste
@@ -158,23 +143,4 @@ public class TransactionViewController implements HttpService {
         }
     }
 
-    // ============= HELPERS =============
-
-    private Map<String, String> parseFormData(String body) {
-        Map<String, String> data = new java.util.HashMap<>();
-        if (body == null || body.isEmpty()) {
-            return data;
-        }
-
-        for (String pair : body.split("&")) {
-            String[] keyValue = pair.split("=");
-            if (keyValue.length == 2) {
-                data.put(
-                        java.net.URLDecoder.decode(keyValue[0], java.nio.charset.StandardCharsets.UTF_8),
-                        java.net.URLDecoder.decode(keyValue[1], java.nio.charset.StandardCharsets.UTF_8)
-                );
-            }
-        }
-        return data;
-    }
 }

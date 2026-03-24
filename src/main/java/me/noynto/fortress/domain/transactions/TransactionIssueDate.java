@@ -3,10 +3,10 @@ package me.noynto.fortress.domain.transactions;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public record TransactionCreationDate(
+public record TransactionIssueDate(
         LocalDate value
 ) {
-    public TransactionCreationDate {
+    public TransactionIssueDate {
         Objects.requireNonNull(value);
     }
 }

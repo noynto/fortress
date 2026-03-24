@@ -57,9 +57,9 @@ content = @`
                 @for(Transaction transaction : transactions)
                     <tr class="border-b border-ctp-surface0 last:border-0 hover:bg-ctp-surface0 transition-colors">
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <p class="text-xs text-ctp-overlay1">${transaction.effectiveDate().value().format(DateTimeFormatter.ISO_DATE)}</p>
+                            <p class="text-xs text-ctp-overlay1">${transaction.applicationDate().value().format(DateTimeFormatter.ISO_DATE)}</p>
                             <p class="text-[0.65rem] text-ctp-overlay0 mt-0.5">
-                                Créée le ${transaction.creationDate().value().format(DateTimeFormatter.ISO_DATE)}
+                                Créée le ${transaction.issueDate().value().format(DateTimeFormatter.ISO_DATE)}
                             </p>
                         </td>
                         <td class="px-6 py-4 text-sm text-ctp-text font-semibold">
@@ -134,7 +134,7 @@ content = @`
                         <div>
                             <p class="text-sm font-bold text-ctp-text leading-snug">${transaction.description().value()}</p>
                             <p class="text-[0.65rem] text-ctp-overlay0 mt-1 font-medium">Effectif
-                                le ${transaction.effectiveDate().value().format(DateTimeFormatter.ISO_DATE)}</p>
+                                le ${transaction.applicationDate().value().format(DateTimeFormatter.ISO_DATE)}</p>
                         </div>
                         <p class="font-nunito text-base font-bold shrink-0 ${transaction.type().name().equals("CREDIT") ? "text-ctp-green" : "text-ctp-red"}">
                             ${transaction.type().name().equals("CREDIT") ? "+" : "−"}${String.format("%.2f", transaction.amount().value())}
@@ -156,7 +156,7 @@ content = @`
                         @else
                             <span class="inline-flex items-center gap-1 text-[0.65rem] font-bold px-2.5 py-1 rounded-full bg-ctp-red/15 text-ctp-red">✗ Rejetée</span>
                         @endif
-                        <span class="text-[0.62rem] text-ctp-overlay0 ml-auto font-medium">Créée le ${transaction.creationDate().value().format(DateTimeFormatter.ISO_DATE)}</span>
+                        <span class="text-[0.62rem] text-ctp-overlay0 ml-auto font-medium">Créée le ${transaction.issueDate().value().format(DateTimeFormatter.ISO_DATE)}</span>
                     </div>
 
                     <%-- Actions --%>

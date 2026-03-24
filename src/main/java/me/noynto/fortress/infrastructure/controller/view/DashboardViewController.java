@@ -1,11 +1,9 @@
 package me.noynto.fortress.infrastructure.controller.view;
 
 import io.helidon.http.HeaderNames;
-import io.helidon.webserver.http.HttpRules;
-import io.helidon.webserver.http.HttpService;
-import io.helidon.webserver.http.ServerRequest;
-import io.helidon.webserver.http.ServerResponse;
+import io.helidon.webserver.http.*;
 import me.noynto.fortress.application.transactions.query.handler.*;
+import me.noynto.fortress.infrastructure.controller.filter.SessionFilter;
 import me.noynto.fortress.infrastructure.controller.view.config.TemplateRenderer;
 
 import java.math.BigDecimal;
@@ -23,13 +21,14 @@ public record DashboardViewController(
         CountPending countPending,
         CountApproved countApproved,
         CountRejected countRejected,
-        TemplateRenderer templateRenderer
-) implements HttpService {
+        TemplateRenderer templateRenderer,
+        SessionFilter sessionFilter
+) implements HttpFeature {
+
     @Override
-    public void routing(HttpRules rules) {
-        rules
-                // Pages
-                .get("/", this::showDashboard);
+    public void setup(HttpRouting.Builder builder) {
+        builder
+                .get("/dashboard", sessionFilter, this::showDashboard);
     }
 
     // ============= PAGES (Queries) =============

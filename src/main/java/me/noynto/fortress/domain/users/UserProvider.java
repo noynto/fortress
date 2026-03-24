@@ -1,9 +1,11 @@
 package me.noynto.fortress.domain.users;
 
-import java.util.Optional;
+import java.util.stream.Stream;
 
 public interface UserProvider {
-    User create(User user);
+    User create(UserElectronicAddress electronicAddress, UserPassword userPassword);
 
-    Optional<User> read(User.ElectronicAddress userElectronicAddress);
+    Stream<User> stream(UserElectronicAddress userElectronicAddress);
+
+    boolean exist(UserElectronicAddress userElectronicAddress);
 }

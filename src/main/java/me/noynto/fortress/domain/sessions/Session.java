@@ -22,4 +22,5 @@ public class Session {
     public void id(SessionId id) {
         this.id = id;
     }
+
 }
