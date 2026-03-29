@@ -10,7 +10,7 @@ public class Transaction {
     private TransactionType type;
     private TransactionState state;
     private TransactionApplicationDate effectiveDate;
-    private TransactionOwner creator;
+    private TransactionOwner owner;
     private TransactionIssueDate issueDate;
 
     public TransactionId id() {
@@ -62,11 +62,11 @@ public class Transaction {
     }
 
     public TransactionOwner owner() {
-        return creator;
+        return owner;
     }
 
     public void owner(TransactionOwner creator) {
-        this.creator = creator;
+        this.owner = creator;
     }
 
     public TransactionIssueDate issueDate() {

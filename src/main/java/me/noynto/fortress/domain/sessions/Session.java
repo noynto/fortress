@@ -1,18 +1,18 @@
 package me.noynto.fortress.domain.sessions;
 
 import me.noynto.fortress.domain.shared.SessionId;
-import me.noynto.fortress.domain.shared.UserId;
+import me.noynto.fortress.domain.shared.IdentityId;
 
 public class Session {
     private SessionId id;
-    private UserId userId;
+    private IdentityId identityId;
 
-    public UserId userId() {
-        return userId;
+    public IdentityId userId() {
+        return identityId;
     }
 
-    public void userId(UserId userId) {
-        this.userId = userId;
+    public void userId(IdentityId identityId) {
+        this.identityId = identityId;
     }
 
     public SessionId id() {

@@ -2,7 +2,7 @@ package me.noynto.fortress.application.transactions.command.handler;
 
 import me.noynto.fortress.application.transactions.command.CreateTransactionCommand;
 import me.noynto.fortress.domain.shared.TransactionId;
-import me.noynto.fortress.domain.shared.UserId;
+import me.noynto.fortress.domain.shared.IdentityId;
 import me.noynto.fortress.domain.transactions.Transaction;
 import me.noynto.fortress.domain.transactions.TransactionProvider;
 import me.noynto.fortress.domain.transactions.TransactionState;
@@ -28,8 +28,8 @@ class CreateTransactionHandlerTest {
         String type = "CREDIT";
         String description = "Description";
         LocalDate effectiveDate = LocalDate.now().plusDays(3);
-        UserId userId = new UserId("USER_ID");
-        CreateTransactionCommand command = new CreateTransactionCommand(amount, type, description, effectiveDate, userId);
+        IdentityId identityId = new IdentityId("USER_ID");
+        CreateTransactionCommand command = new CreateTransactionCommand(amount, type, description, effectiveDate, identityId);
         Transaction transaction = handler.handle(command);
         Assertions.assertNotNull(transaction);
         Assertions.assertEquals(TransactionState.PENDING, transaction.state());

@@ -1,7 +1,7 @@
 package me.noynto.fortress.application.transactions.query.handler;
 
 import me.noynto.fortress.application.transactions.query.GetAllTransactionsQuery;
-import me.noynto.fortress.domain.shared.UserId;
+import me.noynto.fortress.domain.shared.IdentityId;
 import me.noynto.fortress.domain.transactions.Transaction;
 import me.noynto.fortress.domain.transactions.TransactionProvider;
 
@@ -15,11 +15,11 @@ public record GetAllTransactionsHandler(
 
     public List<Transaction> handle(GetAllTransactionsQuery query) {
         Objects.requireNonNull(query);
-        return this.provider.stream().filter(creatorOfTransactionEqualsTo(query.userId())).toList();
+        return this.provider.stream().filter(creatorOfTransactionEqualsTo(query.identityId())).toList();
     }
 
-    private static Predicate<Transaction> creatorOfTransactionEqualsTo(UserId userId) {
-        return transaction -> Objects.equals(transaction.owner().userId(), userId);
+    private static Predicate<Transaction> creatorOfTransactionEqualsTo(IdentityId identityId) {
+        return transaction -> Objects.equals(transaction.owner().identityId(), identityId);
     }
 
 }

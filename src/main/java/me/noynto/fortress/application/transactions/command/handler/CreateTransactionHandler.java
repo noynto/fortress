@@ -21,7 +21,7 @@ public record CreateTransactionHandler(
         TransactionDescription description = new TransactionDescription(command.description());
         TransactionAmount amount = new TransactionAmount(command.amount());
         TransactionType type = TransactionType.valueOf(command.type());
-        TransactionOwner creator = new TransactionOwner(command.userId());
+        TransactionOwner creator = new TransactionOwner(command.identityId());
         TransactionApplicationDate applicationDate = new TransactionApplicationDate(LocalDate.now(clock));
         return transactionProvider.create(description, amount, type, creator, applicationDate);
     }

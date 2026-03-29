@@ -2,32 +2,32 @@ package me.noynto.fortress.application.users.command.handler;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import me.noynto.fortress.application.users.command.SignUpCommand;
+import me.noynto.fortress.domain.identities.Identity;
 import me.noynto.fortress.domain.sessions.Session;
 import me.noynto.fortress.domain.sessions.SessionProvider;
-import me.noynto.fortress.domain.users.User;
-import me.noynto.fortress.domain.users.UserElectronicAddress;
-import me.noynto.fortress.domain.users.UserPassword;
-import me.noynto.fortress.domain.users.UserProvider;
+import me.noynto.fortress.domain.identities.IdentityElectronicAddress;
+import me.noynto.fortress.domain.identities.IdentityPassword;
+import me.noynto.fortress.domain.identities.IdentityProvider;
 
 import java.util.Objects;
 
 public record SignUpHandler(
-        UserProvider userProvider,
+        IdentityProvider identityProvider,
         BCrypt.Hasher hasher,
         SessionProvider sessionProvider
 ) {
-    private static final int LEVEL_OF_HASH = 8;
+    private static final int LEVEL_OF_HASH = 4;
 
     public Session handle(SignUpCommand command) {
         Objects.requireNonNull(command);
         command.validate();
-        UserElectronicAddress userElectronicAddress = new UserElectronicAddress(command.electronicAddress());
-        if (userProvider.exist(userElectronicAddress)) {
+        IdentityElectronicAddress identityElectronicAddress = new IdentityElectronicAddress(command.electronicAddress());
+        if (identityProvider.exist(identityElectronicAddress)) {
             throw new IllegalArgumentException("Un utilisateur est déjà lié à cette adresse électronique.");
         }
-        UserPassword userPassword = new UserPassword(hasher.hashToString(LEVEL_OF_HASH, command.electronicAddress().toCharArray()));
-        User user = userProvider.create(userElectronicAddress, userPassword);
-        return sessionProvider.create(user.id());
+        IdentityPassword identityPassword = new IdentityPassword(hasher.hashToString(LEVEL_OF_HASH, command.electronicAddress().toCharArray()));
+        Identity identity = identityProvider.create(identityElectronicAddress, identityPassword);
+        return sessionProvider.create(identity.id());
     }
 
 }

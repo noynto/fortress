@@ -1,13 +1,13 @@
 package me.noynto.fortress.domain.transactions;
 
-import me.noynto.fortress.domain.shared.UserId;
+import me.noynto.fortress.domain.shared.IdentityId;
 
 import java.util.Objects;
 
 public record TransactionOwner(
-        UserId userId
+        IdentityId identityId
 ) {
     public TransactionOwner {
-        Objects.requireNonNull(userId);
+        Objects.requireNonNull(identityId);
     }
 }

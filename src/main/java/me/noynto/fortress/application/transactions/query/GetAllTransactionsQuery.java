@@ -1,12 +1,12 @@
 package me.noynto.fortress.application.transactions.query;
 
-import me.noynto.fortress.domain.shared.UserId;
+import me.noynto.fortress.domain.shared.IdentityId;
 
 /**
  * Query pour récupérer toutes les transactions
- * @param userId identifiant de l'utilisateur.
+ * @param identityId identifiant de l'utilisateur.
  */
 public record GetAllTransactionsQuery(
-        UserId userId
+        IdentityId identityId
 ) {
 }

@@ -4,7 +4,7 @@ import at.favre.lib.crypto.bcrypt.BCrypt;
 import me.noynto.fortress.domain.sessions.Session;
 import me.noynto.fortress.domain.sessions.SessionProvider;
 import me.noynto.fortress.domain.shared.SessionId;
-import me.noynto.fortress.domain.shared.UserId;
+import me.noynto.fortress.domain.shared.IdentityId;
 
 import java.util.Map;
 import java.util.Optional;
@@ -18,11 +18,11 @@ public record InMemorySessions(
     private static final int LEVEL_OF_HASH = 16;
 
     @Override
-    public Session create(UserId userId) {
+    public Session create(IdentityId identityId) {
         Session session = new Session();
         SessionId id = new SessionId(hasher.hashToString(LEVEL_OF_HASH, UUID.randomUUID().toString().toCharArray()));
         session.id(id);
-        session.userId(userId);
+        session.userId(identityId);
         this.store.put(id, session);
         return session;
     }
