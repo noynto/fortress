@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Fortress — Gestion financière personnelle</title>
 
     <!-- Icône -->
@@ -35,340 +35,495 @@
             theme: {
                 extend: {
                     colors: {
-                        ctp: {
-                            crust:    '#11111b',
-                            mantle:   '#181825',
-                            base:     '#1e1e2e',
-                            surface0: '#313244',
-                            surface1: '#45475a',
-                            surface2: '#585b70',
-                            overlay0: '#6c7086',
-                            overlay1: '#7f849c',
-                            overlay2: '#9399b2',
-                            subtext0: '#a6adc8',
-                            subtext1: '#bac2de',
-                            text:     '#cdd6f4',
-                            teal:     '#94e2d5',
-                            green:    '#a6e3a1',
-                            yellow:   '#f9e2af',
-                            peach:    '#fab387',
-                            red:      '#f38ba8',
-                            mauve:    '#cba6f7',
-                            pink:     '#f5c2e7',
-                        }
+                        ef: {
+                            bg0: '#2D353B',
+                            bg1: '#343F44',
+                            bg2: '#3D484D',
+                            bg3: '#475258',
+                            bg4: '#4F585E',
+                            fg: '#D3C6AA',
+                            dim: '#9DA9A0',
+                            green: '#A7C080',
+                            green2: '#83C092',
+                            yellow: '#DBBC7F',
+                            orange: '#E69875',
+                            red: '#E67E80',
+                            blue: '#7FBBB3',
+                            purple: '#D699B6',
+                        },
                     },
                     fontFamily: {
-                        nunito: ['Nunito', 'sans-serif'],
-                    }
-                }
-            }
+                        serif: ['"DM Serif Display"', 'serif'],
+                        mono: ['"DM Mono"', 'monospace'],
+                        sans: ['Sora', 'sans-serif'],
+                    },
+                    fontSize: {
+                        'display': ['clamp(36px,6vw,62px)', {lineHeight: '1.08', letterSpacing: '-0.04em'}],
+                        'heading': ['clamp(28px,4vw,40px)', {lineHeight: '1.15', letterSpacing: '-0.02em'}],
+                        'price': ['clamp(32px,5vw,42px)', {lineHeight: '1', letterSpacing: '-0.03em'}],
+                    },
+                    borderColor: {
+                        ef: {
+                            base: 'rgba(167,192,128,0.15)',
+                            strong: 'rgba(167,192,128,0.30)',
+                            accent: 'rgba(167,192,128,0.40)',
+                        },
+                    },
+                    backgroundColor: {
+                        'ef-green-10': 'rgba(167,192,128,0.10)',
+                        'ef-green-05': 'rgba(167,192,128,0.05)',
+                        'ef-yellow-12': 'rgba(219,188,127,0.12)',
+                        'ef-green-12': 'rgba(167,192,128,0.12)',
+                    },
+                },
+            },
         }
     </script>
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-</head>
-<body class="bg-ctp-base text-ctp-text font-nunito min-h-screen">
+    <style>
+        /* Utilitaires non couverts par Tailwind */
+        .border-ef-base {
+            border-color: rgba(167, 192, 128, 0.15);
+        }
 
-<!-- NAVBAR -->
-<nav class="flex items-center justify-between px-6 sm:px-10 py-4 border-b border-ctp-surface0 bg-ctp-mantle sticky top-0 z-50">
-    <span class="font-nunito text-base font-extrabold text-ctp-mauve">🐱 Fortress</span>
-    <div class="flex items-center gap-3 sm:gap-5">
-        <a href="#features" class="hidden sm:block text-xs font-semibold text-ctp-overlay1 hover:text-ctp-text transition-colors">Fonctionnalités</a>
-        <a href="#pricing" class="hidden sm:block text-xs font-semibold text-ctp-overlay1 hover:text-ctp-text transition-colors">Tarifs</a>
-        <a href="/sign-in" class="text-xs font-bold px-4 py-2 rounded-lg border border-ctp-surface1 text-ctp-subtext0 hover:bg-ctp-surface0 hover:text-ctp-text transition-colors">Se connecter</a>
-        <a href="/sign-up" class="text-xs font-bold px-4 py-2 rounded-lg bg-ctp-mauve text-ctp-crust hover:opacity-85 transition-opacity">Commencer</a>
+        .border-ef-strong {
+            border-color: rgba(167, 192, 128, 0.30);
+        }
+
+        .border-ef-accent {
+            border-color: rgba(167, 192, 128, 0.40);
+        }
+
+        .bg-ef-green-10 {
+            background-color: rgba(167, 192, 128, 0.10);
+        }
+
+        .bg-ef-green-05 {
+            background-color: rgba(167, 192, 128, 0.05);
+        }
+
+        .bg-ef-green-12 {
+            background-color: rgba(167, 192, 128, 0.12);
+        }
+
+        .bg-ef-yellow-12 {
+            background-color: rgba(219, 188, 127, 0.12);
+        }
+
+        .divide-ef > * + * {
+            border-top: 1.5px solid rgba(167, 192, 128, 0.15);
+        }
+
+        .gap-ef {
+            gap: 1.5px;
+        }
+
+        /* Grilles avec séparateurs */
+        .grid-ef {
+            display: grid;
+            gap: 1px;
+            background-color: rgba(167, 192, 128, 0.15);
+            border-radius: 0.75rem;
+            overflow: hidden;
+        }
+
+        .grid-ef > * {
+            background-color: #343F44;
+        }
+
+        .checkmark-item::before {
+            content: '';
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            flex-shrink: 0;
+            background: url("data:image/svg+xml,%3Csvg width='14' height='14' viewBox='0 0 14 14' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2.5 7L5.5 10L11.5 4' stroke='%23A7C080' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center;
+        }
+    </style>
+</head>
+
+<body class="bg-ef-bg0 text-ef-fg font-sans antialiased">
+
+<!-- ═══════════════════════════════════════════
+     NAV
+═══════════════════════════════════════════ -->
+<nav class="sticky top-0 z-50 flex items-center justify-between h-[60px] px-10 border-b border-ef-base bg-ef-bg0/95 backdrop-blur-sm">
+    <!-- Logo -->
+    <div class="font-serif text-[22px] text-ef-green flex items-center gap-2 shrink-0">
+        🌲 Fortress
     </div>
+
+    <!-- Liens desktop -->
+    <ul class="hidden md:flex items-center gap-8 list-none">
+        <li><a href="#features" class="text-ef-dim text-[13px] hover:text-ef-fg transition-colors no-underline">Fonctionnalités</a>
+        </li>
+        <li><a href="#pricing"
+               class="text-ef-dim text-[13px] hover:text-ef-fg transition-colors no-underline">Tarifs</a></li>
+        <li><a href="#" class="text-ef-dim text-[13px] hover:text-ef-fg transition-colors no-underline">Docs</a></li>
+    </ul>
+
+    <!-- Actions desktop -->
+    <div class="hidden md:flex items-center gap-2.5">
+        <a href="/sign-in"
+           class="text-ef-dim text-[13px] border border-ef-strong px-4 py-1.5 rounded-md hover:border-ef-green hover:text-ef-green transition-all no-underline">
+            Se connecter
+        </a>
+        <a href="/sign-up"
+           class="bg-ef-green text-ef-bg0 text-[13px] font-semibold px-4 py-1.5 rounded-md hover:bg-[#b8d494] transition-colors no-underline">
+            Commencer
+        </a>
+    </div>
+
+    <!-- Hamburger mobile -->
+    <button id="hamburger" class="md:hidden flex flex-col gap-[5px] p-1 bg-transparent border-none cursor-pointer"
+            aria-label="Menu">
+        <span class="block w-[22px] h-[2px] bg-ef-dim rounded-sm transition-all"></span>
+        <span class="block w-[22px] h-[2px] bg-ef-dim rounded-sm transition-all"></span>
+        <span class="block w-[22px] h-[2px] bg-ef-dim rounded-sm transition-all"></span>
+    </button>
 </nav>
 
-<!-- HERO -->
-<section class="max-w-3xl mx-auto px-4 sm:px-6 py-20 text-center">
-    <div class="inline-flex items-center gap-2 text-[0.67rem] font-bold px-4 py-1.5 rounded-full
-                    bg-ctp-mauve/10 border border-ctp-mauve/20 text-ctp-mauve uppercase tracking-widest mb-8">
-        <span class="w-1.5 h-1.5 rounded-full bg-ctp-mauve inline-block"></span>
+<!-- Menu mobile -->
+<div id="mobile-menu" class="hidden flex-col bg-ef-bg1 border-b border-ef-base">
+    <a href="#features"
+       class="text-ef-dim text-[14px] px-8 py-3 border-b border-ef-base hover:text-ef-fg transition-colors no-underline">Fonctionnalités</a>
+    <a href="#pricing"
+       class="text-ef-dim text-[14px] px-8 py-3 border-b border-ef-base hover:text-ef-fg transition-colors no-underline">Tarifs</a>
+    <a href="#"
+       class="text-ef-dim text-[14px] px-8 py-3 border-b border-ef-base hover:text-ef-fg transition-colors no-underline">Docs</a>
+    <a href="/sign-in"
+       class="text-ef-dim text-[14px] px-8 py-3 border-b border-ef-base hover:text-ef-fg transition-colors no-underline">Se
+        connecter</a>
+    <div class="px-8 py-3">
+        <a href="/sign-up"
+           class="block text-center bg-ef-green text-ef-bg0 font-semibold text-[14px] py-3 rounded-lg hover:bg-[#b8d494] transition-colors no-underline">
+            Commencer gratuitement
+        </a>
+    </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════
+     HERO
+═══════════════════════════════════════════ -->
+<section class="max-w-[960px] mx-auto px-10 pt-28 pb-20 sm:px-6 sm:pt-16 sm:pb-12 xs:px-4 xs:pt-12">
+
+    <!-- Badge -->
+    <div class="inline-flex items-center gap-1.5 bg-ef-green-10 border border-[rgba(167,192,128,0.25)] text-ef-green text-[12px] font-mono px-3 py-1 rounded-full mb-8">
+        <span class="w-1.5 h-1.5 bg-ef-green rounded-full inline-block"></span>
         Gestion financière personnelle
     </div>
-    <h1 class="font-nunito text-5xl font-extrabold leading-tight text-ctp-text mb-5">
-        Prenez le contrôle de<br><span class="text-ctp-mauve">vos finances</span>
+
+    <!-- Titre -->
+    <h1 class="font-serif text-display text-ef-fg max-w-[700px] mb-6">
+        Prenez le contrôle de vos <em class="text-ef-green">finances</em>
     </h1>
-    <p class="text-base text-ctp-overlay2 leading-relaxed max-w-lg mx-auto mb-10">
+
+    <!-- Sous-titre -->
+    <p class="text-ef-dim font-light max-w-[520px] leading-relaxed mb-10 text-[17px] sm:text-[15px]">
         Suivez vos transactions, approuvez vos dépenses et anticipez votre solde en temps réel.
         Simple, rapide, fiable.
     </p>
-    <div class="flex items-center justify-center gap-3 flex-wrap">
+
+    <!-- CTAs -->
+    <div class="flex flex-wrap items-center gap-3 mb-16 sm:flex-col sm:items-start">
         <a href="/sign-up"
-           class="font-nunito text-sm font-bold px-7 py-3.5 rounded-xl bg-ctp-mauve text-ctp-crust hover:opacity-85 transition-opacity">
+           class="bg-ef-green text-ef-bg0 font-semibold text-[14px] px-7 py-3.5 rounded-lg hover:bg-[#b8d494] transition-colors no-underline sm:w-full sm:text-center">
             Créer un compte gratuit
         </a>
         <a href="#features"
-           class="font-nunito text-sm font-bold px-6 py-3.5 rounded-xl border border-ctp-surface1 text-ctp-subtext0 hover:bg-ctp-surface0 hover:text-ctp-text transition-colors">
-            Voir les fonctionnalités →
+           class="text-ef-dim text-[14px] py-3.5 flex items-center gap-1.5 hover:text-ef-fg transition-colors no-underline after:content-['→'] after:text-[16px]">
+            Voir les fonctionnalités
         </a>
     </div>
-</section>
 
-<!-- MOCKUP -->
-<section class="mx-4 sm:mx-8 lg:mx-16 mb-24 border border-ctp-surface0 rounded-2xl overflow-hidden">
-    <div class="bg-ctp-crust px-4 py-2.5 flex items-center gap-2 border-b border-ctp-surface0">
-        <div class="w-2.5 h-2.5 rounded-full bg-ctp-red"></div>
-        <div class="w-2.5 h-2.5 rounded-full bg-ctp-yellow"></div>
-        <div class="w-2.5 h-2.5 rounded-full bg-ctp-green"></div>
-    </div>
-    <div class="bg-ctp-mantle p-5">
-        <div class="flex items-center justify-between mb-4">
-            <div class="flex items-center gap-2">
-                <span class="font-nunito text-sm font-extrabold text-ctp-mauve">🐱 Fortress</span>
-                <span class="text-[0.6rem] font-semibold px-2 py-0.5 rounded-full bg-ctp-surface0 text-ctp-overlay2">Dashboard</span>
-            </div>
-            <div class="text-[0.65rem] font-bold px-3 py-1.5 rounded-lg bg-ctp-mauve text-ctp-crust">+ Nouvelle transaction</div>
+    <!-- Dashboard preview -->
+    <div class="bg-ef-bg1 border border-ef-base rounded-[14px] p-6 overflow-hidden sm:p-4">
+        <!-- Header -->
+        <div class="flex items-center justify-between flex-wrap gap-3 pb-4 mb-5 border-b border-ef-base">
+            <span class="text-[14px] font-medium text-ef-fg">Dashboard</span>
+            <button class="bg-ef-green-10 border border-ef-strong text-ef-green text-[12px] font-mono px-3 py-1 rounded-md cursor-pointer">
+                + Nouvelle transaction
+            </button>
         </div>
-        <div class="grid grid-cols-4 gap-2 mb-3">
-            <div class="bg-ctp-base border border-ctp-surface0 rounded-xl p-3">
-                <div class="text-[0.55rem] font-bold uppercase tracking-wider text-ctp-overlay1 mb-1">Solde actuel</div>
-                <div class="font-nunito text-base font-extrabold text-ctp-green">+2 450 €</div>
-            </div>
-            <div class="bg-ctp-crust border border-ctp-mauve rounded-xl p-3">
-                <div class="text-[0.55rem] font-bold uppercase tracking-wider text-ctp-overlay1 mb-1">Prévisionnel</div>
-                <div class="font-nunito text-base font-extrabold text-ctp-mauve">+3 120 €</div>
-            </div>
-            <div class="bg-ctp-base border border-ctp-surface0 rounded-xl p-3">
-                <div class="text-[0.55rem] font-bold uppercase tracking-wider text-ctp-overlay1 mb-1">Crédits à venir</div>
-                <div class="font-nunito text-base font-extrabold text-ctp-green">+800 €</div>
-            </div>
-            <div class="bg-ctp-base border border-ctp-surface0 rounded-xl p-3">
-                <div class="text-[0.55rem] font-bold uppercase tracking-wider text-ctp-overlay1 mb-1">Débits à venir</div>
-                <div class="font-nunito text-base font-extrabold text-ctp-red">−129 €</div>
-            </div>
-        </div>
-        <div class="bg-ctp-base border border-ctp-surface0 rounded-xl overflow-hidden">
-            <div class="grid grid-cols-5 px-4 py-2 border-b border-ctp-surface0">
-                <div class="text-[0.52rem] font-bold uppercase tracking-widest text-ctp-overlay0">Date</div>
-                <div class="text-[0.52rem] font-bold uppercase tracking-widest text-ctp-overlay0 col-span-2">Description</div>
-                <div class="text-[0.52rem] font-bold uppercase tracking-widest text-ctp-overlay0 text-right">Montant</div>
-                <div class="text-[0.52rem] font-bold uppercase tracking-widest text-ctp-overlay0 text-right">Statut</div>
-            </div>
-            <div class="grid grid-cols-5 px-4 py-2 border-b border-ctp-surface0 items-center">
-                <div class="text-[0.6rem] text-ctp-overlay1">14/03</div>
-                <div class="text-[0.6rem] font-bold text-ctp-text col-span-2">Salaire mars</div>
-                <div class="text-[0.6rem] font-bold text-ctp-green text-right">+2 800 €</div>
-                <div class="text-right"><span class="text-[0.52rem] font-bold px-2 py-0.5 rounded-full bg-ctp-green/15 text-ctp-green">✓ Approuvée</span></div>
-            </div>
-            <div class="grid grid-cols-5 px-4 py-2 border-b border-ctp-surface0 items-center">
-                <div class="text-[0.6rem] text-ctp-overlay1">13/03</div>
-                <div class="text-[0.6rem] font-bold text-ctp-text col-span-2">Loyer mars</div>
-                <div class="text-[0.6rem] font-bold text-ctp-red text-right">−350 €</div>
-                <div class="text-right"><span class="text-[0.52rem] font-bold px-2 py-0.5 rounded-full bg-ctp-yellow/15 text-ctp-yellow">⏳ En attente</span></div>
-            </div>
-            <div class="grid grid-cols-5 px-4 py-2 items-center">
-                <div class="text-[0.6rem] text-ctp-overlay1">12/03</div>
-                <div class="text-[0.6rem] font-bold text-ctp-text col-span-2">Remboursement client</div>
-                <div class="text-[0.6rem] font-bold text-ctp-green text-right">+800 €</div>
-                <div class="text-right"><span class="text-[0.52rem] font-bold px-2 py-0.5 rounded-full bg-ctp-yellow/15 text-ctp-yellow">⏳ En attente</span></div>
-            </div>
-        </div>
-    </div>
-</section>
 
-<!-- FONCTIONNALITÉS -->
-<section id="features" class="max-w-5xl mx-auto px-4 sm:px-6 py-16">
-    <p class="font-nunito text-[0.62rem] font-bold tracking-[.14em] uppercase text-ctp-mauve text-center mb-2">Fonctionnalités</p>
-    <h2 class="font-nunito text-3xl font-extrabold text-ctp-text text-center mb-3">Tout ce dont vous avez besoin</h2>
-    <p class="text-sm text-ctp-overlay2 text-center leading-relaxed max-w-md mx-auto mb-12">
-        Une interface pensée pour simplifier la gestion de vos flux financiers au quotidien.
-    </p>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        <div class="bg-ctp-mantle border border-ctp-surface0 rounded-2xl p-6">
-            <div class="w-10 h-10 rounded-xl bg-ctp-mauve/10 flex items-center justify-center text-base mb-4">📊</div>
-            <p class="font-nunito text-sm font-bold text-ctp-text mb-2">Tableau de bord</p>
-            <p class="text-xs text-ctp-overlay1 leading-relaxed">Visualisez votre solde actuel et prévisionnel grâce aux cartes métriques en temps réel.</p>
+        <!-- Métriques -->
+        <div class="grid grid-cols-4 gap-2.5 mb-5 sm:grid-cols-2">
+            <div class="bg-ef-bg2 border border-ef-base rounded-lg p-3.5">
+                <div class="text-[10px] font-mono text-ef-dim uppercase tracking-wide mb-1.5">Solde actuel</div>
+                <div class="font-mono font-semibold text-ef-green text-[clamp(14px,2.5vw,20px)]">+2 450 €</div>
+            </div>
+            <div class="bg-ef-bg2 border border-ef-base rounded-lg p-3.5">
+                <div class="text-[10px] font-mono text-ef-dim uppercase tracking-wide mb-1.5">Prévisionnel</div>
+                <div class="font-mono font-semibold text-ef-blue text-[clamp(14px,2.5vw,20px)]">+3 120 €</div>
+            </div>
+            <div class="bg-ef-bg2 border border-ef-base rounded-lg p-3.5">
+                <div class="text-[10px] font-mono text-ef-dim uppercase tracking-wide mb-1.5">Crédits à venir</div>
+                <div class="font-mono font-semibold text-ef-yellow text-[clamp(14px,2.5vw,20px)]">+800 €</div>
+            </div>
+            <div class="bg-ef-bg2 border border-ef-base rounded-lg p-3.5">
+                <div class="text-[10px] font-mono text-ef-dim uppercase tracking-wide mb-1.5">Débits à venir</div>
+                <div class="font-mono font-semibold text-ef-red text-[clamp(14px,2.5vw,20px)]">−129 €</div>
+            </div>
         </div>
-        <div class="bg-ctp-mantle border border-ctp-surface0 rounded-2xl p-6">
-            <div class="w-10 h-10 rounded-xl bg-ctp-green/10 flex items-center justify-center text-base mb-4">✓</div>
-            <p class="font-nunito text-sm font-bold text-ctp-text mb-2">Approbation manuelle</p>
-            <p class="text-xs text-ctp-overlay1 leading-relaxed">Approuvez ou rejetez chaque transaction avant qu'elle n'impacte votre solde réel.</p>
-        </div>
-        <div class="bg-ctp-mantle border border-ctp-surface0 rounded-2xl p-6">
-            <div class="w-10 h-10 rounded-xl bg-ctp-teal/10 flex items-center justify-center text-base mb-4">📈</div>
-            <p class="font-nunito text-sm font-bold text-ctp-text mb-2">Solde prévisionnel</p>
-            <p class="text-xs text-ctp-overlay1 leading-relaxed">Anticipez l'impact de vos transactions en attente sur votre solde futur.</p>
-        </div>
-        <div class="bg-ctp-mantle border border-ctp-surface0 rounded-2xl p-6">
-            <div class="w-10 h-10 rounded-xl bg-ctp-peach/10 flex items-center justify-center text-base mb-4">📥</div>
-            <p class="font-nunito text-sm font-bold text-ctp-text mb-2">Import CSV / XLSX</p>
-            <p class="text-xs text-ctp-overlay1 leading-relaxed">Importez vos relevés bancaires directement depuis un export de votre banque.</p>
-        </div>
-        <div class="bg-ctp-mantle border border-ctp-surface0 rounded-2xl p-6">
-            <div class="w-10 h-10 rounded-xl bg-ctp-yellow/10 flex items-center justify-center text-base mb-4">📱</div>
-            <p class="font-nunito text-sm font-bold text-ctp-text mb-2">Application mobile</p>
-            <p class="text-xs text-ctp-overlay1 leading-relaxed">Installez Fortress sur mobile ou desktop grâce au support PWA natif.</p>
-        </div>
-        <div class="bg-ctp-mantle border border-ctp-surface0 rounded-2xl p-6">
-            <div class="w-10 h-10 rounded-xl bg-ctp-red/10 flex items-center justify-center text-base mb-4">🔔</div>
-            <p class="font-nunito text-sm font-bold text-ctp-text mb-2">Notifications push</p>
-            <p class="text-xs text-ctp-overlay1 leading-relaxed">Recevez une alerte dès qu'une transaction est en attente d'approbation.</p>
+
+        <!-- Tableau transactions -->
+        <div class="overflow-x-auto">
+            <table class="w-full border-collapse min-w-[400px]">
+                <thead>
+                <tr>
+                    <th class="text-left text-[11px] font-mono text-ef-dim uppercase tracking-wider px-2 py-1.5 border-b border-ef-base">
+                        Date
+                    </th>
+                    <th class="text-left text-[11px] font-mono text-ef-dim uppercase tracking-wider px-2 py-1.5 border-b border-ef-base">
+                        Description
+                    </th>
+                    <th class="text-left text-[11px] font-mono text-ef-dim uppercase tracking-wider px-2 py-1.5 border-b border-ef-base">
+                        Montant
+                    </th>
+                    <th class="text-left text-[11px] font-mono text-ef-dim uppercase tracking-wider px-2 py-1.5 border-b border-ef-base">
+                        Statut
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="hover:bg-[rgba(167,192,128,0.04)] transition-colors border-b border-[rgba(167,192,128,0.07)]">
+                    <td class="px-2 py-2.5 text-[12px] font-mono text-ef-dim">14/03</td>
+                    <td class="px-2 py-2.5 text-[13px] text-ef-fg">Salaire mars</td>
+                    <td class="px-2 py-2.5 text-[13px] font-mono font-medium text-ef-green">+2 800 €</td>
+                    <td class="px-2 py-2.5"><span
+                            class="inline-flex items-center gap-1 text-[11px] font-mono bg-ef-green-12 text-ef-green px-2 py-0.5 rounded whitespace-nowrap">✓ Approuvée</span>
+                    </td>
+                </tr>
+                <tr class="hover:bg-[rgba(167,192,128,0.04)] transition-colors border-b border-[rgba(167,192,128,0.07)]">
+                    <td class="px-2 py-2.5 text-[12px] font-mono text-ef-dim">13/03</td>
+                    <td class="px-2 py-2.5 text-[13px] text-ef-fg">Loyer mars</td>
+                    <td class="px-2 py-2.5 text-[13px] font-mono font-medium text-ef-red">−350 €</td>
+                    <td class="px-2 py-2.5"><span
+                            class="inline-flex items-center gap-1 text-[11px] font-mono bg-ef-yellow-12 text-ef-yellow px-2 py-0.5 rounded whitespace-nowrap">⏳ En attente</span>
+                    </td>
+                </tr>
+                <tr class="hover:bg-[rgba(167,192,128,0.04)] transition-colors">
+                    <td class="px-2 py-2.5 text-[12px] font-mono text-ef-dim">12/03</td>
+                    <td class="px-2 py-2.5 text-[13px] text-ef-fg">Remboursement client</td>
+                    <td class="px-2 py-2.5 text-[13px] font-mono font-medium text-ef-green">+800 €</td>
+                    <td class="px-2 py-2.5"><span
+                            class="inline-flex items-center gap-1 text-[11px] font-mono bg-ef-yellow-12 text-ef-yellow px-2 py-0.5 rounded whitespace-nowrap">⏳ En attente</span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </section>
 
-<!-- TARIFS -->
-<section id="pricing" class="max-w-3xl mx-auto px-4 sm:px-6 py-16">
-    <p class="font-nunito text-[0.62rem] font-bold tracking-[.14em] uppercase text-ctp-mauve text-center mb-2">Tarifs</p>
-    <h2 class="font-nunito text-3xl font-extrabold text-ctp-text text-center mb-3">Simple et transparent</h2>
-    <p class="text-sm text-ctp-overlay2 text-center leading-relaxed max-w-md mx-auto mb-8">
-        Commencez gratuitement, passez en Premium quand vous êtes prêt.
-    </p>
+<hr class="border-none border-t border-ef-base mx-10 sm:mx-6 xs:mx-4"/>
 
-    <!-- Toggle mensuel / annuel -->
-    <div class="flex items-center justify-center gap-3 mb-10">
-        <span class="text-xs font-semibold text-ctp-text" id="lbl-m">Mensuel</span>
-        <div id="toggle" onclick="toggleBilling()"
-             class="w-11 h-6 rounded-full cursor-pointer relative transition-colors duration-200"
-             style="background:#45475a">
-            <div id="knob" class="w-4 h-4 rounded-full absolute top-1 transition-all duration-200"
-                 style="background:#11111b;left:4px"></div>
-        </div>
-        <span class="text-xs font-semibold text-ctp-overlay1" id="lbl-a">
-                Annuel
-                <span class="ml-1 text-[0.62rem] font-bold px-2 py-0.5 rounded-full bg-ctp-green/15 text-ctp-green">−20%</span>
-            </span>
-    </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <!-- Plan gratuit -->
-        <div class="bg-ctp-mantle border border-ctp-surface0 rounded-2xl p-7">
-            <p class="text-[0.68rem] font-bold uppercase tracking-widest text-ctp-overlay1 mb-3">Gratuit</p>
-            <p class="font-nunito text-4xl font-extrabold text-ctp-text mb-1">
-                0 €<span class="text-sm font-semibold text-ctp-overlay1"> / mois</span>
-            </p>
-            <p class="text-xs text-ctp-overlay1 leading-relaxed mb-5">Pour découvrir et gérer vos finances simplement.</p>
-            <div class="h-px bg-ctp-surface0 mb-5"></div>
-            <div class="space-y-3">
-                <div class="flex items-center gap-3 text-xs text-ctp-subtext0">
-                    <div class="w-4 h-4 rounded-full bg-ctp-green/15 flex items-center justify-center text-ctp-green text-[0.6rem] font-bold shrink-0">✓</div>
-                    Jusqu'à 50 transactions / mois
-                </div>
-                <div class="flex items-center gap-3 text-xs text-ctp-subtext0">
-                    <div class="w-4 h-4 rounded-full bg-ctp-green/15 flex items-center justify-center text-ctp-green text-[0.6rem] font-bold shrink-0">✓</div>
-                    Dashboard & prévisionnel
-                </div>
-                <div class="flex items-center gap-3 text-xs text-ctp-subtext0">
-                    <div class="w-4 h-4 rounded-full bg-ctp-green/15 flex items-center justify-center text-ctp-green text-[0.6rem] font-bold shrink-0">✓</div>
-                    Approbation manuelle
-                </div>
-                <div class="flex items-center gap-3 text-xs text-ctp-subtext0">
-                    <div class="w-4 h-4 rounded-full bg-ctp-green/15 flex items-center justify-center text-ctp-green text-[0.6rem] font-bold shrink-0">✓</div>
-                    Application PWA
-                </div>
+<!-- ═══════════════════════════════════════════
+     STEPS
+═══════════════════════════════════════════ -->
+<section class="max-w-[960px] mx-auto px-10 py-20 sm:px-6 sm:py-14 xs:px-4 xs:py-10">
+    <div class="text-[11px] font-mono text-ef-green uppercase tracking-[0.15em] mb-4">Comment ça marche</div>
+    <h2 class="font-serif text-heading text-ef-fg mb-12 sm:mb-8">
+        Trois étapes,<br>zéro friction.
+    </h2>
+    <div class="grid-ef grid-cols-3 sm:grid-cols-1">
+        <div class="p-8 sm:p-6">
+            <div class="w-7 h-7 flex items-center justify-center bg-ef-green-10 border border-ef-strong rounded-md text-ef-green text-[11px] font-mono font-medium mb-4">
+                01
             </div>
+            <div class="text-[15px] font-medium text-ef-fg mb-2">Importez vos données</div>
+            <div class="text-[13px] text-ef-dim leading-relaxed">Connectez votre banque ou importez un relevé CSV/XLSX
+                en quelques secondes.
+            </div>
+        </div>
+        <div class="p-8 sm:p-6">
+            <div class="w-7 h-7 flex items-center justify-center bg-ef-green-10 border border-ef-strong rounded-md text-ef-green text-[11px] font-mono font-medium mb-4">
+                02
+            </div>
+            <div class="text-[15px] font-medium text-ef-fg mb-2">Approuvez vos dépenses</div>
+            <div class="text-[13px] text-ef-dim leading-relaxed">Validez ou rejetez chaque transaction avant qu'elle
+                impacte votre solde réel.
+            </div>
+        </div>
+        <div class="p-8 sm:p-6">
+            <div class="w-7 h-7 flex items-center justify-center bg-ef-green-10 border border-ef-strong rounded-md text-ef-green text-[11px] font-mono font-medium mb-4">
+                03
+            </div>
+            <div class="text-[15px] font-medium text-ef-fg mb-2">Anticipez votre solde</div>
+            <div class="text-[13px] text-ef-dim leading-relaxed">Visualisez l'impact futur de vos transactions en
+                attente sur votre budget.
+            </div>
+        </div>
+    </div>
+</section>
+
+<hr class="border-none border-t border-ef-base mx-10 sm:mx-6 xs:mx-4"/>
+
+
+<!-- ═══════════════════════════════════════════
+     FEATURES
+═══════════════════════════════════════════ -->
+<section id="features" class="max-w-[960px] mx-auto px-10 py-20 sm:px-6 sm:py-14 xs:px-4 xs:py-10">
+    <div class="text-[11px] font-mono text-ef-green uppercase tracking-[0.15em] mb-4">Fonctionnalités</div>
+    <h2 class="font-serif text-heading text-ef-fg mb-12 sm:mb-8">Tout ce dont vous avez besoin.</h2>
+    <div class="grid-ef grid-cols-3 md:grid-cols-2 sm:grid-cols-1">
+        <div class="p-7 sm:p-5">
+            <div class="w-9 h-9 flex items-center justify-center bg-ef-green-10 rounded-lg mb-4 text-[16px]">📊</div>
+            <div class="text-[14px] font-medium text-ef-fg mb-1.5">Tableau de bord</div>
+            <div class="text-[12px] text-ef-dim leading-relaxed">Solde actuel et prévisionnel en temps réel avec
+                métriques visuelles.
+            </div>
+        </div>
+        <div class="p-7 sm:p-5">
+            <div class="w-9 h-9 flex items-center justify-center bg-ef-green-10 rounded-lg mb-4 text-ef-green font-semibold">
+                ✓
+            </div>
+            <div class="text-[14px] font-medium text-ef-fg mb-1.5">Approbation manuelle</div>
+            <div class="text-[12px] text-ef-dim leading-relaxed">Approuvez ou rejetez chaque transaction avant impact
+                sur votre solde.
+            </div>
+        </div>
+        <div class="p-7 sm:p-5">
+            <div class="w-9 h-9 flex items-center justify-center bg-ef-green-10 rounded-lg mb-4 text-[16px]">📈</div>
+            <div class="text-[14px] font-medium text-ef-fg mb-1.5">Solde prévisionnel</div>
+            <div class="text-[12px] text-ef-dim leading-relaxed">Anticipez l'impact de vos transactions en attente sur
+                votre futur.
+            </div>
+        </div>
+        <div class="p-7 sm:p-5">
+            <div class="w-9 h-9 flex items-center justify-center bg-ef-green-10 rounded-lg mb-4 text-[16px]">📥</div>
+            <div class="text-[14px] font-medium text-ef-fg mb-1.5">Import CSV / XLSX</div>
+            <div class="text-[12px] text-ef-dim leading-relaxed">Importez vos relevés bancaires directement depuis votre
+                banque.
+            </div>
+        </div>
+        <div class="p-7 sm:p-5">
+            <div class="w-9 h-9 flex items-center justify-center bg-ef-green-10 rounded-lg mb-4 text-[16px]">📱</div>
+            <div class="text-[14px] font-medium text-ef-fg mb-1.5">Application mobile</div>
+            <div class="text-[12px] text-ef-dim leading-relaxed">Installez Fortress sur mobile ou desktop grâce au
+                support PWA natif.
+            </div>
+        </div>
+        <div class="p-7 sm:p-5">
+            <div class="w-9 h-9 flex items-center justify-center bg-ef-green-10 rounded-lg mb-4 text-[16px]">🔔</div>
+            <div class="text-[14px] font-medium text-ef-fg mb-1.5">Notifications push</div>
+            <div class="text-[12px] text-ef-dim leading-relaxed">Recevez une alerte dès qu'une transaction attend votre
+                approbation.
+            </div>
+        </div>
+    </div>
+</section>
+
+<hr class="border-none border-t border-ef-base mx-10 sm:mx-6 xs:mx-4"/>
+
+
+<!-- ═══════════════════════════════════════════
+     PRICING
+═══════════════════════════════════════════ -->
+<section id="pricing" class="max-w-[960px] mx-auto px-10 py-20 sm:px-6 sm:py-14 xs:px-4 xs:py-10">
+    <div class="text-[11px] font-mono text-ef-green uppercase tracking-[0.15em] mb-4">Tarifs</div>
+    <h2 class="font-serif text-heading text-ef-fg mb-12 sm:mb-8">Simple et transparent.</h2>
+    <div class="grid grid-cols-2 gap-4 max-w-[680px] sm:grid-cols-1">
+
+        <!-- Gratuit -->
+        <div class="bg-ef-bg1 border border-ef-base rounded-xl p-8 sm:p-6">
+            <div class="text-[13px] font-mono text-ef-dim uppercase tracking-wider mb-2">Gratuit</div>
+            <div class="font-serif text-price text-ef-fg mb-1">
+                0 € <span class="font-sans text-[14px] text-ef-dim font-light">/ mois</span>
+            </div>
+            <div class="text-[13px] text-ef-dim leading-snug mb-6">Pour découvrir et gérer vos finances simplement.
+            </div>
+            <ul class="space-y-2 mb-7">
+                <li class="checkmark-item flex items-center gap-2 text-[13px] text-ef-dim">Jusqu'à 50 transactions /
+                    mois
+                </li>
+                <li class="checkmark-item flex items-center gap-2 text-[13px] text-ef-dim">Dashboard & prévisionnel</li>
+                <li class="checkmark-item flex items-center gap-2 text-[13px] text-ef-dim">Approbation manuelle</li>
+                <li class="checkmark-item flex items-center gap-2 text-[13px] text-ef-dim">Application PWA</li>
+            </ul>
             <a href="/sign-up"
-               class="block text-center w-full mt-6 font-nunito text-sm font-bold py-3 rounded-xl border border-ctp-surface1 text-ctp-subtext0 hover:bg-ctp-surface0 hover:text-ctp-text transition-colors">
+               class="block w-full text-center border border-ef-strong text-ef-dim text-[13px] font-medium py-2.5 rounded-lg hover:border-ef-green hover:text-ef-green transition-all no-underline">
                 Commencer gratuitement
             </a>
         </div>
 
-        <!-- Plan premium -->
-        <div class="bg-ctp-crust border border-ctp-mauve rounded-2xl p-7">
-            <p class="text-[0.68rem] font-bold uppercase tracking-widest text-ctp-mauve mb-3">Premium</p>
-            <p class="font-nunito text-4xl font-extrabold text-ctp-text mb-1" id="price">
-                4,99 €<span class="text-sm font-semibold text-ctp-overlay1"> / mois</span>
-            </p>
-            <p class="text-xs text-ctp-overlay1 leading-relaxed mb-5">Pour une gestion financière complète et sans limites.</p>
-            <div class="h-px bg-ctp-surface0 mb-5"></div>
-            <div class="space-y-3">
-                <div class="flex items-center gap-3 text-xs text-ctp-subtext0">
-                    <div class="w-4 h-4 rounded-full bg-ctp-mauve/15 flex items-center justify-center text-ctp-mauve text-[0.6rem] font-bold shrink-0">✓</div>
-                    Transactions illimitées
-                </div>
-                <div class="flex items-center gap-3 text-xs text-ctp-subtext0">
-                    <div class="w-4 h-4 rounded-full bg-ctp-mauve/15 flex items-center justify-center text-ctp-mauve text-[0.6rem] font-bold shrink-0">✓</div>
-                    Import CSV / XLSX
-                </div>
-                <div class="flex items-center gap-3 text-xs text-ctp-subtext0">
-                    <div class="w-4 h-4 rounded-full bg-ctp-mauve/15 flex items-center justify-center text-ctp-mauve text-[0.6rem] font-bold shrink-0">✓</div>
-                    Notifications push
-                </div>
-                <div class="flex items-center gap-3 text-xs text-ctp-subtext0">
-                    <div class="w-4 h-4 rounded-full bg-ctp-mauve/15 flex items-center justify-center text-ctp-mauve text-[0.6rem] font-bold shrink-0">✓</div>
-                    Historique complet
-                </div>
-                <div class="flex items-center gap-3 text-xs text-ctp-subtext0">
-                    <div class="w-4 h-4 rounded-full bg-ctp-mauve/15 flex items-center justify-center text-ctp-mauve text-[0.6rem] font-bold shrink-0">✓</div>
-                    Support prioritaire
-                </div>
+        <!-- Premium -->
+        <div class="relative bg-ef-green-05 border border-ef-accent rounded-xl p-8 sm:p-6 sm:mt-3">
+            <div class="absolute -top-[11px] left-1/2 -translate-x-1/2 bg-ef-green text-ef-bg0 text-[11px] font-mono font-semibold px-3 py-0.5 rounded-full whitespace-nowrap">
+                Plus populaire
             </div>
+            <div class="text-[13px] font-mono text-ef-dim uppercase tracking-wider mb-2">Premium</div>
+            <div class="font-serif text-price text-ef-fg mb-1">
+                4,99 € <span class="font-sans text-[14px] text-ef-dim font-light">/ mois</span>
+            </div>
+            <div class="text-[13px] text-ef-dim leading-snug mb-6">Pour une gestion financière complète et sans
+                limites.
+            </div>
+            <ul class="space-y-2 mb-7">
+                <li class="checkmark-item flex items-center gap-2 text-[13px] text-ef-dim">Transactions illimitées</li>
+                <li class="checkmark-item flex items-center gap-2 text-[13px] text-ef-dim">Import CSV / XLSX</li>
+                <li class="checkmark-item flex items-center gap-2 text-[13px] text-ef-dim">Notifications push</li>
+                <li class="checkmark-item flex items-center gap-2 text-[13px] text-ef-dim">Historique complet</li>
+                <li class="checkmark-item flex items-center gap-2 text-[13px] text-ef-dim">Support prioritaire</li>
+            </ul>
             <a href="/sign-up"
-               class="block text-center w-full mt-6 font-nunito text-sm font-bold py-3 rounded-xl bg-ctp-mauve text-ctp-crust hover:opacity-85 transition-opacity">
+               class="block w-full text-center bg-ef-green text-ef-bg0 text-[13px] font-semibold py-2.5 rounded-lg hover:bg-[#b8d494] transition-colors no-underline">
                 Passer en Premium
             </a>
         </div>
+
     </div>
 </section>
 
-<!-- CTA FINAL -->
-<section class="mx-4 sm:mx-8 lg:mx-16 mb-0 bg-ctp-mantle border border-ctp-surface0 rounded-2xl px-6 py-16 text-center">
-    <h2 class="font-nunito text-3xl font-extrabold text-ctp-text mb-3">Prêt à reprendre le contrôle ?</h2>
-    <p class="text-sm text-ctp-overlay2 mb-8">Créez votre compte en moins de 2 minutes. Gratuit, sans carte bancaire.</p>
-    <a href="/sign-up"
-       class="inline-block font-nunito text-sm font-bold px-8 py-3.5 rounded-xl bg-ctp-mauve text-ctp-crust hover:opacity-85 transition-opacity">
-        Commencer gratuitement
-    </a>
+<hr class="border-none border-t border-ef-base mx-10 sm:mx-6 xs:mx-4"/>
+
+
+<!-- ═══════════════════════════════════════════
+     CTA FINAL
+═══════════════════════════════════════════ -->
+<section class="max-w-[960px] mx-auto px-10 py-20 pb-24 sm:px-6 sm:py-14 xs:px-4">
+    <div class="bg-ef-bg1 border border-ef-strong rounded-2xl p-16 text-center sm:p-10 xs:p-8">
+        <h2 class="font-serif text-heading text-ef-fg mb-4">Prêt à reprendre le contrôle ?</h2>
+        <p class="text-ef-dim font-light mb-8 text-[15px]">Créez votre compte en moins de 2 minutes. Gratuit, sans carte
+            bancaire.</p>
+        <a href="/sign-up"
+           class="inline-block bg-ef-green text-ef-bg0 font-semibold text-[14px] px-7 py-3.5 rounded-lg hover:bg-[#b8d494] transition-colors no-underline">
+            Commencer gratuitement
+        </a>
+    </div>
 </section>
 
-<!-- FOOTER -->
-<footer class="bg-ctp-mantle border-t border-ctp-surface0 mt-12 py-10">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-wrap justify-between gap-8 mb-8">
-            <div>
-                <p class="font-nunito text-base font-extrabold text-ctp-mauve mb-2">🐱 Fortress</p>
-                <p class="text-xs text-ctp-overlay0 leading-relaxed max-w-[200px]">
-                    Suivez, approuvez et analysez vos flux financiers en temps réel.
-                </p>
-            </div>
-            <div class="flex flex-wrap gap-12">
-                <div>
-                    <p class="text-[0.62rem] font-bold tracking-[.12em] uppercase text-ctp-overlay0 mb-3">Produit</p>
-                    <div class="flex flex-col gap-2">
-                        <a href="#features" class="text-xs text-ctp-subtext0 hover:text-ctp-mauve transition-colors">Fonctionnalités</a>
-                        <a href="#pricing" class="text-xs text-ctp-subtext0 hover:text-ctp-mauve transition-colors">Tarifs</a>
-                        <a href="/sign-up" class="text-xs text-ctp-subtext0 hover:text-ctp-mauve transition-colors">Créer un compte</a>
-                    </div>
-                </div>
-                <div>
-                    <p class="text-[0.62rem] font-bold tracking-[.12em] uppercase text-ctp-overlay0 mb-3">Compte</p>
-                    <div class="flex flex-col gap-2">
-                        <a href="/sign-in" class="text-xs text-ctp-subtext0 hover:text-ctp-mauve transition-colors">Se connecter</a>
-                        <a href="/dashboard" class="text-xs text-ctp-subtext0 hover:text-ctp-mauve transition-colors">Dashboard</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="flex flex-wrap items-center justify-between gap-3 pt-5 border-t border-ctp-surface0">
-            <span class="text-[0.7rem] text-ctp-overlay0">© 2026 Fortress — Gestion financière</span>
-            <div class="flex items-center gap-2">
-                <div class="w-1.5 h-1.5 rounded-full bg-ctp-green"></div>
-                <span class="text-[0.7rem] text-ctp-overlay0">Système opérationnel</span>
-            </div>
-        </div>
+
+<!-- ═══════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════ -->
+<footer class="border-t border-ef-base px-10 py-8 flex justify-between items-center flex-wrap gap-4 sm:px-6 sm:flex-col sm:items-start xs:px-4">
+    <div class="font-serif text-[16px] text-ef-green">🌲 Fortress</div>
+    <div class="flex gap-6 flex-wrap">
+        <a href="#features" class="text-[12px] font-mono text-ef-dim hover:text-ef-fg transition-colors no-underline">Fonctionnalités</a>
+        <a href="#pricing" class="text-[12px] font-mono text-ef-dim hover:text-ef-fg transition-colors no-underline">Tarifs</a>
+        <a href="/sign-in" class="text-[12px] font-mono text-ef-dim hover:text-ef-fg transition-colors no-underline">Se
+            connecter</a>
+        <a href="/dashboard" class="text-[12px] font-mono text-ef-dim hover:text-ef-fg transition-colors no-underline">Dashboard</a>
+    </div>
+    <div class="flex items-center gap-3">
+      <span class="inline-flex items-center gap-1.5 text-[11px] font-mono text-ef-green before:content-[''] before:w-1.5 before:h-1.5 before:bg-ef-green before:rounded-full before:inline-block">
+        Système opérationnel
+      </span>
+        <span class="text-[12px] font-mono text-ef-bg4">© 2026 Fortress</span>
     </div>
 </footer>
 
+
 <script>
-    let annual = false;
-    function toggleBilling() {
-        annual = !annual;
-        const toggle = document.getElementById('toggle');
-        const knob = document.getElementById('knob');
-        const lblM = document.getElementById('lbl-m');
-        const lblA = document.getElementById('lbl-a');
-        const price = document.getElementById('price');
-        toggle.style.background = annual ? '#cba6f7' : '#45475a';
-        knob.style.left = annual ? '23px' : '4px';
-        lblM.style.color = annual ? '#7f849c' : '#cdd6f4';
-        price.innerHTML = annual
-            ? '3,99 €<span style="font-size:.875rem;font-weight:600;color:#7f849c"> / mois</span>'
-            : '4,99 €<span style="font-size:.875rem;font-weight:600;color:#7f849c"> / mois</span>';
-    }
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobile-menu');
+    hamburger.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+        mobileMenu.classList.toggle('flex');
+    });
 </script>
 
 </body>

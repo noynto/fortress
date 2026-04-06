@@ -6,6 +6,8 @@ import io.helidon.dbclient.DbClient;
 import io.helidon.logging.common.LogConfig;
 import io.helidon.webserver.WebServer;
 import io.helidon.webserver.http.HttpRouting;
+import io.helidon.webserver.observe.ObserveFeature;
+import io.helidon.webserver.observe.health.HealthObserver;
 import io.helidon.webserver.staticcontent.StaticContentFeature;
 import me.noynto.fortress.application.transactions.command.handler.ApproveTransactionHandler;
 import me.noynto.fortress.application.transactions.command.handler.CreateTransactionHandler;
@@ -24,10 +26,10 @@ import me.noynto.fortress.infrastructure.controller.view.SignUpViewController;
 import me.noynto.fortress.infrastructure.controller.view.TransactionViewController;
 import me.noynto.fortress.infrastructure.controller.view.config.TemplateRenderer;
 import me.noynto.fortress.infrastructure.persistence.DatabaseConfiguration;
+import me.noynto.fortress.infrastructure.persistence.DatabaseHealthCheck;
 import me.noynto.fortress.infrastructure.persistence.sessions.InMemorySessions;
 import me.noynto.fortress.infrastructure.persistence.transactions.DatabaseTransactions;
 import me.noynto.fortress.infrastructure.persistence.users.InMemoryUsers;
-import org.slf4j.bridge.SLF4JBridgeHandler;
 
 import java.time.Clock;
 import java.util.concurrent.ConcurrentHashMap;
@@ -40,8 +42,6 @@ public class Main {
 
     public static void main(String[] args) {
         LogConfig.configureRuntime();
-        SLF4JBridgeHandler.removeHandlersForRootLogger();
-        SLF4JBridgeHandler.install();
         Config config = Config.create();
         // Infrastructure Layer : Repository
         BCrypt.Hasher hasher = BCrypt.withDefaults();
@@ -125,6 +125,17 @@ public class Main {
         WebServer server = WebServer.builder()
                 .routing(routing)
                 .addFeature(StaticContentFeature.builder().addClasspath(builder -> builder.location("/web").welcome("index.html").context("/")).build())
+                .addFeature(
+                        ObserveFeature
+                                .builder()
+                                .addObserver(
+                                        HealthObserver
+                                                .builder()
+                                                .addCheck(new DatabaseHealthCheck(dbClient))
+                                                .build()
+                                )
+                                .build()
+                )
                 .port(8080)
                 .build()
                 .start();

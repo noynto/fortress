@@ -65,7 +65,8 @@ public record TransactionViewController(
     }
 
     private void showNewTransactionForm(ServerRequest req, ServerResponse res) {
-        String html = templateRenderer.render("page/new-transaction.jte");
+        Map<String, Object> params = new HashMap<>();
+        String html = templateRenderer.render("page/new-transaction.jte", params);
         res.header(HeaderNames.CONTENT_TYPE, "text/html");
         res.send(html);
     }
@@ -90,8 +91,12 @@ public record TransactionViewController(
             res.header(HeaderNames.LOCATION, "/transactions");
             res.send();
         } catch (Exception e) {
-            res.status(Status.BAD_REQUEST_400);
-            res.send("Erreur: " + e.getMessage());
+            Map<String, Object> params = new HashMap<>();
+            params.put("error", e.getMessage());
+            String html = templateRenderer.render("page/new-transaction.jte",params);
+            res.status(Status.UNPROCESSABLE_CONTENT_422);
+            res.header(HeaderNames.CONTENT_TYPE, "text/html");
+            res.send(html);
         }
     }
 

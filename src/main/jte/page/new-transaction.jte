@@ -1,3 +1,5 @@
+@param String error = null
+
 @template.layout.main(
 title = "Nouvelle transaction",
 content = @`
@@ -7,6 +9,13 @@ content = @`
             <h1 class="font-nunito text-2xl font-bold text-ctp-text mt-4">Nouvelle transaction</h1>
             <p class="text-sm text-ctp-overlay1 mt-1">Renseignez les informations ci-dessous</p>
         </div>
+
+        @if(error != null)
+            <div class="mb-6 flex items-center gap-3 rounded-xl border border-ctp-red/30 bg-ctp-red/10 px-5 py-4">
+                <span class="text-ctp-red text-lg">✕</span>
+                <p class="text-sm font-nunito font-semibold text-ctp-red">${error}</p>
+            </div>
+        @endif
 
         <form action="/transactions" method="post" class="space-y-6">
 

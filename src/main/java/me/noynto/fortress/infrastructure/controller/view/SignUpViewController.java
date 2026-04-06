@@ -66,8 +66,12 @@ public record SignUpViewController(
             res.header(HeaderNames.LOCATION, "/dashboard");
             res.send();
         } catch (Exception e) {
-            res.status(Status.BAD_REQUEST_400);
-            res.send("Erreur: " + e.getMessage());
+            Map<String, Object> params = new HashMap<>();
+            params.put("error", e.getMessage());
+            String html = renderer.render("page/sign-up.jte",params);
+            res.status(Status.UNPROCESSABLE_CONTENT_422);
+            res.header(HeaderNames.CONTENT_TYPE, "text/html");
+            res.send(html);
         }
     }
 

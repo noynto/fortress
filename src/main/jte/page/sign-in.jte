@@ -88,7 +88,7 @@
                            class="block text-[0.62rem] font-bold tracking-[.12em] uppercase text-ctp-overlay1 mb-2">
                         Adresse email
                     </label>
-                    <input type="email" id="email" name="email"
+                    <input type="email" id="email" name="email" autocomplete="email" autocapitalize="none" spellcheck="false"
                            placeholder="jean.dupont@email.com" required
                            class="w-full bg-ctp-base border border-ctp-surface1 rounded-xl px-4 py-3
                                   text-ctp-text text-sm font-semibold placeholder:text-ctp-surface2
@@ -102,7 +102,7 @@
                            class="block text-[0.62rem] font-bold tracking-[.12em] uppercase text-ctp-overlay1 mb-2">
                         Mot de passe
                     </label>
-                    <input type="password" id="password" name="password"
+                    <input type="password" id="password" name="password" autocomplete="current-password"
                            placeholder="••••••••" required
                            class="w-full bg-ctp-base border border-ctp-surface1 rounded-xl px-4 py-3
                                   text-ctp-text text-sm font-semibold placeholder:text-ctp-surface2
