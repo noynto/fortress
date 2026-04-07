@@ -3,4 +3,4 @@ Allow: /
 Disallow: /dashboard/
 Disallow: /transactions/
 
-Sitemap: https://fortress-production-79b3.up.railway.app/sitemap.xml
+Sitemap: https://fortress.noynto.me/sitemap.xml
