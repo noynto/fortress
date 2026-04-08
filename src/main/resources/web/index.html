@@ -1,16 +1,15 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Fortress — Gestion financière personnelle</title>
-
     <!-- Icône -->
     <link rel="icon" type="image/png" href="/icons/icon-192.png">
     <link rel="apple-touch-icon" href="/icons/icon-192.png">
 
     <!-- SEO -->
-    <meta name="description" content="Fortress — Suivez, approuvez et analysez vos flux financiers en temps réel. Gratuit, sans carte bancaire.">
+    <meta name="description" content="Fortress — Suivez, anticipez et planifiez vos finances en temps réel. Vos données sont chiffrées de bout en bout. Gratuit, sans carte bancaire.">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://fortress.noynto.me">
 
@@ -18,62 +17,44 @@
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Fortress">
     <meta property="og:title" content="Fortress — Gestion financière personnelle">
-    <meta property="og:description" content="Fortress — Gestion financière personnelle. Gratuit, sans carte bancaire.">
+    <meta property="og:description" content="Suivez, anticipez et planifiez vos finances. Données chiffrées AES-256. Gratuit, sans carte bancaire.">
     <meta property="og:image" content="https://fortress.noynto.me/icons/icon-512.png">
     <meta property="og:url" content="https://fortress.noynto.me">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Fortress — Gestion financière personnelle">
-    <meta name="twitter:description" content="Fortress — Gestion financière personnelle.">
+    <meta name="twitter:description" content="Suivez, anticipez et planifiez vos finances. Données chiffrées AES-256.">
     <meta name="twitter:image" content="https://fortress.noynto.me/icons/icon-512.png">
 
-    <!-- Tailwind -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
     <script>
         tailwind.config = {
             theme: {
+                screens: { sm:'640px', md:'768px', lg:'1024px', xl:'1280px', '2xl':'1536px' },
                 extend: {
                     colors: {
                         ef: {
-                            bg0: '#2D353B',
-                            bg1: '#343F44',
-                            bg2: '#3D484D',
-                            bg3: '#475258',
-                            bg4: '#4F585E',
-                            fg: '#D3C6AA',
-                            dim: '#9DA9A0',
-                            green: '#A7C080',
-                            green2: '#83C092',
-                            yellow: '#DBBC7F',
-                            orange: '#E69875',
-                            red: '#E67E80',
-                            blue: '#7FBBB3',
-                            purple: '#D699B6',
+                            bg0:'#2D353B', bg1:'#343F44', bg2:'#3D484D', bg3:'#475258', bg4:'#4F585E',
+                            fg:'#D3C6AA', dim:'#9DA9A0',
+                            green:'#A7C080', green2:'#83C092',
+                            yellow:'#DBBC7F', orange:'#E69875', red:'#E67E80', blue:'#7FBBB3', purple:'#D699B6',
                         },
                     },
                     fontFamily: {
-                        serif: ['"DM Serif Display"', 'serif'],
-                        mono: ['"DM Mono"', 'monospace'],
-                        sans: ['Sora', 'sans-serif'],
+                        serif:['"DM Serif Display"','serif'],
+                        mono:['"DM Mono"','monospace'],
+                        sans:['Sora','sans-serif'],
                     },
                     fontSize: {
-                        'display': ['clamp(36px,6vw,62px)', {lineHeight: '1.08', letterSpacing: '-0.04em'}],
-                        'heading': ['clamp(28px,4vw,40px)', {lineHeight: '1.15', letterSpacing: '-0.02em'}],
-                        'price': ['clamp(32px,5vw,42px)', {lineHeight: '1', letterSpacing: '-0.03em'}],
-                    },
-                    borderColor: {
-                        ef: {
-                            base: 'rgba(167,192,128,0.15)',
-                            strong: 'rgba(167,192,128,0.30)',
-                            accent: 'rgba(167,192,128,0.40)',
-                        },
-                    },
-                    backgroundColor: {
-                        'ef-green-10': 'rgba(167,192,128,0.10)',
-                        'ef-green-05': 'rgba(167,192,128,0.05)',
-                        'ef-yellow-12': 'rgba(219,188,127,0.12)',
-                        'ef-green-12': 'rgba(167,192,128,0.12)',
+                        display:['clamp(26px,7vw,62px)',  {lineHeight:'1.08',letterSpacing:'-0.03em'}],
+                        heading:['clamp(20px,5.5vw,40px)',{lineHeight:'1.15',letterSpacing:'-0.02em'}],
+                        subhead:['clamp(17px,3.5vw,26px)',{lineHeight:'1.2', letterSpacing:'-0.01em'}],
+                        price:  ['clamp(24px,6vw,42px)',  {lineHeight:'1',   letterSpacing:'-0.03em'}],
                     },
                 },
             },
@@ -81,235 +62,182 @@
     </script>
 
     <style>
-        /* Utilitaires non couverts par Tailwind */
-        .border-ef-base {
-            border-color: rgba(167, 192, 128, 0.15);
+        .bef-base   { border-color: rgba(167,192,128,0.15); }
+        .bef-strong { border-color: rgba(167,192,128,0.30); }
+        .bef-accent { border-color: rgba(167,192,128,0.40); }
+        .bg-g10  { background-color: rgba(167,192,128,0.10); }
+        .bg-g05  { background-color: rgba(167,192,128,0.05); }
+        .bg-g12  { background-color: rgba(167,192,128,0.12); }
+        .bg-y12  { background-color: rgba(219,188,127,0.12); }
+        .bg-b12  { background-color: rgba(127,187,179,0.12); }
+        .bg-p12  { background-color: rgba(214,153,182,0.12); }
+        .bg-r12  { background-color: rgba(230,126,128,0.12); }
+
+        .divef { border-color: rgba(167,192,128,0.15); }
+
+        /* Grille avec séparateurs */
+        .grid-ef { display:grid; gap:1px; background-color:rgba(167,192,128,0.15); border-radius:0.75rem; overflow:hidden; }
+        .grid-ef > * { background-color:#343F44; }
+
+        /* Check SVG */
+        .check-li { display:flex; align-items:center; gap:8px; }
+        .check-li::before {
+            content:''; display:block; width:14px; height:14px; flex-shrink:0;
+            background:url("data:image/svg+xml,%3Csvg width='14' height='14' viewBox='0 0 14 14' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2.5 7L5.5 10L11.5 4' stroke='%23A7C080' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center;
         }
 
-        .border-ef-strong {
-            border-color: rgba(167, 192, 128, 0.30);
+        /* Fade scroll tableau mobile */
+        .table-wrap { position:relative; overflow-x:auto; }
+        .table-wrap::after {
+            content:''; position:absolute; top:0; right:0; bottom:0; width:24px;
+            background:linear-gradient(to right,transparent,#343F44); pointer-events:none;
         }
+        @media(min-width:640px){ .table-wrap::after { display:none; } }
 
-        .border-ef-accent {
-            border-color: rgba(167, 192, 128, 0.40);
-        }
+        /* Pill tag */
+        .pill { display:inline-flex; align-items:center; gap:4px; border-radius:9999px; font-family:'DM Mono',monospace; font-size:10px; padding:3px 10px; white-space:nowrap; }
 
-        .bg-ef-green-10 {
-            background-color: rgba(167, 192, 128, 0.10);
-        }
+        /* Barre de progression projet */
+        .progress-bar { height:4px; border-radius:9999px; background:rgba(167,192,128,0.15); overflow:hidden; }
+        .progress-fill { height:100%; border-radius:9999px; background:#A7C080; transition:width 0.4s; }
 
-        .bg-ef-green-05 {
-            background-color: rgba(167, 192, 128, 0.05);
-        }
+        /* Timeline anticipation */
+        .timeline-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; margin-top:4px; }
+        .timeline-line { width:1px; background:rgba(167,192,128,0.2); flex:1; min-height:24px; margin-left:4px; }
 
-        .bg-ef-green-12 {
-            background-color: rgba(167, 192, 128, 0.12);
-        }
-
-        .bg-ef-yellow-12 {
-            background-color: rgba(219, 188, 127, 0.12);
-        }
-
-        .divide-ef > * + * {
-            border-top: 1.5px solid rgba(167, 192, 128, 0.15);
-        }
-
-        .gap-ef {
-            gap: 1.5px;
-        }
-
-        /* Grilles avec séparateurs */
-        .grid-ef {
-            display: grid;
-            gap: 1px;
-            background-color: rgba(167, 192, 128, 0.15);
-            border-radius: 0.75rem;
-            overflow: hidden;
-        }
-
-        .grid-ef > * {
-            background-color: #343F44;
-        }
-
-        .checkmark-item::before {
-            content: '';
-            display: inline-block;
-            width: 14px;
-            height: 14px;
-            flex-shrink: 0;
-            background: url("data:image/svg+xml,%3Csvg width='14' height='14' viewBox='0 0 14 14' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2.5 7L5.5 10L11.5 4' stroke='%23A7C080' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center;
-        }
+        /* Gradient section hero → anticipation */
+        .section-transition { background: linear-gradient(to bottom, #2D353B 0%, #2D353B 60%, #2D3B35 100%); }
     </style>
 </head>
 
 <body class="bg-ef-bg0 text-ef-fg font-sans antialiased">
 
-<!-- ═══════════════════════════════════════════
+<!-- ══════════════════════════════════════
      NAV
-═══════════════════════════════════════════ -->
-<nav class="sticky top-0 z-50 flex items-center justify-between h-[60px] px-10 border-b border-ef-base bg-ef-bg0/95 backdrop-blur-sm">
-    <!-- Logo -->
-    <div class="font-serif text-[22px] text-ef-green flex items-center gap-2 shrink-0">
-        🌲 Fortress
-    </div>
+══════════════════════════════════════ -->
+<nav class="sticky top-0 z-50 flex items-center justify-between h-14 px-4 sm:h-[60px] sm:px-8 md:px-10 border-b bef-base bg-ef-bg0/97 backdrop-blur-sm">
+    <div class="font-serif text-xl text-ef-green flex items-center gap-2 shrink-0">🌲 Fortress</div>
 
-    <!-- Liens desktop -->
     <ul class="hidden md:flex items-center gap-8 list-none">
-        <li><a href="#features" class="text-ef-dim text-[13px] hover:text-ef-fg transition-colors no-underline">Fonctionnalités</a>
-        </li>
-        <li><a href="#pricing"
-               class="text-ef-dim text-[13px] hover:text-ef-fg transition-colors no-underline">Tarifs</a></li>
-        <li><a href="#" class="text-ef-dim text-[13px] hover:text-ef-fg transition-colors no-underline">Docs</a></li>
+        <li><a href="#suivre"     class="text-ef-dim text-[13px] hover:text-ef-fg transition-colors no-underline">Suivi</a></li>
+        <li><a href="#anticiper"  class="text-ef-dim text-[13px] hover:text-ef-fg transition-colors no-underline">Anticipation</a></li>
+        <li><a href="#projets"    class="text-ef-dim text-[13px] hover:text-ef-fg transition-colors no-underline">Projets</a></li>
+        <li><a href="#pricing"    class="text-ef-dim text-[13px] hover:text-ef-fg transition-colors no-underline">Tarifs</a></li>
     </ul>
 
-    <!-- Actions desktop -->
     <div class="hidden md:flex items-center gap-2.5">
-        <a href="/sign-in"
-           class="text-ef-dim text-[13px] border border-ef-strong px-4 py-1.5 rounded-md hover:border-ef-green hover:text-ef-green transition-all no-underline">
-            Se connecter
-        </a>
-        <a href="/sign-up"
-           class="bg-ef-green text-ef-bg0 text-[13px] font-semibold px-4 py-1.5 rounded-md hover:bg-[#b8d494] transition-colors no-underline">
-            Commencer
-        </a>
+        <a href="/sign-in" class="text-ef-dim text-[13px] border bef-strong px-4 py-1.5 rounded-md hover:border-ef-green hover:text-ef-green transition-all no-underline">Se connecter</a>
+        <a href="/sign-up" class="bg-ef-green text-ef-bg0 text-[13px] font-semibold px-4 py-1.5 rounded-md hover:bg-[#b8d494] transition-colors no-underline">Commencer</a>
     </div>
 
-    <!-- Hamburger mobile -->
-    <button id="hamburger" class="md:hidden flex flex-col gap-[5px] p-1 bg-transparent border-none cursor-pointer"
-            aria-label="Menu">
-        <span class="block w-[22px] h-[2px] bg-ef-dim rounded-sm transition-all"></span>
-        <span class="block w-[22px] h-[2px] bg-ef-dim rounded-sm transition-all"></span>
-        <span class="block w-[22px] h-[2px] bg-ef-dim rounded-sm transition-all"></span>
+    <button id="hamburger" class="md:hidden flex flex-col justify-center gap-[5px] w-9 h-9 bg-transparent border-none cursor-pointer" aria-label="Menu">
+        <span class="block w-5 h-[2px] bg-ef-dim rounded-sm"></span>
+        <span class="block w-5 h-[2px] bg-ef-dim rounded-sm"></span>
+        <span class="block w-5 h-[2px] bg-ef-dim rounded-sm"></span>
     </button>
 </nav>
 
-<!-- Menu mobile -->
-<div id="mobile-menu" class="hidden flex-col bg-ef-bg1 border-b border-ef-base">
-    <a href="#features"
-       class="text-ef-dim text-[14px] px-8 py-3 border-b border-ef-base hover:text-ef-fg transition-colors no-underline">Fonctionnalités</a>
-    <a href="#pricing"
-       class="text-ef-dim text-[14px] px-8 py-3 border-b border-ef-base hover:text-ef-fg transition-colors no-underline">Tarifs</a>
-    <a href="#"
-       class="text-ef-dim text-[14px] px-8 py-3 border-b border-ef-base hover:text-ef-fg transition-colors no-underline">Docs</a>
-    <a href="/sign-in"
-       class="text-ef-dim text-[14px] px-8 py-3 border-b border-ef-base hover:text-ef-fg transition-colors no-underline">Se
-        connecter</a>
-    <div class="px-8 py-3">
-        <a href="/sign-up"
-           class="block text-center bg-ef-green text-ef-bg0 font-semibold text-[14px] py-3 rounded-lg hover:bg-[#b8d494] transition-colors no-underline">
-            Commencer gratuitement
-        </a>
+<div id="mobile-menu" class="hidden flex-col md:hidden bg-ef-bg1 border-b bef-base">
+    <a href="#suivre"    class="text-ef-dim text-sm px-6 py-3.5 border-b bef-base hover:text-ef-fg no-underline">Suivi</a>
+    <a href="#anticiper" class="text-ef-dim text-sm px-6 py-3.5 border-b bef-base hover:text-ef-fg no-underline">Anticipation</a>
+    <a href="#projets"   class="text-ef-dim text-sm px-6 py-3.5 border-b bef-base hover:text-ef-fg no-underline">Projets</a>
+    <a href="#pricing"   class="text-ef-dim text-sm px-6 py-3.5 border-b bef-base hover:text-ef-fg no-underline">Tarifs</a>
+    <a href="/sign-in"   class="text-ef-dim text-sm px-6 py-3.5 border-b bef-base hover:text-ef-fg no-underline">Se connecter</a>
+    <div class="p-4">
+        <a href="/sign-up" class="block w-full text-center bg-ef-green text-ef-bg0 font-semibold text-sm py-3 rounded-lg hover:bg-[#b8d494] no-underline">Commencer gratuitement</a>
     </div>
 </div>
 
 
-<!-- ═══════════════════════════════════════════
+<!-- ══════════════════════════════════════
      HERO
-═══════════════════════════════════════════ -->
-<section class="max-w-[960px] mx-auto px-10 pt-28 pb-20 sm:px-6 sm:pt-16 sm:pb-12 xs:px-4 xs:pt-12">
+══════════════════════════════════════ -->
+<section class="max-w-[960px] mx-auto px-4 pt-10 pb-14 sm:px-6 sm:pt-16 lg:px-10 lg:pt-24 lg:pb-20">
 
-    <!-- Badge -->
-    <div class="inline-flex items-center gap-1.5 bg-ef-green-10 border border-[rgba(167,192,128,0.25)] text-ef-green text-[12px] font-mono px-3 py-1 rounded-full mb-8">
-        <span class="w-1.5 h-1.5 bg-ef-green rounded-full inline-block"></span>
+    <div class="inline-flex items-center gap-1.5 bg-g10 border border-[rgba(167,192,128,0.25)] text-ef-green text-[11px] font-mono px-3 py-1 rounded-full mb-6 sm:mb-8">
+        <span class="w-1.5 h-1.5 bg-ef-green rounded-full shrink-0"></span>
         Gestion financière personnelle
     </div>
 
-    <!-- Titre -->
-    <h1 class="font-serif text-display text-ef-fg max-w-[700px] mb-6">
-        Prenez le contrôle de vos <em class="text-ef-green">finances</em>
+    <h1 class="font-serif text-display text-ef-fg max-w-[680px] mb-4 sm:mb-5">
+        Suivez, anticipez,<br><em class="text-ef-green not-italic">réalisez.</em>
     </h1>
 
-    <!-- Sous-titre -->
-    <p class="text-ef-dim font-light max-w-[520px] leading-relaxed mb-10 text-[17px] sm:text-[15px]">
-        Suivez vos transactions, approuvez vos dépenses et anticipez votre solde en temps réel.
-        Simple, rapide, fiable.
+    <p class="text-ef-dim font-light max-w-[500px] leading-relaxed mb-8 sm:mb-10 text-sm sm:text-base lg:text-[17px]">
+        Fortress centralise vos transactions, modélise vos charges futures et vous dit exactement quand vos projets deviennent accessibles.
     </p>
 
-    <!-- CTAs -->
-    <div class="flex flex-wrap items-center gap-3 mb-16 sm:flex-col sm:items-start">
-        <a href="/sign-up"
-           class="bg-ef-green text-ef-bg0 font-semibold text-[14px] px-7 py-3.5 rounded-lg hover:bg-[#b8d494] transition-colors no-underline sm:w-full sm:text-center">
+    <div class="flex flex-col gap-3 mb-10 sm:flex-row sm:items-center sm:gap-4 sm:mb-14">
+        <a href="/sign-up" class="w-full text-center sm:w-auto bg-ef-green text-ef-bg0 font-semibold text-sm px-6 py-3.5 rounded-lg hover:bg-[#b8d494] transition-colors no-underline">
             Créer un compte gratuit
         </a>
-        <a href="#features"
-           class="text-ef-dim text-[14px] py-3.5 flex items-center gap-1.5 hover:text-ef-fg transition-colors no-underline after:content-['→'] after:text-[16px]">
-            Voir les fonctionnalités
+        <a href="#suivre" class="text-ef-dim text-sm text-center flex items-center justify-center sm:justify-start gap-1.5 py-2 hover:text-ef-fg transition-colors no-underline after:content-['→'] after:text-base">
+            Découvrir les fonctionnalités
         </a>
     </div>
 
     <!-- Dashboard preview -->
-    <div class="bg-ef-bg1 border border-ef-base rounded-[14px] p-6 overflow-hidden sm:p-4">
-        <!-- Header -->
-        <div class="flex items-center justify-between flex-wrap gap-3 pb-4 mb-5 border-b border-ef-base">
-            <span class="text-[14px] font-medium text-ef-fg">Dashboard</span>
-            <button class="bg-ef-green-10 border border-ef-strong text-ef-green text-[12px] font-mono px-3 py-1 rounded-md cursor-pointer">
-                + Nouvelle transaction
-            </button>
+    <div class="bg-ef-bg1 border bef-base rounded-xl p-3 sm:p-5 lg:p-6">
+        <div class="flex items-center justify-between gap-2 pb-3 mb-3 border-b bef-base sm:pb-4 sm:mb-5">
+            <span class="text-[13px] sm:text-[14px] font-medium">Dashboard · Avril 2026</span>
+            <button class="bg-g10 border bef-strong text-ef-green text-[10px] sm:text-[12px] font-mono px-2.5 sm:px-3 py-1 rounded-md whitespace-nowrap">+ Ajouter</button>
         </div>
 
         <!-- Métriques -->
-        <div class="grid grid-cols-4 gap-2.5 mb-5 sm:grid-cols-2">
-            <div class="bg-ef-bg2 border border-ef-base rounded-lg p-3.5">
-                <div class="text-[10px] font-mono text-ef-dim uppercase tracking-wide mb-1.5">Solde actuel</div>
-                <div class="font-mono font-semibold text-ef-green text-[clamp(14px,2.5vw,20px)]">+2 450 €</div>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-3 sm:gap-2.5 sm:mb-5">
+            <div class="bg-ef-bg2 border bef-base rounded-lg p-2.5 sm:p-3.5 min-w-0">
+                <div class="text-[9px] sm:text-[10px] font-mono text-ef-dim uppercase tracking-wide mb-1 truncate">Solde actuel</div>
+                <div class="font-mono font-semibold text-ef-green text-sm sm:text-base lg:text-[18px] truncate">+2 450 €</div>
             </div>
-            <div class="bg-ef-bg2 border border-ef-base rounded-lg p-3.5">
-                <div class="text-[10px] font-mono text-ef-dim uppercase tracking-wide mb-1.5">Prévisionnel</div>
-                <div class="font-mono font-semibold text-ef-blue text-[clamp(14px,2.5vw,20px)]">+3 120 €</div>
+            <div class="bg-ef-bg2 border bef-base rounded-lg p-2.5 sm:p-3.5 min-w-0">
+                <div class="text-[9px] sm:text-[10px] font-mono text-ef-dim uppercase tracking-wide mb-1 truncate">Prévisionnel</div>
+                <div class="font-mono font-semibold text-ef-blue text-sm sm:text-base lg:text-[18px] truncate">+1 820 €</div>
             </div>
-            <div class="bg-ef-bg2 border border-ef-base rounded-lg p-3.5">
-                <div class="text-[10px] font-mono text-ef-dim uppercase tracking-wide mb-1.5">Crédits à venir</div>
-                <div class="font-mono font-semibold text-ef-yellow text-[clamp(14px,2.5vw,20px)]">+800 €</div>
+            <div class="bg-ef-bg2 border bef-base rounded-lg p-2.5 sm:p-3.5 min-w-0">
+                <div class="text-[9px] sm:text-[10px] font-mono text-ef-dim uppercase tracking-wide mb-1 truncate">Charges à venir</div>
+                <div class="font-mono font-semibold text-ef-red text-sm sm:text-base lg:text-[18px] truncate">−630 €</div>
             </div>
-            <div class="bg-ef-bg2 border border-ef-base rounded-lg p-3.5">
-                <div class="text-[10px] font-mono text-ef-dim uppercase tracking-wide mb-1.5">Débits à venir</div>
-                <div class="font-mono font-semibold text-ef-red text-[clamp(14px,2.5vw,20px)]">−129 €</div>
+            <div class="bg-ef-bg2 border bef-base rounded-lg p-2.5 sm:p-3.5 min-w-0">
+                <div class="text-[9px] sm:text-[10px] font-mono text-ef-dim uppercase tracking-wide mb-1 truncate">Prochain projet</div>
+                <div class="font-mono font-semibold text-ef-yellow text-sm sm:text-base lg:text-[18px] truncate">3 mois</div>
             </div>
         </div>
 
-        <!-- Tableau transactions -->
-        <div class="overflow-x-auto">
-            <table class="w-full border-collapse min-w-[400px]">
+        <!-- Transactions récentes -->
+        <div class="table-wrap">
+            <table class="w-full border-collapse" style="min-width:380px">
                 <thead>
                 <tr>
-                    <th class="text-left text-[11px] font-mono text-ef-dim uppercase tracking-wider px-2 py-1.5 border-b border-ef-base">
-                        Date
-                    </th>
-                    <th class="text-left text-[11px] font-mono text-ef-dim uppercase tracking-wider px-2 py-1.5 border-b border-ef-base">
-                        Description
-                    </th>
-                    <th class="text-left text-[11px] font-mono text-ef-dim uppercase tracking-wider px-2 py-1.5 border-b border-ef-base">
-                        Montant
-                    </th>
-                    <th class="text-left text-[11px] font-mono text-ef-dim uppercase tracking-wider px-2 py-1.5 border-b border-ef-base">
-                        Statut
-                    </th>
+                    <th class="text-left text-[10px] font-mono text-ef-dim uppercase tracking-wider px-2 py-1.5 border-b bef-base whitespace-nowrap">Date</th>
+                    <th class="text-left text-[10px] font-mono text-ef-dim uppercase tracking-wider px-2 py-1.5 border-b bef-base">Description</th>
+                    <th class="text-left text-[10px] font-mono text-ef-dim uppercase tracking-wider px-2 py-1.5 border-b bef-base whitespace-nowrap">Montant</th>
+                    <th class="text-left text-[10px] font-mono text-ef-dim uppercase tracking-wider px-2 py-1.5 border-b bef-base">Type</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr class="hover:bg-[rgba(167,192,128,0.04)] transition-colors border-b border-[rgba(167,192,128,0.07)]">
-                    <td class="px-2 py-2.5 text-[12px] font-mono text-ef-dim">14/03</td>
-                    <td class="px-2 py-2.5 text-[13px] text-ef-fg">Salaire mars</td>
-                    <td class="px-2 py-2.5 text-[13px] font-mono font-medium text-ef-green">+2 800 €</td>
-                    <td class="px-2 py-2.5"><span
-                            class="inline-flex items-center gap-1 text-[11px] font-mono bg-ef-green-12 text-ef-green px-2 py-0.5 rounded whitespace-nowrap">✓ Approuvée</span>
-                    </td>
+                <tr class="border-b border-[rgba(167,192,128,0.07)] hover:bg-[rgba(167,192,128,0.04)] transition-colors">
+                    <td class="px-2 py-2.5 text-[11px] font-mono text-ef-dim whitespace-nowrap">14/04</td>
+                    <td class="px-2 py-2.5 text-[12px] text-ef-fg">Salaire avril</td>
+                    <td class="px-2 py-2.5 text-[12px] font-mono font-medium text-ef-green whitespace-nowrap">+2 800 €</td>
+                    <td class="px-2 py-2.5"><span class="pill bg-g12 text-ef-green">Transaction</span></td>
                 </tr>
-                <tr class="hover:bg-[rgba(167,192,128,0.04)] transition-colors border-b border-[rgba(167,192,128,0.07)]">
-                    <td class="px-2 py-2.5 text-[12px] font-mono text-ef-dim">13/03</td>
-                    <td class="px-2 py-2.5 text-[13px] text-ef-fg">Loyer mars</td>
-                    <td class="px-2 py-2.5 text-[13px] font-mono font-medium text-ef-red">−350 €</td>
-                    <td class="px-2 py-2.5"><span
-                            class="inline-flex items-center gap-1 text-[11px] font-mono bg-ef-yellow-12 text-ef-yellow px-2 py-0.5 rounded whitespace-nowrap">⏳ En attente</span>
-                    </td>
+                <tr class="border-b border-[rgba(167,192,128,0.07)] hover:bg-[rgba(167,192,128,0.04)] transition-colors">
+                    <td class="px-2 py-2.5 text-[11px] font-mono text-ef-dim whitespace-nowrap">01/04</td>
+                    <td class="px-2 py-2.5 text-[12px] text-ef-fg">Netflix · Spotify · iCloud</td>
+                    <td class="px-2 py-2.5 text-[12px] font-mono font-medium text-ef-red whitespace-nowrap">−28 €</td>
+                    <td class="px-2 py-2.5"><span class="pill bg-b12 text-ef-blue">Abonnement</span></td>
+                </tr>
+                <tr class="border-b border-[rgba(167,192,128,0.07)] hover:bg-[rgba(167,192,128,0.04)] transition-colors">
+                    <td class="px-2 py-2.5 text-[11px] font-mono text-ef-dim whitespace-nowrap">15/04</td>
+                    <td class="px-2 py-2.5 text-[12px] text-ef-fg">Impôts — acompte T2</td>
+                    <td class="px-2 py-2.5 text-[12px] font-mono font-medium text-ef-red whitespace-nowrap">−420 €</td>
+                    <td class="px-2 py-2.5"><span class="pill bg-p12 text-ef-purple">Impôt</span></td>
                 </tr>
                 <tr class="hover:bg-[rgba(167,192,128,0.04)] transition-colors">
-                    <td class="px-2 py-2.5 text-[12px] font-mono text-ef-dim">12/03</td>
-                    <td class="px-2 py-2.5 text-[13px] text-ef-fg">Remboursement client</td>
-                    <td class="px-2 py-2.5 text-[13px] font-mono font-medium text-ef-green">+800 €</td>
-                    <td class="px-2 py-2.5"><span
-                            class="inline-flex items-center gap-1 text-[11px] font-mono bg-ef-yellow-12 text-ef-yellow px-2 py-0.5 rounded whitespace-nowrap">⏳ En attente</span>
-                    </td>
+                    <td class="px-2 py-2.5 text-[11px] font-mono text-ef-dim whitespace-nowrap">20/04</td>
+                    <td class="px-2 py-2.5 text-[12px] text-ef-fg">Remboursement prêt auto</td>
+                    <td class="px-2 py-2.5 text-[12px] font-mono font-medium text-ef-orange whitespace-nowrap">−182 €</td>
+                    <td class="px-2 py-2.5"><span class="pill bg-y12 text-ef-yellow">Crédit</span></td>
                 </tr>
                 </tbody>
             </table>
@@ -317,205 +245,435 @@
     </div>
 </section>
 
-<hr class="border-none border-t border-ef-base mx-10 sm:mx-6 xs:mx-4"/>
+<hr class="border-none border-t bef-base mx-4 sm:mx-6 lg:mx-10" />
 
 
-<!-- ═══════════════════════════════════════════
-     STEPS
-═══════════════════════════════════════════ -->
-<section class="max-w-[960px] mx-auto px-10 py-20 sm:px-6 sm:py-14 xs:px-4 xs:py-10">
-    <div class="text-[11px] font-mono text-ef-green uppercase tracking-[0.15em] mb-4">Comment ça marche</div>
-    <h2 class="font-serif text-heading text-ef-fg mb-12 sm:mb-8">
-        Trois étapes,<br>zéro friction.
-    </h2>
-    <div class="grid-ef grid-cols-3 sm:grid-cols-1">
-        <div class="p-8 sm:p-6">
-            <div class="w-7 h-7 flex items-center justify-center bg-ef-green-10 border border-ef-strong rounded-md text-ef-green text-[11px] font-mono font-medium mb-4">
-                01
+<!-- ══════════════════════════════════════
+     SECTION 1 — SUIVRE
+══════════════════════════════════════ -->
+<section id="suivre" class="max-w-[960px] mx-auto px-4 py-12 sm:px-6 sm:py-16 lg:px-10 lg:py-20">
+    <div class="text-[11px] font-mono text-ef-green uppercase tracking-[0.15em] mb-3">01 · Suivre</div>
+    <h2 class="font-serif text-heading text-ef-fg mb-4 sm:mb-5">Vos transactions,<br>sous contrôle.</h2>
+    <p class="text-ef-dim font-light text-sm sm:text-base max-w-[520px] leading-relaxed mb-10 sm:mb-12">
+        Importez vos relevés ou saisissez manuellement. Approuvez chaque transaction avant qu'elle impacte votre solde réel.
+    </p>
+
+    <div class="grid-ef grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="p-5 sm:p-6">
+            <div class="w-8 h-8 flex items-center justify-center bg-g10 rounded-lg mb-3 text-sm">📥</div>
+            <div class="text-[13px] sm:text-[14px] font-medium text-ef-fg mb-1.5">Import CSV / XLSX</div>
+            <div class="text-[11px] sm:text-[12px] text-ef-dim leading-relaxed">Importez vos relevés bancaires directement depuis l'export de votre banque.</div>
+        </div>
+        <div class="p-5 sm:p-6">
+            <div class="w-8 h-8 flex items-center justify-center bg-g10 rounded-lg mb-3 text-ef-green font-semibold text-sm">✓</div>
+            <div class="text-[13px] sm:text-[14px] font-medium text-ef-fg mb-1.5">Approbation manuelle</div>
+            <div class="text-[11px] sm:text-[12px] text-ef-dim leading-relaxed">Validez ou rejetez chaque opération. Seules les transactions approuvées affectent votre solde.</div>
+        </div>
+        <div class="p-5 sm:p-6">
+            <div class="w-8 h-8 flex items-center justify-center bg-g10 rounded-lg mb-3 text-sm">📊</div>
+            <div class="text-[13px] sm:text-[14px] font-medium text-ef-fg mb-1.5">Tableau de bord temps réel</div>
+            <div class="text-[11px] sm:text-[12px] text-ef-dim leading-relaxed">Solde actuel, solde prévisionnel et résumé de vos flux en un coup d'œil.</div>
+        </div>
+    </div>
+</section>
+
+<hr class="border-none border-t bef-base mx-4 sm:mx-6 lg:mx-10" />
+
+
+<!-- ══════════════════════════════════════
+     SECTION 2 — ANTICIPER
+══════════════════════════════════════ -->
+<section id="anticiper" class="max-w-[960px] mx-auto px-4 py-12 sm:px-6 sm:py-16 lg:px-10 lg:py-20">
+    <div class="text-[11px] font-mono text-ef-green uppercase tracking-[0.15em] mb-3">02 · Anticiper</div>
+    <h2 class="font-serif text-heading text-ef-fg mb-4 sm:mb-5">Modélisez toutes<br>vos charges futures.</h2>
+    <p class="text-ef-dim font-light text-sm sm:text-base max-w-[520px] leading-relaxed mb-10 sm:mb-12">
+        Abonnements récurrents, crédits en cours, échéances fiscales — Fortress les intègre dans votre solde prévisionnel pour une vision honnête de votre situation réelle.
+    </p>
+
+    <!-- 3 types de charges -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-8 sm:mb-10">
+
+        <!-- Abonnements -->
+        <div class="bg-ef-bg1 border bef-base rounded-xl p-4 sm:p-5">
+            <div class="flex items-center gap-2 mb-3 sm:mb-4">
+                <span class="pill bg-b12 text-ef-blue">Abonnement</span>
             </div>
-            <div class="text-[15px] font-medium text-ef-fg mb-2">Importez vos données</div>
-            <div class="text-[13px] text-ef-dim leading-relaxed">Connectez votre banque ou importez un relevé CSV/XLSX
-                en quelques secondes.
+            <div class="text-[13px] sm:text-[14px] font-medium text-ef-fg mb-1.5">Abonnements</div>
+            <div class="text-[11px] sm:text-[12px] text-ef-dim leading-relaxed mb-4">
+                Streaming, SaaS, salle de sport… Renseignez une fois, Fortress les déduit automatiquement chaque mois.
+            </div>
+            <!-- Mini liste mockée -->
+            <div class="space-y-2">
+                <div class="flex items-center justify-between text-[11px]">
+                    <span class="text-ef-dim font-mono">Netflix</span>
+                    <span class="text-ef-red font-mono font-medium">−17 €/mois</span>
+                </div>
+                <div class="flex items-center justify-between text-[11px]">
+                    <span class="text-ef-dim font-mono">Spotify</span>
+                    <span class="text-ef-red font-mono font-medium">−11 €/mois</span>
+                </div>
+                <div class="flex items-center justify-between text-[11px] border-t bef-base pt-2 mt-2">
+                    <span class="text-ef-dim font-mono">Total mensuel</span>
+                    <span class="text-ef-red font-mono font-semibold">−28 €</span>
+                </div>
             </div>
         </div>
-        <div class="p-8 sm:p-6">
-            <div class="w-7 h-7 flex items-center justify-center bg-ef-green-10 border border-ef-strong rounded-md text-ef-green text-[11px] font-mono font-medium mb-4">
-                02
+
+        <!-- Crédits -->
+        <div class="bg-ef-bg1 border bef-base rounded-xl p-4 sm:p-5">
+            <div class="flex items-center gap-2 mb-3 sm:mb-4">
+                <span class="pill bg-y12 text-ef-yellow">Crédit</span>
             </div>
-            <div class="text-[15px] font-medium text-ef-fg mb-2">Approuvez vos dépenses</div>
-            <div class="text-[13px] text-ef-dim leading-relaxed">Validez ou rejetez chaque transaction avant qu'elle
-                impacte votre solde réel.
+            <div class="text-[13px] sm:text-[14px] font-medium text-ef-fg mb-1.5">Crédits</div>
+            <div class="text-[11px] sm:text-[12px] text-ef-dim leading-relaxed mb-4">
+                Prêt immobilier, auto, conso — renseignez le capital restant et la mensualité pour un suivi précis.
+            </div>
+            <div class="space-y-2">
+                <div class="flex items-center justify-between text-[11px]">
+                    <span class="text-ef-dim font-mono">Prêt auto</span>
+                    <span class="text-ef-yellow font-mono font-medium">−182 €/mois</span>
+                </div>
+                <div class="flex items-center justify-between text-[11px]">
+                    <span class="text-ef-dim font-mono">Reste à rembourser</span>
+                    <span class="text-ef-dim font-mono">7 200 €</span>
+                </div>
+                <div class="flex items-center justify-between text-[11px] border-t bef-base pt-2 mt-2">
+                    <span class="text-ef-dim font-mono">Fin estimée</span>
+                    <span class="text-ef-yellow font-mono font-semibold">Fév. 2029</span>
+                </div>
             </div>
         </div>
-        <div class="p-8 sm:p-6">
-            <div class="w-7 h-7 flex items-center justify-center bg-ef-green-10 border border-ef-strong rounded-md text-ef-green text-[11px] font-mono font-medium mb-4">
-                03
+
+        <!-- Impôts -->
+        <div class="bg-ef-bg1 border bef-base rounded-xl p-4 sm:p-5">
+            <div class="flex items-center gap-2 mb-3 sm:mb-4">
+                <span class="pill bg-p12 text-ef-purple">Impôt</span>
             </div>
-            <div class="text-[15px] font-medium text-ef-fg mb-2">Anticipez votre solde</div>
-            <div class="text-[13px] text-ef-dim leading-relaxed">Visualisez l'impact futur de vos transactions en
-                attente sur votre budget.
+            <div class="text-[13px] sm:text-[14px] font-medium text-ef-fg mb-1.5">Impôts & taxes</div>
+            <div class="text-[11px] sm:text-[12px] text-ef-dim leading-relaxed mb-4">
+                Acomptes, taxe foncière, CFE… Planifiez vos échéances fiscales pour ne jamais être pris de court.
+            </div>
+            <div class="space-y-2">
+                <div class="flex items-center justify-between text-[11px]">
+                    <span class="text-ef-dim font-mono">Acompte IS — T2</span>
+                    <span class="text-ef-purple font-mono font-medium">−420 €</span>
+                </div>
+                <div class="flex items-center justify-between text-[11px]">
+                    <span class="text-ef-dim font-mono">Taxe foncière</span>
+                    <span class="text-ef-purple font-mono font-medium">−890 €</span>
+                </div>
+                <div class="flex items-center justify-between text-[11px] border-t bef-base pt-2 mt-2">
+                    <span class="text-ef-dim font-mono">Prochaine échéance</span>
+                    <span class="text-ef-purple font-mono font-semibold">15 juin</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Timeline prévisionnel -->
+    <div class="bg-ef-bg1 border bef-base rounded-xl p-4 sm:p-6">
+        <div class="text-[12px] font-mono text-ef-dim uppercase tracking-wider mb-4">Prévisionnel — prochains 90 jours</div>
+        <div class="flex flex-col gap-3">
+            <div class="flex gap-3 items-start">
+                <div class="flex flex-col items-center">
+                    <div class="timeline-dot bg-ef-green"></div>
+                    <div class="timeline-line"></div>
+                </div>
+                <div class="flex items-start justify-between w-full pb-3 border-b bef-base gap-2 flex-wrap">
+                    <div>
+                        <div class="text-[12px] sm:text-[13px] text-ef-fg font-medium">30 avril · Loyer</div>
+                        <div class="text-[11px] text-ef-dim">Charge fixe mensuelle</div>
+                    </div>
+                    <span class="text-ef-red font-mono text-[12px] sm:text-[13px] font-semibold whitespace-nowrap">−850 €</span>
+                </div>
+            </div>
+            <div class="flex gap-3 items-start">
+                <div class="flex flex-col items-center">
+                    <div class="timeline-dot bg-ef-purple"></div>
+                    <div class="timeline-line"></div>
+                </div>
+                <div class="flex items-start justify-between w-full pb-3 border-b bef-base gap-2 flex-wrap">
+                    <div>
+                        <div class="text-[12px] sm:text-[13px] text-ef-fg font-medium">15 juin · Impôts acompte T2</div>
+                        <div class="text-[11px] text-ef-dim">Échéance fiscale planifiée</div>
+                    </div>
+                    <span class="text-ef-purple font-mono text-[12px] sm:text-[13px] font-semibold whitespace-nowrap">−420 €</span>
+                </div>
+            </div>
+            <div class="flex gap-3 items-start">
+                <div class="flex flex-col items-center">
+                    <div class="timeline-dot bg-ef-yellow"></div>
+                </div>
+                <div class="flex items-start justify-between w-full gap-2 flex-wrap">
+                    <div>
+                        <div class="text-[12px] sm:text-[13px] text-ef-fg font-medium">20 juillet · Mensualité crédit auto</div>
+                        <div class="text-[11px] text-ef-dim">Crédit en cours — 39 échéances restantes</div>
+                    </div>
+                    <span class="text-ef-yellow font-mono text-[12px] sm:text-[13px] font-semibold whitespace-nowrap">−182 €</span>
+                </div>
             </div>
         </div>
     </div>
 </section>
 
-<hr class="border-none border-t border-ef-base mx-10 sm:mx-6 xs:mx-4"/>
+<hr class="border-none border-t bef-base mx-4 sm:mx-6 lg:mx-10" />
 
 
-<!-- ═══════════════════════════════════════════
-     FEATURES
-═══════════════════════════════════════════ -->
-<section id="features" class="max-w-[960px] mx-auto px-10 py-20 sm:px-6 sm:py-14 xs:px-4 xs:py-10">
-    <div class="text-[11px] font-mono text-ef-green uppercase tracking-[0.15em] mb-4">Fonctionnalités</div>
-    <h2 class="font-serif text-heading text-ef-fg mb-12 sm:mb-8">Tout ce dont vous avez besoin.</h2>
-    <div class="grid-ef grid-cols-3 md:grid-cols-2 sm:grid-cols-1">
-        <div class="p-7 sm:p-5">
-            <div class="w-9 h-9 flex items-center justify-center bg-ef-green-10 rounded-lg mb-4 text-[16px]">📊</div>
-            <div class="text-[14px] font-medium text-ef-fg mb-1.5">Tableau de bord</div>
-            <div class="text-[12px] text-ef-dim leading-relaxed">Solde actuel et prévisionnel en temps réel avec
-                métriques visuelles.
+<!-- ══════════════════════════════════════
+     SECTION 3 — PROJETS
+══════════════════════════════════════ -->
+<section id="projets" class="max-w-[960px] mx-auto px-4 py-12 sm:px-6 sm:py-16 lg:px-10 lg:py-20">
+    <div class="text-[11px] font-mono text-ef-green uppercase tracking-[0.15em] mb-3">03 · Projets</div>
+    <h2 class="font-serif text-heading text-ef-fg mb-4 sm:mb-5">Planifiez vos projets,<br>réalisez-les au bon moment.</h2>
+    <p class="text-ef-dim font-light text-sm sm:text-base max-w-[520px] leading-relaxed mb-10 sm:mb-12">
+        Définissez un montant cible, une priorité. Fortress calcule automatiquement quand votre solde vous permettra de le réaliser — en tenant compte de toutes vos charges anticipées.
+    </p>
+
+    <!-- Mockup liste de projets -->
+    <div class="bg-ef-bg1 border bef-base rounded-xl overflow-hidden mb-6 sm:mb-8">
+
+        <!-- Header -->
+        <div class="flex items-center justify-between px-4 sm:px-5 py-3.5 border-b bef-base">
+            <span class="text-[13px] sm:text-[14px] font-medium text-ef-fg">Mes projets</span>
+            <button class="bg-g10 border bef-strong text-ef-green text-[10px] sm:text-[11px] font-mono px-2.5 py-1 rounded-md whitespace-nowrap">+ Nouveau projet</button>
+        </div>
+
+        <!-- Projets -->
+        <div class="divide-y divide-[rgba(167,192,128,0.1)]">
+
+            <!-- Projet 1 — priorité haute -->
+            <div class="px-4 sm:px-5 py-4">
+                <div class="flex items-start justify-between gap-3 mb-2.5">
+                    <div class="flex items-center gap-2.5 min-w-0">
+                        <div class="w-1.5 h-1.5 rounded-full bg-ef-green shrink-0"></div>
+                        <span class="text-[13px] sm:text-[14px] font-medium text-ef-fg truncate">MacBook Pro M4</span>
+                        <span class="pill bg-g12 text-ef-green hidden sm:inline-flex">Priorité 1</span>
+                    </div>
+                    <div class="text-right shrink-0">
+                        <div class="text-[12px] font-mono text-ef-green font-semibold">1 450 € / 2 400 €</div>
+                        <div class="text-[10px] font-mono text-ef-dim">Disponible dans ~3 mois</div>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width:60%"></div>
+                </div>
+                <div class="flex items-center justify-between mt-1.5">
+                    <span class="text-[10px] font-mono text-ef-dim sm:hidden">Priorité 1</span>
+                    <span class="text-[10px] font-mono text-ef-dim">60 % atteint</span>
+                    <span class="text-[10px] font-mono text-ef-green">Juil. 2026</span>
+                </div>
+            </div>
+
+            <!-- Projet 2 -->
+            <div class="px-4 sm:px-5 py-4">
+                <div class="flex items-start justify-between gap-3 mb-2.5">
+                    <div class="flex items-center gap-2.5 min-w-0">
+                        <div class="w-1.5 h-1.5 rounded-full bg-ef-yellow shrink-0"></div>
+                        <span class="text-[13px] sm:text-[14px] font-medium text-ef-fg truncate">Voyage au Japon</span>
+                        <span class="pill bg-y12 text-ef-yellow hidden sm:inline-flex">Priorité 2</span>
+                    </div>
+                    <div class="text-right shrink-0">
+                        <div class="text-[12px] font-mono text-ef-yellow font-semibold">620 € / 3 000 €</div>
+                        <div class="text-[10px] font-mono text-ef-dim">Disponible dans ~12 mois</div>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width:21%;background:#DBBC7F"></div>
+                </div>
+                <div class="flex items-center justify-between mt-1.5">
+                    <span class="text-[10px] font-mono text-ef-dim sm:hidden">Priorité 2</span>
+                    <span class="text-[10px] font-mono text-ef-dim">21 % atteint</span>
+                    <span class="text-[10px] font-mono text-ef-yellow">Avr. 2027</span>
+                </div>
+            </div>
+
+            <!-- Projet 3 -->
+            <div class="px-4 sm:px-5 py-4 opacity-60">
+                <div class="flex items-start justify-between gap-3 mb-2.5">
+                    <div class="flex items-center gap-2.5 min-w-0">
+                        <div class="w-1.5 h-1.5 rounded-full bg-ef-dim shrink-0"></div>
+                        <span class="text-[13px] sm:text-[14px] font-medium text-ef-fg truncate">Rénovation cuisine</span>
+                        <span class="pill bg-b12 text-ef-blue hidden sm:inline-flex">Priorité 3</span>
+                    </div>
+                    <div class="text-right shrink-0">
+                        <div class="text-[12px] font-mono text-ef-dim font-semibold">0 € / 8 000 €</div>
+                        <div class="text-[10px] font-mono text-ef-dim">Disponible dans ~36 mois</div>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width:0%;background:#7FBBB3"></div>
+                </div>
+                <div class="flex items-center justify-between mt-1.5">
+                    <span class="text-[10px] font-mono text-ef-dim sm:hidden">Priorité 3</span>
+                    <span class="text-[10px] font-mono text-ef-dim">0 % atteint</span>
+                    <span class="text-[10px] font-mono text-ef-dim">~Avr. 2029</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Explication fonctionnement -->
+    <div class="grid-ef grid-cols-1 sm:grid-cols-2">
+        <div class="p-5 sm:p-6">
+            <div class="w-8 h-8 flex items-center justify-center bg-g10 rounded-lg mb-3 text-sm">🎯</div>
+            <div class="text-[13px] sm:text-[14px] font-medium text-ef-fg mb-1.5">Définissez vos priorités</div>
+            <div class="text-[11px] sm:text-[12px] text-ef-dim leading-relaxed">
+                Glissez-déposez vos projets pour les réordonner. Fortress recalcule instantanément les dates de réalisation selon votre ordre de priorité.
             </div>
         </div>
-        <div class="p-7 sm:p-5">
-            <div class="w-9 h-9 flex items-center justify-center bg-ef-green-10 rounded-lg mb-4 text-ef-green font-semibold">
-                ✓
-            </div>
-            <div class="text-[14px] font-medium text-ef-fg mb-1.5">Approbation manuelle</div>
-            <div class="text-[12px] text-ef-dim leading-relaxed">Approuvez ou rejetez chaque transaction avant impact
-                sur votre solde.
+        <div class="p-5 sm:p-6">
+            <div class="w-8 h-8 flex items-center justify-center bg-g10 rounded-lg mb-3 text-sm">📅</div>
+            <div class="text-[13px] sm:text-[14px] font-medium text-ef-fg mb-1.5">Estimation précise</div>
+            <div class="text-[11px] sm:text-[12px] text-ef-dim leading-relaxed">
+                Le calcul tient compte de votre épargne nette mensuelle, de vos charges anticipées (abonnements, crédits, impôts) et de votre solde courant.
             </div>
         </div>
-        <div class="p-7 sm:p-5">
-            <div class="w-9 h-9 flex items-center justify-center bg-ef-green-10 rounded-lg mb-4 text-[16px]">📈</div>
-            <div class="text-[14px] font-medium text-ef-fg mb-1.5">Solde prévisionnel</div>
-            <div class="text-[12px] text-ef-dim leading-relaxed">Anticipez l'impact de vos transactions en attente sur
-                votre futur.
+        <div class="p-5 sm:p-6">
+            <div class="w-8 h-8 flex items-center justify-center bg-g10 rounded-lg mb-3 text-sm">🔄</div>
+            <div class="text-[13px] sm:text-[14px] font-medium text-ef-fg mb-1.5">Mise à jour automatique</div>
+            <div class="text-[11px] sm:text-[12px] text-ef-dim leading-relaxed">
+                Chaque nouvelle transaction approuvée ou charge ajoutée met à jour les estimations en temps réel.
             </div>
         </div>
-        <div class="p-7 sm:p-5">
-            <div class="w-9 h-9 flex items-center justify-center bg-ef-green-10 rounded-lg mb-4 text-[16px]">📥</div>
-            <div class="text-[14px] font-medium text-ef-fg mb-1.5">Import CSV / XLSX</div>
-            <div class="text-[12px] text-ef-dim leading-relaxed">Importez vos relevés bancaires directement depuis votre
-                banque.
-            </div>
-        </div>
-        <div class="p-7 sm:p-5">
-            <div class="w-9 h-9 flex items-center justify-center bg-ef-green-10 rounded-lg mb-4 text-[16px]">📱</div>
-            <div class="text-[14px] font-medium text-ef-fg mb-1.5">Application mobile</div>
-            <div class="text-[12px] text-ef-dim leading-relaxed">Installez Fortress sur mobile ou desktop grâce au
-                support PWA natif.
-            </div>
-        </div>
-        <div class="p-7 sm:p-5">
-            <div class="w-9 h-9 flex items-center justify-center bg-ef-green-10 rounded-lg mb-4 text-[16px]">🔔</div>
-            <div class="text-[14px] font-medium text-ef-fg mb-1.5">Notifications push</div>
-            <div class="text-[12px] text-ef-dim leading-relaxed">Recevez une alerte dès qu'une transaction attend votre
-                approbation.
+        <div class="p-5 sm:p-6">
+            <div class="w-8 h-8 flex items-center justify-center bg-g10 rounded-lg mb-3 text-sm">🔔</div>
+            <div class="text-[13px] sm:text-[14px] font-medium text-ef-fg mb-1.5">Alertes au bon moment</div>
+            <div class="text-[11px] sm:text-[12px] text-ef-dim leading-relaxed">
+                Recevez une notification push quand votre solde atteint le montant d'un projet prioritaire.
             </div>
         </div>
     </div>
 </section>
 
-<hr class="border-none border-t border-ef-base mx-10 sm:mx-6 xs:mx-4"/>
+<hr class="border-none border-t bef-base mx-4 sm:mx-6 lg:mx-10" />
 
 
-<!-- ═══════════════════════════════════════════
+<!-- ══════════════════════════════════════
+     SECTION 4 — PARTOUT
+══════════════════════════════════════ -->
+<section class="max-w-[960px] mx-auto px-4 py-12 sm:px-6 sm:py-16 lg:px-10 lg:py-20">
+    <div class="text-[11px] font-mono text-ef-green uppercase tracking-[0.15em] mb-3">04 · Partout</div>
+    <h2 class="font-serif text-heading text-ef-fg mb-8 sm:mb-10">Sur tous vos appareils.</h2>
+    <div class="grid-ef grid-cols-1 sm:grid-cols-3">
+        <div class="p-5 sm:p-6">
+            <div class="w-8 h-8 flex items-center justify-center bg-g10 rounded-lg mb-3 text-sm">📱</div>
+            <div class="text-[13px] sm:text-[14px] font-medium text-ef-fg mb-1.5">Application PWA</div>
+            <div class="text-[11px] sm:text-[12px] text-ef-dim leading-relaxed">Installez Fortress sur mobile ou desktop directement depuis votre navigateur, sans passer par un store.</div>
+        </div>
+        <div class="p-5 sm:p-6">
+            <div class="w-8 h-8 flex items-center justify-center bg-g10 rounded-lg mb-3 text-sm">🔔</div>
+            <div class="text-[13px] sm:text-[14px] font-medium text-ef-fg mb-1.5">Notifications push</div>
+            <div class="text-[11px] sm:text-[12px] text-ef-dim leading-relaxed">Transactions en attente, projets atteignables, échéances à venir — toutes les alertes qu'il vous faut.</div>
+        </div>
+        <div class="p-5 sm:p-6">
+            <div class="w-8 h-8 flex items-center justify-center bg-g10 rounded-lg mb-3 text-sm">🔒</div>
+            <div class="text-[13px] sm:text-[14px] font-medium text-ef-fg mb-1.5">Données chiffrées</div>
+            <div class="text-[11px] sm:text-[12px] text-ef-dim leading-relaxed">Toutes vos données sont chiffrées de bout en bout — au repos comme en transit. Aucune revente, aucun accès tiers.</div>
+            <div class="mt-3 inline-flex items-center gap-1.5 bg-g10 border bef-strong text-ef-green text-[10px] font-mono px-2.5 py-1 rounded-md">🔐 AES-256 · TLS 1.3</div>
+        </div>
+    </div>
+</section>
+
+<hr class="border-none border-t bef-base mx-4 sm:mx-6 lg:mx-10" />
+
+
+<!-- ══════════════════════════════════════
      PRICING
-═══════════════════════════════════════════ -->
-<section id="pricing" class="max-w-[960px] mx-auto px-10 py-20 sm:px-6 sm:py-14 xs:px-4 xs:py-10">
-    <div class="text-[11px] font-mono text-ef-green uppercase tracking-[0.15em] mb-4">Tarifs</div>
-    <h2 class="font-serif text-heading text-ef-fg mb-12 sm:mb-8">Simple et transparent.</h2>
-    <div class="grid grid-cols-2 gap-4 max-w-[680px] sm:grid-cols-1">
+══════════════════════════════════════ -->
+<section id="pricing" class="max-w-[960px] mx-auto px-4 py-12 sm:px-6 sm:py-16 lg:px-10 lg:py-20">
+    <div class="text-[11px] font-mono text-ef-green uppercase tracking-[0.15em] mb-3">Tarifs</div>
+    <h2 class="font-serif text-heading text-ef-fg mb-8 sm:mb-10 lg:mb-12">Simple et transparent.</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-[680px]">
 
         <!-- Gratuit -->
-        <div class="bg-ef-bg1 border border-ef-base rounded-xl p-8 sm:p-6">
-            <div class="text-[13px] font-mono text-ef-dim uppercase tracking-wider mb-2">Gratuit</div>
-            <div class="font-serif text-price text-ef-fg mb-1">
-                0 € <span class="font-sans text-[14px] text-ef-dim font-light">/ mois</span>
-            </div>
-            <div class="text-[13px] text-ef-dim leading-snug mb-6">Pour découvrir et gérer vos finances simplement.
-            </div>
-            <ul class="space-y-2 mb-7">
-                <li class="checkmark-item flex items-center gap-2 text-[13px] text-ef-dim">Jusqu'à 50 transactions /
-                    mois
-                </li>
-                <li class="checkmark-item flex items-center gap-2 text-[13px] text-ef-dim">Dashboard & prévisionnel</li>
-                <li class="checkmark-item flex items-center gap-2 text-[13px] text-ef-dim">Approbation manuelle</li>
-                <li class="checkmark-item flex items-center gap-2 text-[13px] text-ef-dim">Application PWA</li>
+        <div class="bg-ef-bg1 border bef-base rounded-xl p-5 sm:p-6 lg:p-8">
+            <div class="text-[12px] font-mono text-ef-dim uppercase tracking-wider mb-2">Gratuit</div>
+            <div class="font-serif text-price text-ef-fg mb-1">0 € <span class="font-sans text-[13px] text-ef-dim font-light">/ mois</span></div>
+            <div class="text-[12px] text-ef-dim leading-snug mb-5">Pour découvrir et prendre en main Fortress.</div>
+            <ul class="space-y-2.5 mb-6">
+                <li class="check-li text-[12px] text-ef-dim">50 transactions / mois</li>
+                <li class="check-li text-[12px] text-ef-dim">Dashboard & prévisionnel</li>
+                <li class="check-li text-[12px] text-ef-dim">Abonnements & crédits (3 max)</li>
+                <li class="check-li text-[12px] text-ef-dim">2 projets actifs</li>
+                <li class="check-li text-[12px] text-ef-dim">Application PWA</li>
             </ul>
-            <a href="/sign-up"
-               class="block w-full text-center border border-ef-strong text-ef-dim text-[13px] font-medium py-2.5 rounded-lg hover:border-ef-green hover:text-ef-green transition-all no-underline">
+            <a href="/sign-up" class="block w-full text-center border bef-strong text-ef-dim text-[12px] font-medium py-2.5 rounded-lg hover:border-ef-green hover:text-ef-green transition-all no-underline">
                 Commencer gratuitement
             </a>
         </div>
 
         <!-- Premium -->
-        <div class="relative bg-ef-green-05 border border-ef-accent rounded-xl p-8 sm:p-6 sm:mt-3">
-            <div class="absolute -top-[11px] left-1/2 -translate-x-1/2 bg-ef-green text-ef-bg0 text-[11px] font-mono font-semibold px-3 py-0.5 rounded-full whitespace-nowrap">
+        <div class="relative bg-g05 border bef-accent rounded-xl p-5 sm:p-6 lg:p-8 mt-6 md:mt-0">
+            <div class="absolute -top-[11px] left-1/2 -translate-x-1/2 bg-ef-green text-ef-bg0 text-[10px] sm:text-[11px] font-mono font-semibold px-3 py-0.5 rounded-full whitespace-nowrap">
                 Plus populaire
             </div>
-            <div class="text-[13px] font-mono text-ef-dim uppercase tracking-wider mb-2">Premium</div>
-            <div class="font-serif text-price text-ef-fg mb-1">
-                4,99 € <span class="font-sans text-[14px] text-ef-dim font-light">/ mois</span>
-            </div>
-            <div class="text-[13px] text-ef-dim leading-snug mb-6">Pour une gestion financière complète et sans
-                limites.
-            </div>
-            <ul class="space-y-2 mb-7">
-                <li class="checkmark-item flex items-center gap-2 text-[13px] text-ef-dim">Transactions illimitées</li>
-                <li class="checkmark-item flex items-center gap-2 text-[13px] text-ef-dim">Import CSV / XLSX</li>
-                <li class="checkmark-item flex items-center gap-2 text-[13px] text-ef-dim">Notifications push</li>
-                <li class="checkmark-item flex items-center gap-2 text-[13px] text-ef-dim">Historique complet</li>
-                <li class="checkmark-item flex items-center gap-2 text-[13px] text-ef-dim">Support prioritaire</li>
+            <div class="text-[12px] font-mono text-ef-dim uppercase tracking-wider mb-2">Premium</div>
+            <div class="font-serif text-price text-ef-fg mb-1">4,99 € <span class="font-sans text-[13px] text-ef-dim font-light">/ mois</span></div>
+            <div class="text-[12px] text-ef-dim leading-snug mb-5">Pour une gestion financière complète et sans limites.</div>
+            <ul class="space-y-2.5 mb-6">
+                <li class="check-li text-[12px] text-ef-dim">Transactions illimitées</li>
+                <li class="check-li text-[12px] text-ef-dim">Import CSV / XLSX</li>
+                <li class="check-li text-[12px] text-ef-dim">Abonnements, crédits & impôts illimités</li>
+                <li class="check-li text-[12px] text-ef-dim">Projets illimités avec priorisation</li>
+                <li class="check-li text-[12px] text-ef-dim">Estimations de réalisation</li>
+                <li class="check-li text-[12px] text-ef-dim">Notifications push avancées</li>
+                <li class="check-li text-[12px] text-ef-dim">Historique complet & support prioritaire</li>
             </ul>
-            <a href="/sign-up"
-               class="block w-full text-center bg-ef-green text-ef-bg0 text-[13px] font-semibold py-2.5 rounded-lg hover:bg-[#b8d494] transition-colors no-underline">
+            <a href="/sign-up" class="block w-full text-center bg-ef-green text-ef-bg0 text-[12px] font-semibold py-2.5 rounded-lg hover:bg-[#b8d494] transition-colors no-underline">
                 Passer en Premium
             </a>
         </div>
-
     </div>
 </section>
 
-<hr class="border-none border-t border-ef-base mx-10 sm:mx-6 xs:mx-4"/>
+<hr class="border-none border-t bef-base mx-4 sm:mx-6 lg:mx-10" />
 
 
-<!-- ═══════════════════════════════════════════
+<!-- ══════════════════════════════════════
      CTA FINAL
-═══════════════════════════════════════════ -->
-<section class="max-w-[960px] mx-auto px-10 py-20 pb-24 sm:px-6 sm:py-14 xs:px-4">
-    <div class="bg-ef-bg1 border border-ef-strong rounded-2xl p-16 text-center sm:p-10 xs:p-8">
-        <h2 class="font-serif text-heading text-ef-fg mb-4">Prêt à reprendre le contrôle ?</h2>
-        <p class="text-ef-dim font-light mb-8 text-[15px]">Créez votre compte en moins de 2 minutes. Gratuit, sans carte
-            bancaire.</p>
-        <a href="/sign-up"
-           class="inline-block bg-ef-green text-ef-bg0 font-semibold text-[14px] px-7 py-3.5 rounded-lg hover:bg-[#b8d494] transition-colors no-underline">
+══════════════════════════════════════ -->
+<section class="max-w-[960px] mx-auto px-4 py-12 pb-16 sm:px-6 sm:py-16 sm:pb-20 lg:px-10 lg:py-20 lg:pb-24">
+    <div class="bg-ef-bg1 border bef-strong rounded-2xl px-5 py-10 text-center sm:px-10 sm:py-14 lg:px-16 lg:py-16">
+        <h2 class="font-serif text-heading text-ef-fg mb-3 sm:mb-4">Prêt à reprendre le contrôle ?</h2>
+        <p class="text-ef-dim font-light mb-6 sm:mb-8 text-sm sm:text-[15px] max-w-[380px] mx-auto">
+            Créez votre compte en moins de 2 minutes. Gratuit, sans carte bancaire.
+        </p>
+        <a href="/sign-up" class="block w-full sm:inline-block sm:w-auto text-center bg-ef-green text-ef-bg0 font-semibold text-sm px-7 py-3.5 rounded-lg hover:bg-[#b8d494] transition-colors no-underline">
             Commencer gratuitement
         </a>
+        <div class="mt-5 flex items-center justify-center gap-4 flex-wrap text-[11px] font-mono text-ef-dim">
+            <span class="inline-flex items-center gap-1.5">🔐 Données chiffrées AES-256</span>
+            <span class="text-ef-bg3">·</span>
+            <span class="inline-flex items-center gap-1.5">🚫 Aucune carte bancaire requise</span>
+            <span class="text-ef-bg3">·</span>
+            <span class="inline-flex items-center gap-1.5">🔒 Transit TLS 1.3</span>
+        </div>
     </div>
 </section>
 
 
-<!-- ═══════════════════════════════════════════
+<!-- ══════════════════════════════════════
      FOOTER
-═══════════════════════════════════════════ -->
-<footer class="border-t border-ef-base px-10 py-8 flex justify-between items-center flex-wrap gap-4 sm:px-6 sm:flex-col sm:items-start xs:px-4">
-    <div class="font-serif text-[16px] text-ef-green">🌲 Fortress</div>
-    <div class="flex gap-6 flex-wrap">
-        <a href="#features" class="text-[12px] font-mono text-ef-dim hover:text-ef-fg transition-colors no-underline">Fonctionnalités</a>
-        <a href="#pricing" class="text-[12px] font-mono text-ef-dim hover:text-ef-fg transition-colors no-underline">Tarifs</a>
-        <a href="/sign-in" class="text-[12px] font-mono text-ef-dim hover:text-ef-fg transition-colors no-underline">Se
-            connecter</a>
-        <a href="/dashboard" class="text-[12px] font-mono text-ef-dim hover:text-ef-fg transition-colors no-underline">Dashboard</a>
+══════════════════════════════════════ -->
+<footer class="border-t bef-base px-4 py-6 sm:px-6 lg:px-10 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
+    <div class="font-serif text-base text-ef-green">🌲 Fortress</div>
+    <div class="flex gap-4 sm:gap-6 flex-wrap">
+        <a href="#suivre"    class="text-[12px] font-mono text-ef-dim hover:text-ef-fg transition-colors no-underline">Suivi</a>
+        <a href="#anticiper" class="text-[12px] font-mono text-ef-dim hover:text-ef-fg transition-colors no-underline">Anticipation</a>
+        <a href="#projets"   class="text-[12px] font-mono text-ef-dim hover:text-ef-fg transition-colors no-underline">Projets</a>
+        <a href="#pricing"   class="text-[12px] font-mono text-ef-dim hover:text-ef-fg transition-colors no-underline">Tarifs</a>
+        <a href="/sign-in"   class="text-[12px] font-mono text-ef-dim hover:text-ef-fg transition-colors no-underline">Se connecter</a>
     </div>
     <div class="flex items-center gap-3">
-      <span class="inline-flex items-center gap-1.5 text-[11px] font-mono text-ef-green before:content-[''] before:w-1.5 before:h-1.5 before:bg-ef-green before:rounded-full before:inline-block">
+      <span class="inline-flex items-center gap-1.5 text-[11px] font-mono text-ef-green">
+        <span class="w-1.5 h-1.5 bg-ef-green rounded-full"></span>
         Système opérationnel
       </span>
-        <span class="text-[12px] font-mono text-ef-bg4">© 2026 Fortress</span>
+        <span class="text-[11px] font-mono text-ef-bg4">© 2026 Fortress</span>
     </div>
 </footer>
-
 
 <script>
     const hamburger = document.getElementById('hamburger');
@@ -523,6 +681,12 @@
     hamburger.addEventListener('click', () => {
         mobileMenu.classList.toggle('hidden');
         mobileMenu.classList.toggle('flex');
+    });
+    mobileMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            mobileMenu.classList.add('hidden');
+            mobileMenu.classList.remove('flex');
+        });
     });
 </script>
 

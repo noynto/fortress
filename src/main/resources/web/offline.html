@@ -4,26 +4,77 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fortress — Hors ligne</title>
+
+    <!-- Icône -->
+    <link rel="icon" type="image/png" href="/icons/icon-192.png">
+    <link rel="apple-touch-icon" href="/icons/icon-192.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Sora:wght@300;400;500;600&display=swap"
+          rel="stylesheet">
+
+    <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
-            theme: { extend: { colors: { ctp: {
-                            base:'#1e1e2e', surface0:'#313244', overlay1:'#7f849c',
-                            text:'#cdd6f4', mauve:'#cba6f7', crust:'#11111b'
-                        }}}}
+            theme: {
+                extend: {
+                    colors: {
+                        ef: {
+                            bg0: '#2D353B', bg1: '#343F44', bg2: '#3D484D',
+                            bg4: '#4F585E',
+                            fg: '#D3C6AA', dim: '#9DA9A0',
+                            green: '#A7C080', red: '#E67E80',
+                        },
+                    },
+                    fontFamily: {
+                        serif: ['"DM Serif Display"', 'serif'],
+                        mono: ['"DM Mono"', 'monospace'],
+                        sans: ['Sora', 'sans-serif'],
+                    },
+                },
+            },
         }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        .bef-base {
+            border-color: rgba(167, 192, 128, 0.15);
+        }
+    </style>
 </head>
-<body class="bg-ctp-base text-ctp-text font-nunito min-h-screen flex items-center justify-center">
-<div class="flex flex-col items-center text-center px-6">
-    <div class="w-16 h-16 rounded-2xl bg-ctp-surface0 flex items-center justify-center text-3xl mb-6">📡</div>
-    <h1 class="text-2xl font-bold text-ctp-text mb-2">Vous êtes hors ligne</h1>
-    <p class="text-sm text-ctp-overlay1 max-w-xs mb-8">Vérifiez votre connexion internet et réessayez.</p>
+
+<body class="bg-ef-bg0 text-ef-fg font-sans antialiased min-h-screen flex flex-col items-center justify-center p-6">
+
+<div class="flex flex-col items-center text-center max-w-xs">
+
+    <!-- Icône -->
+    <div class="w-14 h-14 rounded-2xl bg-ef-bg1 border bef-base flex items-center justify-center text-2xl mb-6">
+        📡
+    </div>
+
+    <!-- Logo -->
+    <div class="font-serif text-lg text-ef-green mb-6">🌲 Fortress</div>
+
+    <!-- Titre -->
+    <h1 class="font-serif text-[22px] text-ef-fg mb-2 leading-tight">Vous êtes hors ligne</h1>
+    <p class="text-[13px] text-ef-dim leading-relaxed mb-8">
+        Vérifiez votre connexion internet et réessayez.
+    </p>
+
+    <!-- Bouton -->
     <button onclick="window.location.reload()"
-            class="text-sm font-bold px-6 py-3 rounded-xl bg-ctp-mauve text-ctp-crust hover:opacity-85 transition-opacity">
+            class="bg-ef-green text-ef-bg0 font-semibold text-sm px-6 py-3 rounded-xl
+                       hover:bg-[#b8d494] transition-colors">
         Réessayer
     </button>
+
+    <!-- Footer -->
+    <p class="text-[10px] font-mono text-ef-bg4 mt-10">© 2026 Fortress — Gestion financière</p>
+
 </div>
+
 </body>
 </html>

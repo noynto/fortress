@@ -15,131 +15,141 @@
     <meta name="description" content="Connectez-vous à votre compte Fortress.">
     <meta name="robots" content="noindex, nofollow">
 
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet">
+
     <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
+                screens: { sm:'640px', md:'768px', lg:'1024px', xl:'1280px' },
                 extend: {
                     colors: {
-                        ctp: {
-                            crust:    '#11111b',
-                            mantle:   '#181825',
-                            base:     '#1e1e2e',
-                            surface0: '#313244',
-                            surface1: '#45475a',
-                            surface2: '#585b70',
-                            overlay0: '#6c7086',
-                            overlay1: '#7f849c',
-                            overlay2: '#9399b2',
-                            subtext0: '#a6adc8',
-                            subtext1: '#bac2de',
-                            text:     '#cdd6f4',
-                            teal:     '#94e2d5',
-                            green:    '#a6e3a1',
-                            yellow:   '#f9e2af',
-                            peach:    '#fab387',
-                            red:      '#f38ba8',
-                            mauve:    '#cba6f7',
-                            pink:     '#f5c2e7',
-                        }
+                        ef: {
+                            bg0:'#2D353B', bg1:'#343F44', bg2:'#3D484D',
+                            bg3:'#475258', bg4:'#4F585E',
+                            fg:'#D3C6AA', dim:'#9DA9A0',
+                            green:'#A7C080', yellow:'#DBBC7F',
+                            red:'#E67E80', blue:'#7FBBB3',
+                        },
                     },
                     fontFamily: {
-                        nunito: ['Nunito', 'sans-serif'],
-                    }
-                }
-            }
+                        serif: ['"DM Serif Display"', 'serif'],
+                        mono:  ['"DM Mono"', 'monospace'],
+                        sans:  ['Sora', 'sans-serif'],
+                    },
+                },
+            },
         }
     </script>
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .bef-base   { border-color: rgba(167,192,128,0.15); }
+        .bef-strong { border-color: rgba(167,192,128,0.30); }
+        .bg-g10     { background-color: rgba(167,192,128,0.10); }
+        .bg-r10     { background-color: rgba(230,126,128,0.10); }
+        .border-r30 { border-color: rgba(230,126,128,0.30); }
+
+        input:-webkit-autofill,
+        input:-webkit-autofill:focus {
+            -webkit-box-shadow: 0 0 0 1000px #3D484D inset !important;
+            -webkit-text-fill-color: #D3C6AA !important;
+            caret-color: #D3C6AA;
+        }
+    </style>
 </head>
-<body class="bg-ctp-base text-ctp-text font-nunito min-h-screen flex items-center justify-center p-6">
 
-    <div class="w-full max-w-md">
+<body class="bg-ef-bg0 text-ef-fg font-sans antialiased min-h-screen flex flex-col items-center justify-center p-4 sm:p-6">
 
-        <!-- LOGO -->
-        <div class="text-center mb-8">
-            <a href="/" class="font-nunito text-2xl font-extrabold text-ctp-mauve hover:opacity-80 transition-opacity">
-                🐱 Fortress
-            </a>
-            <p class="text-sm text-ctp-overlay1 mt-1">Gestion financière personnelle</p>
-        </div>
+<div class="w-full max-w-[420px]">
 
-        <!-- CARTE -->
-        <div class="bg-ctp-mantle border border-ctp-surface0 rounded-2xl p-8">
-            <h1 class="font-nunito text-xl font-extrabold text-ctp-text mb-6">Connexion</h1>
+    <!-- LOGO -->
+    <div class="text-center mb-8">
+        <a href="/" class="font-serif text-2xl text-ef-green hover:opacity-80 transition-opacity inline-block">
+            🌲 Fortress
+        </a>
+        <p class="text-[12px] font-mono text-ef-dim mt-1.5 uppercase tracking-wider">Gestion financière personnelle</p>
+    </div>
 
-            <!-- ERREUR -->
-            @if(error != null)
-                <div class="flex items-start gap-3 bg-ctp-red/10 border border-ctp-red/30 rounded-xl px-4 py-3 mb-6">
-                    <span class="text-ctp-red text-sm shrink-0 mt-0.5">⚠</span>
-                    <p class="text-ctp-red text-xs leading-relaxed">${error}</p>
-                </div>
-            @endif
+    <!-- CARTE -->
+    <div class="bg-ef-bg1 border bef-base rounded-2xl p-7 sm:p-8">
 
-            <form action="/sign-in" method="post" class="space-y-5">
+        <h1 class="font-serif text-[22px] text-ef-fg mb-6 leading-tight">Connexion</h1>
 
-                <!-- EMAIL -->
-                <div>
-                    <label for="email"
-                           class="block text-[0.62rem] font-bold tracking-[.12em] uppercase text-ctp-overlay1 mb-2">
-                        Adresse email
-                    </label>
-                    <input type="email" id="email" name="email" autocomplete="email" autocapitalize="none" spellcheck="false"
-                           placeholder="jean.dupont@email.com" required
-                           class="w-full bg-ctp-base border border-ctp-surface1 rounded-xl px-4 py-3
-                                  text-ctp-text text-sm font-semibold placeholder:text-ctp-surface2
-                                  focus:outline-none focus:border-ctp-mauve focus:ring-1 focus:ring-ctp-mauve/30
+        <!-- ERREUR -->
+        @if(error != null)
+            <div class="flex items-start gap-3 bg-r10 border border-r30 rounded-xl px-4 py-3 mb-6">
+                <span class="text-ef-red text-sm shrink-0 mt-0.5">⚠</span>
+                <p class="text-ef-red text-xs leading-relaxed">${error}</p>
+            </div>
+        @endif
+
+        <form action="/sign-in" method="post" class="space-y-5">
+
+            <!-- EMAIL -->
+            <div>
+                <label for="email" class="block text-[10px] font-mono font-medium tracking-[.12em] uppercase text-ef-dim mb-2">
+                    Adresse email
+                </label>
+                <input type="email" id="email" name="email"
+                       autocomplete="email" autocapitalize="none" spellcheck="false"
+                       placeholder="jean.dupont@email.com" required
+                       class="w-full bg-ef-bg2 border bef-base rounded-xl px-4 py-3
+                                  text-ef-fg text-sm placeholder:text-ef-bg4
+                                  focus:outline-none focus:border-ef-green focus:ring-1 focus:ring-[rgba(167,192,128,0.25)]
                                   transition-colors">
-                </div>
-
-                <!-- MOT DE PASSE -->
-                <div>
-                    <label for="password"
-                           class="block text-[0.62rem] font-bold tracking-[.12em] uppercase text-ctp-overlay1 mb-2">
-                        Mot de passe
-                    </label>
-                    <input type="password" id="password" name="password" autocomplete="current-password"
-                           placeholder="••••••••" required
-                           class="w-full bg-ctp-base border border-ctp-surface1 rounded-xl px-4 py-3
-                                  text-ctp-text text-sm font-semibold placeholder:text-ctp-surface2
-                                  focus:outline-none focus:border-ctp-mauve focus:ring-1 focus:ring-ctp-mauve/30
-                                  transition-colors">
-                </div>
-
-                <!-- SUBMIT -->
-                <button type="submit"
-                        class="w-full font-nunito font-bold text-sm py-3.5 rounded-xl
-                               bg-ctp-mauve text-ctp-crust hover:opacity-85 transition-opacity mt-1">
-                    Se connecter
-                </button>
-
-            </form>
-
-            <!-- SÉPARATEUR -->
-            <div class="flex items-center gap-3 my-5">
-                <div class="flex-1 h-px bg-ctp-surface0"></div>
-                <span class="text-[0.68rem] text-ctp-overlay0">pas encore de compte ?</span>
-                <div class="flex-1 h-px bg-ctp-surface0"></div>
             </div>
 
-            <!-- LIEN INSCRIPTION -->
-            <p class="text-center text-sm text-ctp-overlay1">
-                <a href="/sign-up" class="text-ctp-mauve font-bold hover:opacity-80 transition-opacity">
-                    Créer un compte →
-                </a>
-            </p>
+            <!-- MOT DE PASSE -->
+            <div>
+                <label for="password" class="block text-[10px] font-mono font-medium tracking-[.12em] uppercase text-ef-dim mb-2">
+                    Mot de passe
+                </label>
+                <input type="password" id="password" name="password"
+                       autocomplete="current-password"
+                       placeholder="••••••••" required
+                       class="w-full bg-ef-bg2 border bef-base rounded-xl px-4 py-3
+                                  text-ef-fg text-sm placeholder:text-ef-bg4
+                                  focus:outline-none focus:border-ef-green focus:ring-1 focus:ring-[rgba(167,192,128,0.25)]
+                                  transition-colors">
+            </div>
+
+            <!-- SUBMIT -->
+            <button type="submit"
+                    class="w-full bg-ef-green text-ef-bg0 font-semibold text-sm py-3.5 rounded-xl
+                               hover:bg-[#b8d494] transition-colors mt-1">
+                Se connecter
+            </button>
+
+        </form>
+
+        <!-- SÉPARATEUR -->
+        <div class="flex items-center gap-3 my-5">
+            <div class="flex-1 h-px bg-[rgba(167,192,128,0.1)]"></div>
+            <span class="text-[10px] font-mono text-ef-dim uppercase tracking-wider">pas encore de compte ?</span>
+            <div class="flex-1 h-px bg-[rgba(167,192,128,0.1)]"></div>
         </div>
 
-        <!-- FOOTER -->
-        <p class="text-center text-[0.68rem] text-ctp-overlay0 mt-6">
-            © 2026 Fortress — Gestion financière
+        <!-- LIEN INSCRIPTION -->
+        <p class="text-center text-sm text-ef-dim">
+            <a href="/sign-up" class="text-ef-green font-medium hover:opacity-80 transition-opacity">
+                Créer un compte →
+            </a>
         </p>
-
     </div>
+
+    <!-- FOOTER -->
+    <div class="mt-6 text-center space-y-2">
+        <p class="text-[10px] font-mono text-ef-bg4">© 2026 Fortress — Gestion financière</p>
+        <p class="inline-flex items-center gap-1.5 text-[10px] font-mono text-ef-dim">
+            <span>🔐</span> Données chiffrées AES-256 · TLS 1.3
+        </p>
+    </div>
+
+</div>
 
 </body>
 </html>
